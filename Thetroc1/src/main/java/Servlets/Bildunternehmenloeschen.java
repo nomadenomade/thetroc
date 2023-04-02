@@ -17,6 +17,7 @@ import Model.Person;
 import Model.Produkt;
 import Model.Unternehmen;
 import Model.Verkaufer;
+import helpklasse.PathToSaveFile;
 
 /**
  * Servlet implementation class Bildunternehmenloeschen
@@ -39,13 +40,15 @@ public class Bildunternehmenloeschen extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 				Verkaufer verkaufer = (Verkaufer)request.getSession().getAttribute("verkaufer");
 				UnternehmenDAO dao = new UnternehmenDAO();
+				String path = PathToSaveFile.getPathToSaveFile();
+				String osdivider = PathToSaveFile.getOsDivider();
 						
 				boolean rueck =dao.bildlöschen(dao.getBildProduktInfos(request.getParameter("bildname"), request.getParameter("bildsize")));
 				
 				String result="";
 				
 				if(rueck) {
-					File file = new File("C:\\Users\\user\\eclipse-workspace\\Thetroc1\\src\\main\\webapp\\Dateien\\"+verkaufer.getPerson().getEmail()+"\\"+request.getParameter("bildname"));
+					File file = new File(path+verkaufer.getPerson().getEmail()+osdivider+request.getParameter("bildname"));
 					
 					if(file.exists()) {
 						
@@ -58,7 +61,7 @@ public class Bildunternehmenloeschen extends HttpServlet {
 								result+="<div class='card-body'>";
 								result+="<p class='text-info'>"+foto.getName()+"</p>";
 								result+="<img alt='bild' class='produkt' src='Dateien/"+verkaufer.getPerson().getEmail()+"/"+foto.getName()+"'/>";
-								result+="<button type='button' class='btn btn-sm btn-danger' onclick=\"deleteBild('"+foto.getName()+"','"+foto.getSize()+"')\">löschen</button>";
+								result+="<button type='button' class='btn btn-sm btn-danger' onclick=\"deleteBild('"+foto.getName()+"','"+foto.getSize()+"')\">delete</button>";
 								result+="</div>";
 								result+="</div>";
 								result+="</div>";
@@ -70,7 +73,7 @@ public class Bildunternehmenloeschen extends HttpServlet {
 							response.getWriter().println(result);
 						}else {
 							
-							response.getWriter().println("Die Datei konnte nicht gelöscht werden");
+							response.getWriter().println("could not be deleted");
 						}
 					}else {
 						

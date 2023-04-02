@@ -66,7 +66,7 @@
 	    <!-- Start your project here-->
 	
 			<!-- Navbar2 -->
-			<nav class="navbar navbar-expand-lg navbar-light " style="background-color:#48D1CC;">
+		<nav class="navbar navbar-expand-lg navbar-light " style="background-color:#48D1CC;">
 		  <!-- Container wrapper -->
 		  <div class="container-fluid">
 		    <!-- Toggle button -->
@@ -88,7 +88,7 @@
 		      <a class="navbar-brand mt-2 mt-lg-0" href="<%=request.getContextPath() %>/index.jsp">
 		        <img
 		         src="img/logo3.png"
-			          height="80"
+			     height="80"
 		          alt=""
 		          loading="lazy"
 		        />
@@ -99,40 +99,39 @@
 		          <a class="nav-link text-reset me-3" href="<%=request.getContextPath()%>/RequestReSend?name=liste_de_commande_client">
 		         <span class="lead text-white" style="font-weight:bold; font-size:0.8em;" id="el1">Meine Bestellungen<i class="fas fa-shopping-cart"></i></span>
 		        </a>
-		        </li>
-		       
-		        
+		        </li>  
 		      </ul>
+		      
 		        <!-- language --> 
 			  <ul class="navbar-nav">
-		      <!-- Icon dropdown -->
-		      <li class="nav-item dropdown">
-		        <a
-		          class="nav-link dropdown-toggle"
-		          href="#"
-		          id="navbarDropdown"
-		          role="button"
-		          data-mdb-toggle="dropdown"
-		          aria-expanded="false"
-		        >
-		          <i class="flag-united-kingdom flag m-0"></i>
-		        </a>
-		        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-		          <li >
-		            <a class="dropdown-item" href="#" id ="englishlg"
-		              ><i class="flag-united-kingdom flag"></i>English
-		              </a>
-		          </li>
-		          <li><hr class="dropdown-divider" /></li>
-		         
-		          <li >
-		            <a class="dropdown-item" href="#" id="germanlg"><i class="flag-germany flag"></i>German</a>
-		          </li>
-		          <li >
-		            <a class="dropdown-item" href="#" id="frenchlg"><i class="flag-france flag"></i>French</a>
-		          </li>
-		         
-		        </ul>
+			      <!-- Icon dropdown -->
+			      <li class="nav-item dropdown">
+			        <a
+			          class="nav-link dropdown-toggle"
+			          href="#"
+			          id="navbarDropdown"
+			          role="button"
+			          data-mdb-toggle="dropdown"
+			          aria-expanded="false"
+			        >
+			          <i class="flag-united-kingdom flag m-0"></i>
+			        </a>
+			        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+			          <li >
+			            <a class="dropdown-item" href="#" id ="englishlg"
+			              ><i class="flag-united-kingdom flag"></i>English
+			              </a>
+			          </li>
+			          <li><hr class="dropdown-divider" /></li>
+			         
+			          <li >
+			            <a class="dropdown-item" href="#" id="germanlg"><i class="flag-germany flag"></i>German</a>
+			          </li>
+			          <li >
+			            <a class="dropdown-item" href="#" id="frenchlg"><i class="flag-france flag"></i>French</a>
+			          </li>
+		          </ul>
+		          
 		      </li>
 		    </ul>
 		      <!-- Left links -->

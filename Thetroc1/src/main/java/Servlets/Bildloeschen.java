@@ -15,6 +15,7 @@ import Model.Foto;
 import Model.Person;
 import Model.Produkt;
 import Model.Verkaufer;
+import helpklasse.PathToSaveFile;
 
 /**
  * Servlet implementation class Bildloeschen
@@ -36,7 +37,8 @@ public class Bildloeschen extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//Zum Testzweck
 		Verkaufer verkaufer = (Verkaufer)request.getSession().getAttribute("verkaufer");
-		String pfad = "C:\\Users\\user\\eclipse-workspace\\Thetroc1\\src\\main\\webapp\\Dateien\\";
+		String pfad = PathToSaveFile.getPathToSaveFile();
+		String osdivider = PathToSaveFile.getOsDivider();
 		Produkt produkt = new Produkt();
 		produkt.setIdProdukt(Integer.valueOf((String)request.getSession().getAttribute("idprodukt")));
 		//end
@@ -47,7 +49,7 @@ public class Bildloeschen extends HttpServlet {
 		String result="";
 		
 		if(rueck) {
-			File file = new File(pfad+""+verkaufer.getPerson().getEmail()+"\\"+request.getParameter("bildname"));
+			File file = new File(pfad+""+verkaufer.getPerson().getEmail()+osdivider+request.getParameter("bildname"));
 			
 			if(file.exists()) {
 				
@@ -68,7 +70,7 @@ public class Bildloeschen extends HttpServlet {
 					response.getWriter().println(result);
 				}else {
 					
-					response.getWriter().println("Die Datei konnte nicht gelöscht werden");
+					response.getWriter().println("could not be deleted");
 				}
 			}else {
 				

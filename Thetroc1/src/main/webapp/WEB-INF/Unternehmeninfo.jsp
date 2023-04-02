@@ -115,9 +115,9 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link text-reset me-3" href="<%= request.getContextPath()%>/RequestReSendSeller?name=verkaufer_home">
-          <span class="lead text-white"style="font-weight:bold; font-size:0.8em;" id="el1">Dashboard</span>
-          <i class="fas fa-home fa-lg" style="color:white;font-size:0.8em;"></i>
-        </a>
+	          <span class="lead text-white"style="font-weight:bold; font-size:0.8em;" id="el1">Dashboard</span>
+	          <i class="fas fa-home fa-lg" style="color:white;font-size:0.8em;"></i>
+          </a>
         </li>
        
         
@@ -191,7 +191,7 @@
 						<input type="hidden" name="latitude" id="latitude"/>
 						<input type="hidden" name="longitude" id="longitude"/>
 					</div>
-				<input type="submit" name="submit" id="submit1" value="speichern" class="btn btn-info" style="margin:auto;">
+				<input type="submit" name="submit" id="submit1" value="speichern" style="width:200px; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.9em;background-color:#48D1CC;color: white; margin:auto;">
 									
 				</form>
 				<h6 class="text-center text-success" style=" font-size: 0.8em;">${erfolg}</h6>
@@ -215,7 +215,13 @@
 					<input type="file" class="form-control mt-2" name="bildprodukt4" id="bildprodukt4">
 					
 					<span class="text-center text-danger mt-1" style="font-size:0.8em;">${fehlermeldung2}</span><br>
-					<input type="submit" name="sendbildprodukt" style ="border-radius:200px;" id="sendbildprodukt"class="btn btn-info btn-sm mt-5" value="hochladen">
+					<input
+						 type="submit" 
+						 name="sendbildprodukt" 
+						 id="sendbildprodukt" class=" mt-5"
+						 style="width:150px; border:1px solid #1E90FF;border-radius:200px; padding:5px; font-size:0.7em;background-color:#1E90FF;color: white; margin:auto;"
+						 value="hochladen"
+					>
 			
 				</form>
 			</div>

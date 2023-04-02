@@ -43,7 +43,7 @@ public class Bilderautomladen extends HttpServlet {
 			result+="<div class='col-sm'>";
 			result+="<p class='text-info'>"+foto.getName()+"</p>";
 			result+="<img alt='bild' class='produkt' src='Dateien/"+verkaufer.getPerson().getEmail()+"/"+foto.getName()+"'/>";
-			result+="<button type='button' class='btn btn-sm btn-danger delet' onclick=\"deleteBild('"+foto.getName()+"','"+foto.getSize()+"')\">löschen</button>";
+			result+="<button type='button' style='border-radius:200px;' class='btn btn-sm btn-danger delet' onclick=\"deleteBild('"+foto.getName()+"','"+foto.getSize()+"')\">delete</button>";
 			result+="</div>";
 		}
 		result+="</div>";

@@ -27,6 +27,7 @@ import Model.Person;
 import Model.Verkaufer;
 import helpklasse.Checkfotosresult;
 import helpklasse.Checkproduktfoto;
+import helpklasse.PathToSaveFile;
 
 /**
  * Servlet implementation class Bildprodukthochladen
@@ -60,8 +61,8 @@ public class Bildprodukthochladen extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pfad = "C:\\Users\\user\\eclipse-workspace\\Thetroc1\\src\\main\\webapp\\Dateien\\";
-		
+		String pfad = PathToSaveFile.getPathToSaveFile();
+		String osPathdivider = PathToSaveFile.getOsDivider();
 		Collection<Part> partlist = request.getParts();
 		
 		String result ="";
@@ -114,7 +115,7 @@ public class Bildprodukthochladen extends HttpServlet {
 								if(rueck) {
 											
 									try {
-										part.write(userOrdner+"\\"+part.getSubmittedFileName());
+										part.write(userOrdner+osPathdivider+part.getSubmittedFileName());
 										} catch (Exception e) {
 											// TODO Auto-generated catch block
 											e.printStackTrace();

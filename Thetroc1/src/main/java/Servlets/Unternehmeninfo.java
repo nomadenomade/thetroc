@@ -25,6 +25,7 @@ import Model.Unternehmen;
 import Model.Verkaufer;
 import helpklasse.Checkfotosresult;
 import helpklasse.Checkproduktfoto;
+import helpklasse.PathToSaveFile;
 
 /**
  * Servlet implementation class Unternehmeninfo
@@ -156,12 +157,14 @@ public class Unternehmeninfo extends HttpServlet {
 		List <String> list = new ArrayList<>();
 		List <String> bildname = new ArrayList<>();
 		List <String> bildsize = new ArrayList<>();
+		int language = (int)request.getSession().getAttribute("language");
+		
 		HttpSession session = request.getSession(true);
 		session.setAttribute("userEmail",verkaufer.getPerson().getEmail());
 		int idUnternehmen = verkaufer.getUnternehmen().getIdUnternehmen();
 		session.setAttribute("unternehmenid", idUnternehmen);
 		if(idUnternehmen==0) {
-			int language = (int)request.getSession().getAttribute("language");
+			
 			if(language==0) {
 				request.setAttribute("fehlermeldung2", "you should create a company first to purchase this task");
 			}else if(language==1) {
@@ -179,11 +182,13 @@ public class Unternehmeninfo extends HttpServlet {
 			try {
 				List<FileItem> items = upload.parseRequest(request);
 				if(items!=null) {
+					System.out.println("Size items : "+ items.size());
 					for (FileItem item : items) {
 						if(!item.isFormField()) {
 							
 							//result+="Name:"+item.getName()+",Size:"+item.getSize()+",ismemory:"+item.isInMemory()+"Contenttype:"+item.getContentType()+"<br>";
 							String name= item.getName();
+							System.out.println("name: "+name);
 							if(name!=null && !name.equals("")) {
 								
 								String extension = item.getName().substring(item.getName().lastIndexOf(".")+1, (item.getName().length()));
@@ -206,14 +211,17 @@ public class Unternehmeninfo extends HttpServlet {
 									list.add(item.getName());
 									//Verzeichnis für User mit entspechender Email erzeugen falls noch nicht geschiehen 
 									//Die entsprechende Datei wird dann in diesem Ordner gespeichert
-									//
-									String pfad ="C:\\Users\\user\\eclipse-workspace\\Thetroc1\\src\\main\\webapp\\Dateien\\";
+									
+									String pfad =PathToSaveFile.getPathToSaveFile();
+									String osdivider = PathToSaveFile.getOsDivider();
+									
 									String contextpfad =this.getServletContext().getContextPath();
 									if(rueck) {
 										File userOrdner = new File(pfad+verkaufer.getPerson().getEmail());
+										System.out.println(" Pfad : "+pfad+verkaufer.getPerson().getEmail());
 										if(!userOrdner.exists()) {
 											if(userOrdner.mkdir()) {
-												File file = new File(pfad+verkaufer.getPerson().getEmail()+"\\"+item.getName());
+												File file = new File(pfad+verkaufer.getPerson().getEmail()+osdivider+item.getName());
 												try {
 													item.write(file);
 												} catch (Exception e) {
@@ -223,9 +231,13 @@ public class Unternehmeninfo extends HttpServlet {
 												
 											}
 										}else {
-											File file = new File(pfad+verkaufer.getPerson().getEmail()+"\\"+item.getName());
+									
+											File file = new File(pfad+verkaufer.getPerson().getEmail()+osdivider+item.getName());
 											try {
-												item.write(file);
+												if(!file.exists()) {
+													item.write(file);
+												}
+												
 											} catch (Exception e) {
 												// TODO Auto-generated catch block
 												e.printStackTrace();
@@ -236,7 +248,7 @@ public class Unternehmeninfo extends HttpServlet {
 									
 									
 								}else {
-									int language = (int)request.getSession().getAttribute("language");
+									
 									if(language==0) {
 										request.setAttribute("fehlermeldung2", "the give file type ist not allowed ");
 									}else if(language==1) {
@@ -258,11 +270,11 @@ public class Unternehmeninfo extends HttpServlet {
 						}
 					}
 				}else {
-					int language = (int)request.getSession().getAttribute("language");
+					
 					if(language==0) {
 						request.setAttribute("fehlermeldung2", "you habe not yet upload any images ");
 					}else if(language==1) {
-						request.setAttribute("fehlermeldung2", "Vous n'avez jusqu'à présent télécharger aucune images");
+						request.setAttribute("fehlermeldung2", "Vous n'avez jusqu'à présent charger aucune images");
 						
 					}else if(language==2) {
 						request.setAttribute("fehlermeldung2", "Sie haben kein Bild geladen");
@@ -291,7 +303,7 @@ public class Unternehmeninfo extends HttpServlet {
 			
 		}else {
 			//false bereits 4 Bilder in der DB vorhanden ist
-			int language = (int)request.getSession().getAttribute("language");
+			
 			if(language==0) {
 				request.setAttribute("fehlermeldung2", "you habe already uploaded 4 images, you should delete one of them to upload again ");
 			}else if(language==1) {

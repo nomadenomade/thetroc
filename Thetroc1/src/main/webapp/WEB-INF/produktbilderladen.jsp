@@ -101,7 +101,14 @@
 			<input type="file" class="form-control mt-2" name="bildprodukt2" id="bildprodukt2">
 			<input type="file" class="form-control mt-2" name="bildprodukt3" id="bildprodukt3">
 			<input type="file" class="form-control mt-2" name="bildprodukt4" id="bildprodukt4">
-			<input type="submit" name="sendbildprodukt" style="border-radius:200px;" id="sendbildprodukt"class="btn btn-info btn-sm mt-5" value="hochladen">
+			<input 
+				type="submit" 
+				name="sendbildprodukt" 
+				id="sendbildprodukt"
+				class=" mt-5"
+				style="width:150px; border:1px solid #1E90FF;border-radius:200px; padding:5px; font-size:0.7em;background-color:#1E90FF;color: white; margin:auto;"
+				value="hochladen"
+			>
 	
 		</form>
 		<span class="text-center text-danger mt-1" style="font-size:0.8em;">${fehlermeldung2}</span>
