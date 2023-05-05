@@ -11,7 +11,14 @@ public class Warenkob {
 	private String Datum;
 	//Falls der Kaufer bestätig das Produkt abgeholt zu haben
 	private String confirmdatumkunde;
+	private String confirmkunde;
 
+	public String getConfirmkunde() {
+		return confirmkunde;
+	}
+	public void setConfirmkunde(String confirmkunde) {
+		this.confirmkunde = confirmkunde;
+	}
 	public String getConfirmdatumkunde() {
 		return confirmdatumkunde;
 	}

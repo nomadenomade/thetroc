@@ -51,17 +51,27 @@ public class Einloggen extends HttpServlet {
 				session.setAttribute("warnungzahl", person.getWarnunganzahl());
 				session.setAttribute("unternehmenname",unternehmen.getName());
 				session.setAttribute("unternehmenstandort",unternehmen.getStandort());
+				session.setAttribute("barcode",unternehmen.getBarcode());
 				
 				response.getWriter().println("verkaufer");
 			}else if(person.getRolle().equals("Kaufer")) {
-				
-				session.setAttribute("isuser", "kaufer");
 				Kaufer kaufer = dao1.getKaufer(person);
-				session.setAttribute("pseudo", kaufer.getPseudo());
-				session.setAttribute("kaufer",kaufer);
-				session.setAttribute("warnunganzahl", person.getWarnunganzahl());
-				session.setAttribute("idkaufer",String.valueOf(kaufer.getIdKaufer()));
-				response.getWriter().println("kaufer");
+				
+				if(person.getWarnunganzahl()>=4) {
+					session.setAttribute("pseudo", kaufer.getPseudo());
+					session.setAttribute("email", person.getEmail());
+					response.getWriter().println("errorpage");
+					
+				}else {
+					session.setAttribute("isuser", "kaufer");
+					session.setAttribute("pseudo", kaufer.getPseudo());
+					session.setAttribute("kaufer",kaufer);
+					session.setAttribute("email", person.getEmail());
+					session.setAttribute("warnunganzahl", person.getWarnunganzahl());
+					session.setAttribute("idkaufer",String.valueOf(kaufer.getIdKaufer()));
+					response.getWriter().println("kaufer");
+				}
+				
 				
 			}
 			

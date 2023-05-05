@@ -25,9 +25,19 @@
     		font-size:2em;
     	}
     	#searchsektor{
-    			width: 60%;
+    		width: 60%;
     		
     	}
+    	
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
+    	input:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
+    	
     
     	@media screen and (max-width: 992px){
     		.title {
@@ -97,8 +107,8 @@
 		      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 		        <li class="nav-item" id="bestellungbutton" style="visibility:hidden;">
 		          <a class="nav-link text-reset me-3" href="<%=request.getContextPath()%>/RequestReSend?name=liste_de_commande_client">
-		         <span class="lead text-white" style="font-weight:bold; font-size:0.8em;" id="el1">Meine Bestellungen<i class="fas fa-shopping-cart"></i></span>
-		        </a>
+		         	<span class="lead text-white" style="font-weight:bold; font-size:0.8em;" id="el1">Meine Bestellungen<i class="fas fa-shopping-cart"></i></span>
+		          </a>
 		        </li>  
 		      </ul>
 		      
@@ -424,7 +434,6 @@
 	    			 XML.onreadystatechange = function(){
 	    				 if(this.readyState==4 && this.status==200){
 	    					 warnungzahl = parseInt(this.responseText);
-	    					//alert(warnungzahl);
 	    					
 	    	    			
 	    				 }
@@ -452,8 +461,6 @@
 	 	 	    		
 	 	 	    	},200);
 	    		 
-	 	    	
-
 	    	 
 	 	    	//auto Prüfung ob der Kaufer über den selben Browser surft
 	 	    	
@@ -640,8 +647,8 @@
 	    	
 	    	
 	    	
-	    	 var latfilter=0;
-			 var lngfilter=0;
+	    	var latfilter=0;
+			var lngfilter=0;
 	    	document.getElementById("submit").addEventListener('click',function(event){
 	    		event.preventDefault();
 	    		
@@ -859,7 +866,7 @@
 	    		document.getElementById("el204").innerText = "2 days";
 	    		document.getElementById("el206").innerText = "pharmacies";
 	    		
-	    		text = "click on PR if you want permanent and automatic proof that you have picked up your product. This functionality is important if the seller pretends that you did not collect their product. With this proof you avoid losing an account's live";
+	    		text = "click on PR if you want permanent and automatic proof that you have picked up your product. This functionality is important if the seller pretends that you did not collect their product. With this proof you avoid losing an account's live. This option only work if an only if you are at the seller's location when the timer run out. The other better option is to use later the button 'confirm' as soon as the seller confirm your Oder";
 	 	    	text2 = "account lives";
 	 	    	warningtext="A life has been deducted from your account because you or the seller has confirmed that a booked item has not been collected. If this is not the case, please contact us by email";
 	    	
@@ -924,7 +931,7 @@
 	    		document.getElementById("el3").innerText = "se connecter";
 	    		document.getElementById("el4").innerText = "notification";
 	    		document.getElementById("el5").innerText = "bienvenue";
-	    		document.getElementById("el6").innerText = "Entrez dans le champ recherche le nom du produit que vous voulez acheter ou choisissez une catégorie puis clique sur rechercher";
+	    		document.getElementById("el6").innerText = "Entrez dans le champ recherche le nom du produit que vous souhaitez acheter ou choisissez une catégorie puis cliquez sur rechercher";
 	    		document.getElementById("el7").innerText = "Supermarché";
 	    		document.getElementById("el8").innerText = "fastfoods";
 	    		document.getElementById("el9").innerText = "kiosque";
@@ -952,7 +959,7 @@
 	    		document.getElementById("el204").innerText = "2 jours";
 	    		document.getElementById("el206").innerText = "pharmacies";
 	    		
-	    		text = "cliquez sur PR si vous voulez une preuve permanente et automatique que vous avez récupéré votre produit. Cette fonctionnalité est importante si le vendeur affirme que vous n'avez pas récupéré son produit. Avec cette preuve vous évitez de perdre une vie sur votre compte";
+	    		text = "Cliquez sur PR si vous voulez une preuve permanente et automatique que vous avez récupéré votre produit. Cette fonctionnalité est importante si le vendeur affirme que vous n'avez pas récupéré son produit. Avec cette preuve vous évitez de perdre une vie sur votre compte. Cette fonction fonctionne si et seulement si vous vous trouver chez le vendeur lorsque le timer arrive à 0 .L'autre option de confirmation est d utiliser plustard le button confirmer après avoir commander votre produit.";
 	 	    	text2 = "vies du compte";
 	 	    	warningtext="Une vie a été déduite de votre compte parce que vous ou le vendeur avez confirmé qu'un article réservé n'a pas été récupéré. Si ce n'est pas le cas, merci de nous contacter par mail";
 	    	
@@ -1046,7 +1053,7 @@
 	    		document.getElementById("el204").innerText = "2 Tage";
 	    		document.getElementById("el206").innerText = "Apotheken";
 	    		
-	    		text = "Klicken Sie auf PR, wenn Sie dauerhaft und automatisch nachweisen wollen, dass Sie Ihr Produkt abgeholt haben. Diese Funktion ist wichtig, wenn der Verkäufer vorgibt, dass Sie sein Produkt nicht abgeholt haben,obwohl es der Fall war. Mit diesem Beweis vermeiden Sie den Verlust  eines Kontolives";
+	    		text = "Klicken Sie auf PR, wenn Sie dauerhaft und automatisch nachweisen wollen, dass Sie Ihr Produkt abgeholt haben. Diese Funktion ist wichtig, wenn der Verkäufer vorgibt, dass Sie sein Produkt nicht abgeholt haben,obwohl es der Fall war. Mit diesem Beweis vermeiden Sie den Verlust  eines Kontolives. Diese Option funktioniert nur, wenn sie sich beim Verkaufer befinden, wenn der Timer abläuft. Alternativ können Sie später nach der Bestellung den Button 'bestätigen' nutzen. ";
 	 	    	text2 = "Kontolives";
 	 	    	warningtext="Ein Leben wurde von Ihrem Konto abgezogen,da Sie oder der Verkaufer bestätigt hat,dass eine gebuchte Ware nicht abgeholt wurde.Sollten es nicht der Falls sein ,bitten Sie darum uns per Email zu kontaktieren";
 	    	

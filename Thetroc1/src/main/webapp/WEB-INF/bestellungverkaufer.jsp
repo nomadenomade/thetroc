@@ -27,6 +27,10 @@
     		margin:auto;
     		margin-top:30px;
     	}
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
     
     	@media screen and (max-width: 992px){
     		.inhalt {
@@ -395,7 +399,9 @@ setInterval(function(){
 	    	 var tabbutton = document.getElementsByClassName("storno");
 	    	 var tabblockantwort = document.getElementsByClassName("blockantwort");
 	    	 var tabidwarenkob = document.getElementsByClassName("idwarenkob");
-	    	 
+	    	 var info =document.getElementsByClassName("infomeldung");
+	 	     var infob =document.getElementsByClassName("infomeldungbutton");
+	 	    	
 	    	
 	    		 for(let i=0;i<tabdatum.length;i++){
 	    			
@@ -436,6 +442,8 @@ setInterval(function(){
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";
 	    					 tabblockantwort[index].style.visibility ="visible";
+	    					 info[index].remove();
+	    					 infob[index].remove();
 	    					if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -451,7 +459,9 @@ setInterval(function(){
 	    				 if(stunde2>uhr || stunde2< uhrinit){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
-	    					 document.getElementById(index).style.color="red";    					
+	    					 document.getElementById(index).style.color="red";  
+	    					 info[index].remove();
+	    					 infob[index].remove();
 	    					if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -469,7 +479,8 @@ setInterval(function(){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";
-	    					
+	    					 info[index].remove();
+	    					 infob[index].remove();
 	    					if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -486,6 +497,8 @@ setInterval(function(){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0";
 	    					 document.getElementById(index).style.color="red";
+	    					 info[index].remove();
+	    					 infob[index].remove();
 	    					 if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline to collect this product has just passed";
 	    						 alert("Your time to collect one of your orders has expired. Answer the question asked in the appropriate place");
@@ -702,7 +715,8 @@ setInterval(function(){
 	 	    	var res12 =document.getElementsByClassName("res12");
 	 	    	var res13 =document.getElementsByClassName("res13");
 	 	    	var res14 =document.getElementsByClassName("res14");
-	 	    
+	 	    	var info =document.getElementsByClassName("infomeldung");
+	 	    	var infob =document.getElementsByClassName("infomeldungbutton");
 	 	    	
 	 	    	
 	 	    	for(let i=0;i< res1.length; i++){
@@ -754,6 +768,12 @@ setInterval(function(){
 					}
 					if(res14[i]!=null){
 						res14[i].innerText= "No images found! ";	
+					}
+					if(info[i]!=null){
+						info[i].innerText= "Did this Customer already pickup its oder ?";	
+					}
+					if(infob[i]!=null){
+						infob[i].innerText= "yes";	
 					}
 					
 	 	    		
@@ -866,7 +886,9 @@ setInterval(function(){
 	 	    	var res12 =document.getElementsByClassName("res12");
 	 	    	var res13 =document.getElementsByClassName("res13");
 	 	    	var res14 =document.getElementsByClassName("res14");
-	 	    
+	 	    	var info =document.getElementsByClassName("infomeldung");
+	 	    	var infob =document.getElementsByClassName("infomeldungbutton");
+	 	    	
 	 	    	
 	 	    	
 	 	    	for(let i=0;i< res1.length; i++){
@@ -918,6 +940,12 @@ setInterval(function(){
 					}
 					if(res14[i]!=null){
 						res14[i].innerText= "aucune image trouvée! ";	
+					}
+					if(info[i]!=null){
+						info[i].innerText= "Ce client a-t-il déjà récupéré sa commande ?";	
+					}
+					if(infob[i]!=null){
+						infob[i].innerText= "oui";	
 					}
 					
 	 	    		
@@ -1031,7 +1059,9 @@ setInterval(function(){
 	 	    	var res12 =document.getElementsByClassName("res12");
 	 	    	var res13 =document.getElementsByClassName("res13");
 	 	    	var res14 =document.getElementsByClassName("res14");
-	 	    
+	 	    	var info =document.getElementsByClassName("infomeldung");
+	 	    	var infob =document.getElementsByClassName("infomeldungbutton");
+	 	    	
 	 	    	
 	 	    	
 	 	    	for(let i=0;i< res1.length; i++){
@@ -1083,6 +1113,12 @@ setInterval(function(){
 					}
 					if(res14[i]!=null){
 						res14[i].innerText= "kein Bild gefunden! ";	
+					}
+					if(info[i]!=null){
+						info[i].innerText= "Hat der Kunden bereits seine Bestellung abgeholt  ?";	
+					}
+					if(infob[i]!=null){
+						infob[i].innerText= "ya";	
 					}
 					
 	 	    		

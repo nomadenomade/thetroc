@@ -28,6 +28,10 @@
     		width:auto;
     	 	margin:auto;
     	}
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
     	
     	.forms{
     		width:70%;

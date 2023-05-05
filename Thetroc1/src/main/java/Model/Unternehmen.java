@@ -10,21 +10,11 @@ public class Unternehmen {
 	private String stadt;
 	private String geolatidude;
 	private String geolongitude;
-	
-	public String getGeolatidude() {
-		return geolatidude;
-	}
-	public void setGeolatidude(String geolatidude) {
-		this.geolatidude = geolatidude;
-	}
-	public String getGeolongitude() {
-		return geolongitude;
-	}
-	public void setGeolongitude(String geolongitude) {
-		this.geolongitude = geolongitude;
-	}
+	private String barcode;
 	private Verkaufer verkaufer;
 	private List<Foto> bilder;
+	
+	
 	
 	public Unternehmen() {
 		super();
@@ -38,6 +28,24 @@ public class Unternehmen {
 	}
 	
 	
+	public String getBarcode() {
+		return barcode;
+	}
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+	public String getGeolatidude() {
+		return geolatidude;
+	}
+	public void setGeolatidude(String geolatidude) {
+		this.geolatidude = geolatidude;
+	}
+	public String getGeolongitude() {
+		return geolongitude;
+	}
+	public void setGeolongitude(String geolongitude) {
+		this.geolongitude = geolongitude;
+	}
 	
 	
 	public int getIdUnternehmen() {

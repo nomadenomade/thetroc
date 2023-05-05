@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +27,7 @@ import Model.Verkaufer;
 import helpklasse.Checkfotosresult;
 import helpklasse.Checkproduktfoto;
 import helpklasse.PathToSaveFile;
+import helpklasse.QRcode;
 
 /**
  * Servlet implementation class Unternehmeninfo
@@ -49,12 +51,12 @@ public class Unternehmeninfo extends HttpServlet {
 	 String stadt = request.getParameter("stadt");
 	 String latitude = request.getParameter("latitude");
 	 String longitude = request.getParameter("longitude");
-	 System.out.println("lat:"+latitude);
-	 System.out.println("lng:"+longitude);
 	 
 	 String fehler1=null;
 	 String fehler2=null;
 	 Verkaufer verkaufer = (Verkaufer)request.getSession().getAttribute("verkaufer");
+	
+	 
 	 
 	 if(name !=null && !name.equals("")) {
 		 fehler1 ="";
@@ -88,7 +90,9 @@ public class Unternehmeninfo extends HttpServlet {
 		 unternehmen.setStadt(stadt);
 		 unternehmen.setGeolatidude(latitude);
 		 unternehmen.setGeolongitude(longitude);
-		 
+		 unternehmen.setBarcode(QRcode.getBarcode(verkaufer));
+		 String pfad =PathToSaveFile.getPathToSaveFile();
+		 File userOrdner = new File(pfad+verkaufer.getPerson().getEmail());
 		 
 			
 			
@@ -105,8 +109,14 @@ public class Unternehmeninfo extends HttpServlet {
 					 }else {
 						 request.setAttribute("erfolg", "Update erfolgreicht durchgeführt");
 					 }
-				
-					
+					 
+					 if(!userOrdner.exists()) {
+							if(userOrdner.mkdir()) {
+								 QRcode.saveQRcode(verkaufer.getIdVerkaufer()+verkaufer.getPerson().getName()+verkaufer.getPerson().getId(), verkaufer.getPerson().getEmail());	
+							}
+					}else {
+						QRcode.saveQRcode(verkaufer.getIdVerkaufer()+verkaufer.getPerson().getName()+verkaufer.getPerson().getId(), verkaufer.getPerson().getEmail());				
+					}		
 				}
 			}else {
 				
@@ -120,7 +130,16 @@ public class Unternehmeninfo extends HttpServlet {
 					 }else {
 						 request.setAttribute("erfolg", "Daten erfolgreich gespeichert");
 					 }
-					
+					 
+					 
+					 if(!userOrdner.exists()) {
+							if(userOrdner.mkdir()){
+								 QRcode.saveQRcode(verkaufer.getIdVerkaufer()+verkaufer.getPerson().getName()+verkaufer.getPerson().getId(), verkaufer.getPerson().getEmail());
+							}
+					}else {
+						QRcode.saveQRcode(verkaufer.getIdVerkaufer()+verkaufer.getPerson().getName()+verkaufer.getPerson().getId(), verkaufer.getPerson().getEmail());
+									
+					}				
 			}
 			
 			}
@@ -182,13 +201,13 @@ public class Unternehmeninfo extends HttpServlet {
 			try {
 				List<FileItem> items = upload.parseRequest(request);
 				if(items!=null) {
-					System.out.println("Size items : "+ items.size());
+				
 					for (FileItem item : items) {
 						if(!item.isFormField()) {
 							
 							//result+="Name:"+item.getName()+",Size:"+item.getSize()+",ismemory:"+item.isInMemory()+"Contenttype:"+item.getContentType()+"<br>";
 							String name= item.getName();
-							System.out.println("name: "+name);
+							
 							if(name!=null && !name.equals("")) {
 								
 								String extension = item.getName().substring(item.getName().lastIndexOf(".")+1, (item.getName().length()));
@@ -218,7 +237,7 @@ public class Unternehmeninfo extends HttpServlet {
 									String contextpfad =this.getServletContext().getContextPath();
 									if(rueck) {
 										File userOrdner = new File(pfad+verkaufer.getPerson().getEmail());
-										System.out.println(" Pfad : "+pfad+verkaufer.getPerson().getEmail());
+										
 										if(!userOrdner.exists()) {
 											if(userOrdner.mkdir()) {
 												File file = new File(pfad+verkaufer.getPerson().getEmail()+osdivider+item.getName());
@@ -320,5 +339,7 @@ public class Unternehmeninfo extends HttpServlet {
 		
 		//doGet(request, response);
 	}
+	
+	
 
 }

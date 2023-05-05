@@ -14,6 +14,7 @@ import DAO.userDAO;
 import Model.Foto;
 import Model.Produkt;
 import Model.Warenkob;
+import helpklasse.QRcode;
 
 /**
  * Servlet implementation class Produkt_fuer_Bestellung
@@ -402,8 +403,16 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				result+="<div class='col-sm-4 mt-5'></div>";
 				result+="</div>";
 			}else {
+				String barcode ="";
+				String longitude="";
+				String latitude="";
+				int idwarenk=0;
+				
 				for (Produkt prod : bestaetigt) {
-					
+					barcode = prod.getVerkaufer().getUnternehmen().getBarcode();
+					longitude = prod.getVerkaufer().getUnternehmen().getGeolongitude();
+					latitude = prod.getVerkaufer().getUnternehmen().getGeolatidude();
+					idwarenk = prod.getWarenkob().getIdWarenkob();
 					request.getSession().setAttribute("bestaetigt", "true");
 					if(prod.getDatum()!=null) {
 						dateveroeffentlichung =prod.getDatum().split(" ")[0];
@@ -442,12 +451,56 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				    result+="</div>";
 				    //Bereich für Timer
 				    result+="<div class='mt-2 mb-1'>";
-				   // result+="<div class='card-body'>";
 				    result+="<img alt='bild'  style='width:25px; height:auto; margin:5px;' src='img/timer.png'/>";
 				    result+="<div id='"+count+"' style='color:green;font-size:2.5em'></div>";
 				    result+="<button class='storno res13'    style=\"width:200px; border:1px solid #FF8C00;border-radius:200px; padding:5px; font-size:0.9em;background-color:#FF8C00;color: white; margin:auto;\"   id='"+prod.getWarenkob().getIdWarenkob()+"' onclick='storno("+prod.getWarenkob().getIdWarenkob()+")'>stornieren</button>";
+				    result+="<div class='fehlermeldung3 mt-2 text-warning' style='font-size:0.8em;'></div>";
 				    result+="<div class='fehlermeldung mt-2 text-danger' style='font-size:0.8em;'></div>";
-				   // result+="</div>";
+				    
+				    //modal start
+				    result+="<div class='confirmbuttonblock'>";
+				    result+="<div class='textconfirm2' style='font-weight:bold; font-size:0.9em;'>You can also confirm having taken your order before the Time run out !";
+				    result+="</div>";
+				    result+="<button type='button' class='confirm' style='width:100px; border:1px solid black;border-radius:200px; padding:5px; font-size:0.7em;background-color:black;color: white; margin:auto;' data-mdb-toggle='modal' data-mdb-target='#exampleModal"+count+"'>confirm</button>";
+				    result+="</div>";
+				    result+="<div class='modal fade'  id='exampleModal"+count+"' tabindex='-1' aria-labelledby='exampleModalLabel"+count+"' aria-hidden='true'>";
+				    	result+="<div class='modal-dialog' >";
+				    		result+="<div class='modal-content'>"; 
+				    			result+="<div class='modal-body p-2' style='min-height: 600px;'>";
+				    				result+="<button type='button' class='btn-close'  data-mdb-dismiss='modal' aria-label='Close'></button>";
+				    				//neu
+				    				result+="<div class='mt-5 mb-4 textconfirm' style='text-align: center; font-weight: bold; font-size=0.8em;' id='textconfirm1'>Please the mean you want to confirm !</div>";
+				    				result+="<div class='form-check mx-2'>";
+				    					result+="<input type='radio' name='confoption1' onclick='confirmOptionFunction(this,\""+barcode+"\","+longitude+","+latitude+","+idwarenk+","+count+",\""+QRcode.readQRcode(prod.getVerkaufer().getPerson().getEmail())+"\")' class='form-check-input' value='option1' id='check1'>";
+				    					result+="<label for='check1' style='font-weight:bold; font-size:0.8em; color:#48D1CC;' class='form-check-label confoption1' ></label>";								
+				    				result+="</div>";
+				    				result+="<div class='form-check mt-2 mx-2'>";
+				    					result+="<input type='radio' name='confoption1' onclick='confirmOptionFunction(this,\""+barcode+"\","+longitude+","+latitude+","+idwarenk+","+count+",\""+QRcode.readQRcode(prod.getVerkaufer().getPerson().getEmail())+"\")' class='form-check-input' value='option2' id='check2'>";
+				    					result+="<label for='check2' style='font-weight:bold; font-size:0.8em; color:#48D1CC;' class='form-check-label confoption2' ></label>";								
+			    					result+="</div>";
+			    					result+="<div id='confcontentoption"+count+"'></div>";
+				    				//end neu
+				    				/*
+				    				result+="<div class='mt-5 mb-3 textconfirm' style='text-align: center; font-weight: bold; font-size=0.8em;' id='textconfirm'>Please put the Code, that you recieve from the seller in following field !</div>";
+				    				result+="<div class='mb-1' style='text-align:center; font-weight: bold; font-size: 1.4em; color:#2E8B57;'>Code</div>";
+				    			    result+="<div>";
+				    					result+="<div class='form-outline mb-2' >";
+				    							result+="<input type='password' style='font-size:0.8em;' class='form-control code' name='code' placeholder='e.g: TE123-345-SE12' id='code"+count+"'/>";
+				    							result+="<label for='code"+count+"' style='font-size:0.8em;' class='form-label labelconfirm'>Code here</label>";
+				    					result+="</div>";
+				    					result+="<div class='mt-2' style='width:50%; margin:auto;'>";
+				    							result+="<button class='buttonconfirm' onclick='checkCodeSeller(\""+barcode+"\","+longitude+","+latitude+","+idwarenk+","+count+")' style='width:100%; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.8em;background-color:#48D1CC;color: white; margin:auto;'>send</button>";
+				    							result+="<span id='fehler"+count+"' style='width:50%;margin:auto;'></span>";		
+				    					result+="</div>";
+				    				result+="</div>";
+				    				*/
+				    		  result+="</div>";
+				        
+				    	   result+="</div>";
+				     result+="</div>";
+				  result+="</div>";
+
+				    //modal end
 				    result+="</div>";
 				    result+="<div class='blockantwort' style='visibility:hidden;'>";
 				    result+="<p class='text-center mt-2 res9' >Haben Sie Ihre Bestellung abgeholt?</p>";

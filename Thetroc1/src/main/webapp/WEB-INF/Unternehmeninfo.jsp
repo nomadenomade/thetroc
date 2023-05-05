@@ -40,6 +40,16 @@
     		margin:auto;
     	}
     	
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
+    	
+    	input:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
+    	
     	.form2{
     		width:50%; margin:auto;
     	}

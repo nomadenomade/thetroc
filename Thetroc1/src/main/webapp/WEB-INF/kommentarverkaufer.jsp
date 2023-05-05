@@ -25,6 +25,11 @@
     		width:calc(80% - 10px);
     		margin:auto;
     	}
+    	
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
     
     	@media screen and (max-width: 992px){
     		.inhalt {

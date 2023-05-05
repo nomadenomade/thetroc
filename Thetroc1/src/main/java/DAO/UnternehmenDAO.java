@@ -23,7 +23,7 @@ public class UnternehmenDAO {
 	
 	public boolean infoSpeichern(Unternehmen unternehmen) {
 		boolean rueckgabe= false;
-		request ="INSERT INTO unternehmen(Nameunternehmen,Standort,Stadt,idVerkaufer,Latitude,Logitude) VALUES(?,?,?,?,?,?)";
+		request ="INSERT INTO unternehmen(Nameunternehmen,Standort,Stadt,idVerkaufer,Latitude,Logitude,Barcode) VALUES(?,?,?,?,?,?,?)";
 		try {
 			preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
 			preparedstatement.setString(1, unternehmen.getName());
@@ -32,6 +32,7 @@ public class UnternehmenDAO {
 			preparedstatement.setInt(4, unternehmen.getVerkaufer().getIdVerkaufer());
 			preparedstatement.setString(5, unternehmen.getGeolatidude());
 			preparedstatement.setString(6, unternehmen.getGeolongitude());
+			preparedstatement.setString(7, unternehmen.getBarcode());
 			
 			if(preparedstatement.executeUpdate()==1) {
 				rueckgabe=true;
@@ -45,15 +46,16 @@ public class UnternehmenDAO {
 	
 	public boolean infoUpdate(Unternehmen unternehmen) {
 		boolean rueckgabe= false;
-		request ="UPDATE unternehmen SET Nameunternehmen=?, Standort=? ,Stadt=?,Latitude=?,Longitude=? WHERE idVerkaufer=?";
+		request ="UPDATE unternehmen SET Nameunternehmen=?, Standort=? ,Stadt=?,Latitude=?,Longitude=?,Barcode=? WHERE idVerkaufer=?";
 		try {
 			preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
 			preparedstatement.setString(1, unternehmen.getName());
 			preparedstatement.setString(2, unternehmen.getStandort());
 			preparedstatement.setString(3, unternehmen.getStadt());
-			preparedstatement.setInt(6, unternehmen.getVerkaufer().getIdVerkaufer());
 			preparedstatement.setString(4, unternehmen.getGeolatidude());
 			preparedstatement.setString(5, unternehmen.getGeolongitude());
+			preparedstatement.setString(6, unternehmen.getBarcode());
+			preparedstatement.setInt(7, unternehmen.getVerkaufer().getIdVerkaufer());
 			
 			if(preparedstatement.executeUpdate()==1) {
 				rueckgabe=true;
@@ -78,6 +80,7 @@ public class UnternehmenDAO {
 				unternehmen.setStadt(resultset.getString("Stadt"));
 				unternehmen.setGeolatidude(resultset.getString("Latitude"));
 				unternehmen.setGeolongitude(resultset.getString("Longitude"));
+				unternehmen.setBarcode(resultset.getString("Barcode"));
 			}
 			
 		} catch (SQLException e) {

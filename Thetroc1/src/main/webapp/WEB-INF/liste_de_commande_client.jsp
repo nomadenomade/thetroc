@@ -25,19 +25,51 @@
     	.inhalt{
     		width:calc(80% - 10px);background-color:#F5F5F5;margin:auto;
     	}
+    	.bewertungbody{
+    		width:calc(80% - 10px);
+    	}
+    	.buttoncomment1{
+    		margin: auto;
+    	}
+    	.buttoncomment2{
+    		margin-left:20px;
+    	}
+    	
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
     
     	@media screen and (max-width: 992px){
     		.inhalt {
     			width:80% ;
     		}
     		
-    		
+    		 .buttoncomment1{
+    			margin: auto;
+    		}
+    		.buttoncomment2{
+    			margin-left:0px;
+    		}
     	}
     	
     	@media screen and (max-width: 600px){
     		.inhalt {
     			width:100%;
     		}
+    		.bewertungbody {
+    			width:100%;
+    	    }
+    	    
+    	    .buttoncomment1{
+    			margin: auto;
+    			
+    		}
+    		.buttoncomment2{
+    			margin-left:0px;
+    			
+    		}
+    	
     	}
       
     
@@ -193,13 +225,15 @@
 	  	   request.getSession().setAttribute("produktname", request.getParameter("produktname"));
 	    %>
 	  <!--Parameter empfangen end  -->
-	    <script type="text/javascript" src="js/mdb.min.js"></script>
+<script type="text/javascript" src="js/mdb.min.js"></script>
+<script type="text/javascript" src="js/qrcode.min.js"></script>
 	    <!-- Custom scripts -->
-	    <script type="text/javascript">
-	    
+<script type="text/javascript">
+		var lg = <%= request.getSession().getAttribute("language")%>
+		
 	    setInterval(function(){	 
     		window.location.reload();	  
-    	 },50000);
+    	 },93000);
 	    
 	    //Sessionhandling
 	    if(<%=request.getSession().getAttribute("idkaufer") %>==null){		
@@ -232,7 +266,7 @@
 	    		}
 	    	 
 	    	 var idprodukt = "<%= request.getParameter("idprodukt")%>";
-	 	    	
+	 	 
 	    	 if(idprodukt!=null){
 	    		 var xml = initRequest();
 		    	 xml.onreadystatechange= function(){
@@ -393,6 +427,76 @@
 	    		 XML.open("GET","Bestellung_verwaltung_kunde?type=antwortja&idwarenkob="+idwarenkob,false);
 	    		 XML.send();
 	    	 }
+	    	
+	    	 //modal sector
+	    	 var idwarenkob2=0;
+	    	 var checkifgeolocationisactivated = 0;
+	    	 function checkCodeSeller(codeseller,longitude,latitude,idwarenkob,count,type){
+	    		let codeinput = document.querySelector("#code"+count).value;
+	    		
+	    		if(codeseller==codeinput){
+	    			 
+	    			idwarenkob2 = parseInt(document.getElementsByClassName("idwarenkob")[count].value);
+	    			 
+	    			 let XML = initRequest();
+		    		 XML.onreadystatechange = function (){
+		    			 if(this.readyState=4 && this.status==200){
+		    				
+		    				 zeitabgelaufen2();
+		    				 
+		    				 if(parseInt(lg)==0){
+		    	    			document.querySelector("#fehler"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmed <img src='success.gif' als='success' /><div>";
+		        			 }else if(parseInt(lg)==1){
+		        			    document.querySelector("#fehler"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmé <img src='success.gif' als='success' /><div>";	    			
+		        			 }else{
+		        			    document.querySelector("#fehler"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> bestätigt <img src='success.gif' als='success' /><div>";  		    			
+		        			 }
+		    				
+		    			 }
+		    		 };
+		    		 XML.open("GET","Bestellung_verwaltung_kunde?type=antwortja&idwarenkob="+idwarenkob2,false);
+		    		 XML.send();
+		    		
+	    		 }else{
+	    			 if(parseInt(lg)==0){
+	    				 document.querySelector("#fehler"+count).innerHTML="<div style='color:red; text-align:center;'>wrong code !</div>";
+    			    }else if(parseInt(lg)==1){
+    			    	document.querySelector("#fehler"+count).innerHTML="<div style='color:red; text-align:center;'>code incorrect!</div>";
+    			    }else{
+    			    	document.querySelector("#fehler"+count).innerHTML="<div style='color:red; text-align:center;'>Code falsch!</div>";
+    			    }
+	    			 
+	    		 }
+	    	 }
+	    	 function zeitabgelaufen2 (count){
+	    		 if(navigator.geolocation){
+			   		   navigator.geolocation.getCurrentPosition(navigatorCallbackmodal,erreurPosition,{enableHighAccuracy:true});
+			   	   }
+    			
+    		 }
+	    	 function navigatorCallbackmodal(position){
+	    		
+				   lat = position.coords.latitude;
+				   lng = position.coords.longitude;
+				  
+	    			  
+				   var XML = initRequest();
+		    		 XML.onreadystatechange = function (){
+		    			 if(this.readyState=4 && this.status==200){
+		    				if(this.responseText == "true"){
+		    					checkifgeolocationisactivated=1;
+		    				}
+		    				
+		    			 }
+		    		 };
+		    		 XML.open("GET","Bestellung_verwaltung_kunde?type=zeitabgelaufen&idwarenkob="+idwarenkob2+"&lat="+lat+"&lng="+lng,false);
+		    		 XML.send();
+				   	  	   
+				  
+			   }
+			   
+	    	 
+	    	 //modal sector end
 	    	 
 	    	 function antwortnein(idwarenkob){
 	    		 var XML = initRequest();
@@ -404,13 +508,20 @@
 	    		 XML.open("GET","Bestellung_verwaltung_kunde?type=antwortnein&idwarenkob="+idwarenkob,false);
 	    		 XML.send();
 	    	 }
-	    	 var idwarenkob=0
+	    	 
+	    	 
+	    	 
+	    	 var idwarenkob=0;
+	    	 
 	    	 function zeitabgelaufen (){
 	    		 if(navigator.geolocation){
 			   		   navigator.geolocation.getCurrentPosition(navigatorCallback,erreurPosition,{enableHighAccuracy:true});
 			   	   }
     			
     		 }
+	    	 
+	    	 
+	    	 
 	    	 //geolocalisation funktionen
 	    		
 	    	   
@@ -423,13 +534,13 @@
 				   var XML = initRequest();
 		    		 XML.onreadystatechange = function (){
 		    			 if(this.readyState=4 && this.status==200){
-		    			
+		    					
 		    			 }
 		    		 };
 		    		 XML.open("GET","Bestellung_verwaltung_kunde?type=zeitabgelaufen&idwarenkob="+idwarenkob+"&lat="+lat+"&lng="+lng,false);
 		    		 XML.send();
 				   	  	   
-				   return "lat:"+lat+"long:"+lng;
+				  
 			   }
 			   
 			  
@@ -463,6 +574,8 @@
 	    	 var tabbutton = document.getElementsByClassName("storno");
 	    	 var tabblockantwort = document.getElementsByClassName("blockantwort");
 	    	 var tabidwarenkob = document.getElementsByClassName("idwarenkob");
+	    	 var tabfehlermeldung3 = document.getElementsByClassName("fehlermeldung3");
+	    	 var confblock=document.getElementsByClassName("confirmbuttonblock");
 	    	 
 	    	
 	    		 for(let i=0;i<tabdatum.length;i++){
@@ -499,22 +612,40 @@
 	    				 if(parseInt(tabdate[0])==parseInt(parseInt(tabdauerabholung[index].value)/2) && parseInt(tabdate[0]) !=0 && parseInt(tabdauerabholung[index].value)!=2){
 	    					 tabbutton[index].disabled=true;
 	    					 document.getElementById(index).style.color="#FFA500";
+	    					 
+	    					 if(parseInt(lg)==0){
+	    						 tabfehlermeldung3[index].innerHTML="It is not possible anymore to cancel this order !";
+		    			    }else if(parseInt(lg)==1){
+		    			    	tabfehlermeldung3[index].innerHTML="Vous ne pouvez plus annuler cette commande !";
+		    			    }else{
+		    			    	tabfehlermeldung3[index].innerHTML="Sie können diese Bestellung nicht mehr annulieren";
+		    			    }
+	    					 
 	    				 }else if(parseInt(tabdate[0])==0){
 	    					 tabbutton[index].disabled=true;
 	    					 document.getElementById(index).style.color="red";
+	    					 if(parseInt(lg)==0){
+	    						 tabfehlermeldung3[index].innerHTML="It is not possible anymore to cancel this order !";
+		    			    }else if(parseInt(lg)==1){
+		    			    	tabfehlermeldung3[index].innerHTML="Vous ne pouvez plus annuler cette commande !";
+		    			    }else{
+		    			    	tabfehlermeldung3[index].innerHTML="Sie können diese Bestellung nicht mehr annulieren";
+		    			    }
+	    					 
 	    				 }
 	
 	    				 if(uhr==stunde2 && minute2>min){
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";
 	    					 tabblockantwort[index].style.visibility ="visible";
+	    					 confblock[index].style.visibility ="hidden";
+	    					 
 	    					 if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
 		    			    	tabfehlermeldung[index].innerHTML= "la durée de récupération de ce produit c est écoulée depuis longtemps";	
 		    			    }else{
 		    			    	tabfehlermeldung[index].innerHTML= "Die Frist fürs Abholen dieses Produkts ist längst abgeläufen";	
-				    			
 		    			    }
 	    					 tabbutton[index].disabled=true;
 	    					 idwarenkob=tabidwarenkob[index].value;
@@ -525,7 +656,9 @@
 	    				 if(stunde2>uhr || stunde2< uhrinit){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
-	    					 document.getElementById(index).style.color="red";    					
+	    					 document.getElementById(index).style.color="red";
+	    					 confblock[index].style.visibility ="hidden";
+	    					 
 	    					 if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -545,6 +678,7 @@
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";
+	    					 confblock[index].style.visibility ="hidden";
 	    					 tabbutton[index].disabled=true;
 	    					 if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
@@ -563,6 +697,7 @@
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0";
 	    					 document.getElementById(index).style.color="red";
+	    					 confblock[index].style.visibility ="hidden";
 	    					 if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline to collect this product has just passed";
 	    						 alert("Your time to collect one of your orders has expired. Answer the question asked in the appropriate place");
@@ -692,435 +827,585 @@
 				XmL.open("GET","logout",true);
 				XmL.send();
 			});
+		   
+		   //abholungoption wählen
+		   
+		   function confirmOptionFunction(element,barcode,lng,lat,idwarenkob,count,qrcode){
+			  
+			   let content1 ="";
+				   content1+="<div class='mt-5 mb-3 textconfirm' style='text-align: center; font-weight: bold; font-size=0.8em;' id='textconfirm'>Please put the Code, that you recieve from the seller in following field !</div>";
+					content1+="<div class='mb-1' style='text-align:center; font-weight: bold; font-size: 1.4em; color:#2E8B57;'>Code</div>";
+				    content1+="<div>";
+						content1+="<div class='form-outline mb-2' >";
+								content1+="<input type='password' style='font-size:0.8em;' class='form-control code' name='code' placeholder='e.g: TE123-345-SE12' id='code"+count+"'/>";
+								content1+="<label for='code"+count+"' style='font-size:0.8em;' class='form-label labelconfirm'>Code here</label>";
+						content1+="</div>";
+						content1+="<div class='mt-2' style='width:50%; margin:auto;'>";
+								content1+="<button class='buttonconfirm' onclick='checkCodeSeller(\""+barcode+"\","+lng+","+lat+","+idwarenkob+","+count+")' style='width:100%; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.8em;background-color:#48D1CC;color: white; margin:auto;'>send</button>";
+								content1+="<span id='fehler"+count+"' style='width:50%;margin:auto;'></span>";		
+						content1+="</div>";
+					content1+="</div>";
+					
+					
+			  if(element.value=="option1"){
+				  document.getElementById("confcontentoption"+count).innerHTML=content1;  
+				}else if(element.value=="option2"){
+					document.getElementById("confcontentoption"+count).innerHTML="<div id='reader"+count+"'></div><div id='fehler"+count+"'></div>";  
+					const scanner = new Html5QrcodeScanner("reader"+count,{fps:10, qrbox:{width:250,height:250}},false);
+					scanner.render((decodedtext)=>{
+						if(decodedtext==qrcode){
+							idwarenkob2 = parseInt(document.getElementsByClassName("idwarenkob")[count].value);
+			    			 
+			    			 let XML = initRequest();
+				    		 XML.onreadystatechange = function (){
+				    			 if(this.readyState=4 && this.status==200){
+				    				
+				    				 zeitabgelaufen2();
+				    				 
+				    				 if(parseInt(lg)==0){
+				    	    			document.querySelector("#fehler"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmed <img src='success.gif' als='success' /><div>";
+				        			 }else if(parseInt(lg)==1){
+				        			    document.querySelector("#fehler"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmé <img src='success.gif' als='success' /><div>";	    			
+				        			 }else{
+				        			    document.querySelector("#fehler"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> bestätigt <img src='success.gif' als='success' /><div>";  		    			
+				        			 }
+				    				
+				    			 }
+				    		 };
+				    		 XML.open("GET","Bestellung_verwaltung_kunde?type=antwortja&idwarenkob="+idwarenkob2,false);
+				    		 XML.send();
+						}else{
+							
+							if(parseInt(lg)==0){
+			    				 document.querySelector("#fehler"+count).innerHTML="<div style='color:red; text-align:center;'>Wrong QRcode !</div>";
+		    			    }else if(parseInt(lg)==1){
+		    			    	document.querySelector("#fehler"+count).innerHTML="<div style='color:red; text-align:center;'>QRcode incorrect!</div>";
+		    			    }else{
+		    			    	document.querySelector("#fehler"+count).innerHTML="<div style='color:red; text-align:center;'>QRcode falsch!</div>";
+		    			    }
+						}
+						
+					},(error)=>{
+						document.querySelector("#fehler"+count).innerHTML=error;
+					});
+					
+				}
+			  
+		   }
+		   
+		   //
 	    	
 		   
 		   //language
 		   
 		     setInterval(function(){
-	    	var lg = <%= request.getSession().getAttribute("language")%>
+		    	 var lg = <%= request.getSession().getAttribute("language")%>
 	    	
-	    	if(parseInt(lg)==0){
-	    		
-	    		document.getElementById("warn").innerText =" if you don't see your waiting oders anymore, it mean that the seller canceled them";
-	    		document.getElementById("el1").innerText = "My Commands";
-	    		document.getElementById("el2").innerText = "Registration";
-	    		document.getElementById("el3").innerText = "Sign up";
-	    		document.getElementById("el4").innerText = "Notification";
-	    		document.getElementById("el5").innerText = "My Infos";
-	    		document.getElementById("el6").innerText = "hello ";
-	    		document.getElementById("el7").innerText = "As soon as the status of your order is set to confirmed, you can go to the seller at time and collect it";
-	    		document.getElementById("el8").innerText = "evaluation ";
-	    		if(document.getElementById("t1")!=null){
-	    			document.getElementById("t1").innerText = "orders waiting to be confirmed ...";	
-	    		}
-	    		
-	    		if(document.getElementById("t2")!=null){
-	    			document.getElementById("t2").innerText = "confirmed oders";	
-	    		}
-	    		
-	 	    	
-	 	    	var res1 =document.getElementsByClassName("res1");
-	 	    	var res2 =document.getElementsByClassName("res2");
-	 	    	var res3=document.getElementsByClassName("res3");
-	 	    	var res4 =document.getElementsByClassName("res4");
-	 	    	var res5 =document.getElementsByClassName("res5");
-	 	    	var res6 =document.getElementsByClassName("res6");
-	 	    	var res7 =document.getElementsByClassName("res7");
-	 	    	var res8 =document.getElementsByClassName("res8");
-	 	    	var res9 =document.getElementsByClassName("res9");
-	 	    	var res10 =document.getElementsByClassName("res10");
-	 	    	var res11 =document.getElementsByClassName("res11");
-	 	    	var res12=document.getElementsByClassName("res12");
-	 	    	var res13=document.getElementsByClassName("res13");
-	 	    	
-	 	    	
-	 	    	
-	 	    	for(let i=0;i< res1.length; i++){
-	 	    		
-	 	    		if(res1[i]!=null){
-	 	    			res1[i].innerText= "published on :	";
-		 	    		
-	 	    		}
-					if(res2[i]!=null){
-						res2[i].innerText="name:	";
-		 	    		
-	 	    		}
-					if(res3[i]!=null){
-						res3[i].innerText= "price:	";
-		 	    			    			
-					}
-					if(res4[i]!=null){
-						res4[i].innerText= "town:	";
-		 	    			
-					}
-					if(res5[i]!=null){
-						res5[i].innerText= "exact location:	";
-		 	    			
-					}
-					if(res6[i]!=null){
-						res6[i].innerText= "description:	";
-		 	    			
-					}
-					if(res7[i]!=null){
-						res7[i].innerText= "brand:	";	
-					}
-					if(res8[i]!=null){
-						res8[i].innerText= "quantity on stock:	";	
-					}
-					if(res9[i]!=null){
-						res9[i].innerText= "Did you pick up your product from the seller?	";	
-					}
-					if(res10[i]!=null){
-						res10[i].innerText= "yes	";	
-					}
-					if(res11[i]!=null){
-						res11[i].innerText= "no";	
-					}
-					
-					if(res12[i]!=null){
-						res12[i].innerText= "pick up your order before the timer runs out";	
-					}
-					if(res13[i]!=null){
-						res13[i].innerText= "cancel";	
-					}
-	 	    		
-	 	    	}
-	 	    	
-	 	    	
-	 	    	var tes1 =document.getElementsByClassName("tes1");
-	 	    	var tes2 =document.getElementsByClassName("tes2");
-	 	    	var tes3=document.getElementsByClassName("tes3");
-	 	    	var tes4 =document.getElementsByClassName("tes4");
-	 	    	var tes5 =document.getElementsByClassName("tes5");
-	 	    	var tes6 =document.getElementsByClassName("tes6");
-	 	    	var tes7 =document.getElementsByClassName("tes7");
-	 	    	var tes8 =document.getElementsByClassName("tes8");
-	 	    	var tes9 =document.getElementsByClassName("tes9");
-	 	    	
-	 	    	
-
-	 	    	for(let i=0;i< tes1.length; i++){
-	 	    		
-	 	    		if(tes1[i]!=null){
-	 	    			tes1[i].innerText= "published on :	";
-		 	    		
-	 	    		}
-					if(tes2[i]!=null){
-						tes2[i].innerText="name:	";
-		 	    		
-	 	    		}
-					if(tes3[i]!=null){
-						tes3[i].innerText= "price:	";
-		 	    			    			
-					}
-					if(tes4[i]!=null){
-						tes4[i].innerText= "town:	";
-		 	    			
-					}
-					if(tes5[i]!=null){
-						tes5[i].innerText= "exact location:	";
-		 	    			
-					}
-					if(tes6[i]!=null){
-						tes6[i].innerText= "Please your review of this product";
-		 	    			
-					}
-					if(tes7[i]!=null){
-						tes7[i].innerText= "your comment !";	
-					}
-					if(tes8[i]!=null){
-						tes8[i].innerText= "send";	
-					}
-					if(tes9[i]!=null){
-						tes9[i].innerText= "no thanks";	
-					}
-					
-	 	    		
-	 	    	}
-	 	    	
-	    	}else if(parseInt(lg)==1){
-	    		document.getElementById("warn").innerText ="Si vous ne voyer plus aparaitre vos commandes en attente dans la liste d'attente, cela signifie que sois vous, soit le vendeur les a supprimer";
-		    	
-	    		document.getElementById("el1").innerText = "Mes commandes";
-	    		document.getElementById("el2").innerText = "enregistrement";
-	    		document.getElementById("el3").innerText = "se connecter";
-	    		document.getElementById("el4").innerText = "Notification";
-	    		document.getElementById("el5").innerText = "Mes Infos";
-	    		document.getElementById("el6").innerText = "Salut ";
-	    		document.getElementById("el7").innerText = "Aussitot que votre commande est confirmé par le vendeur vous pouvez aller le récupérer";
-	    		document.getElementById("el8").innerText = "évaluation ";
-	    		if(document.getElementById("t1")!=null){
-	    			document.getElementById("t1").innerText = "commande en attente de confirmation ...";	
-	    		}
-	    		
-	    		if(document.getElementById("t2")!=null){
-	    			document.getElementById("t2").innerText = "commandes confirmées";	
-	    		}
-	    		
-	 	    	
-	 	    	var res1 =document.getElementsByClassName("res1");
-	 	    	var res2 =document.getElementsByClassName("res2");
-	 	    	var res3=document.getElementsByClassName("res3");
-	 	    	var res4 =document.getElementsByClassName("res4");
-	 	    	var res5 =document.getElementsByClassName("res5");
-	 	    	var res6 =document.getElementsByClassName("res6");
-	 	    	var res7 =document.getElementsByClassName("res7");
-	 	    	var res8 =document.getElementsByClassName("res8");
-	 	    	var res9 =document.getElementsByClassName("res9");
-	 	    	var res10 =document.getElementsByClassName("res10");
-	 	    	var res11 =document.getElementsByClassName("res11");
-	 	    	var res12=document.getElementsByClassName("res12");
-	 	    	var res13=document.getElementsByClassName("res13");
-	 	    	
-	 	    	
-	 	    	
-	 	    	for(let i=0;i< res1.length; i++){
-	 	    		
-	 	    		if(res1[i]!=null){
-	 	    			res1[i].innerText= "mis en ligne le :	";
-		 	    		
-	 	    		}
-					if(res2[i]!=null){
-						res2[i].innerText="nom:	";
-		 	    		
-	 	    		}
-					if(res3[i]!=null){
-						res3[i].innerText= "prix:	";
-		 	    			    			
-					}
-					if(res4[i]!=null){
-						res4[i].innerText= "ville:	";
-		 	    			
-					}
-					if(res5[i]!=null){
-						res5[i].innerText= "lieu de vente:	";
-		 	    			
-					}
-					if(res6[i]!=null){
-						res6[i].innerText= "description:	";
-		 	    			
-					}
-					if(res7[i]!=null){
-						res7[i].innerText= "marque:	";	
-					}
-					if(res8[i]!=null){
-						res8[i].innerText= "quantité en stock:	";	
-					}
-					if(res9[i]!=null){
-						res9[i].innerText= "avez-vous récupérer votre commande chez le vendeur?	";	
-					}
-					if(res10[i]!=null){
-						res10[i].innerText= "oui	";	
-					}
-					if(res11[i]!=null){
-						res11[i].innerText= "non";	
-					}
-					
-					if(res12[i]!=null){
-						res12[i].innerText= "allez récupérer votre commande chez le vendeur...Penser à emporter l'appareil avec lequel vous etes connecté avec vous ";	
-					}
-					if(res13[i]!=null){
-						res13[i].innerText= "annuler";	
-					}
-	 	    		
-	 	    	}
-	 	    	
-	 	    	
-	 	    	var tes1 =document.getElementsByClassName("tes1");
-	 	    	var tes2 =document.getElementsByClassName("tes2");
-	 	    	var tes3=document.getElementsByClassName("tes3");
-	 	    	var tes4 =document.getElementsByClassName("tes4");
-	 	    	var tes5 =document.getElementsByClassName("tes5");
-	 	    	var tes6 =document.getElementsByClassName("tes6");
-	 	    	var tes7 =document.getElementsByClassName("tes7");
-	 	    	var tes8 =document.getElementsByClassName("tes8");
-	 	    	var tes9 =document.getElementsByClassName("tes9");
-	 	    	
-	 	    	
-
-	 	    	for(let i=0;i< tes1.length; i++){
-	 	    		
-	 	    		if(tes1[i]!=null){
-	 	    			tes1[i].innerText= "mise en ligne le :	";
-		 	    		
-	 	    		}
-					if(tes2[i]!=null){
-						tes2[i].innerText="nom:	";
-		 	    		
-	 	    		}
-					if(tes3[i]!=null){
-						tes3[i].innerText= "prix:	";
-		 	    			    			
-					}
-					if(tes4[i]!=null){
-						tes4[i].innerText= "ville:	";
-		 	    			
-					}
-					if(tes5[i]!=null){
-						tes5[i].innerText= "lieu de vente:	";
-		 	    			
-					}
-					if(tes6[i]!=null){
-						tes6[i].innerText= "S'il vous plait,évaluez ce produit ";
-		 	    			
-					}
-					if(tes7[i]!=null){
-						tes7[i].innerText= "ton commentaire !";	
-					}
-					if(tes8[i]!=null){
-						tes8[i].innerText= "envoyer";	
-					}
-					if(tes9[i]!=null){
-						tes9[i].innerText= "non merci";	
-					}
-					
-	 	    		
-	 	    	}
-	    	}else if(parseInt(lg)==2){
-	    		document.getElementById("warn").innerText ="Sollten Ihre ausstehenden Bestellungen nicht mehr  zu sehen sein, bedeutet das, dass der Kaufer Ihre bestellung abgelehnt hat !";
-	    		document.getElementById("el1").innerText = "Meine Bestellungen";
-	    		document.getElementById("el2").innerText = "Registrierung";
-	    		document.getElementById("el3").innerText = "Anmeldung";
-	    		document.getElementById("el4").innerText = "Benachrichtigung";
-	    		document.getElementById("el5").innerText = "Meine Infos";
-	    		document.getElementById("el6").innerText = "hallo ";
-	    		document.getElementById("el7").innerText = "Sobald der Status ihrer Bestellung auf 'bestätigt' gesetzt ist können Sie diese abholen gehen";
-	    		document.getElementById("el8").innerText = "Bewertung ";
-	    		if(document.getElementById("t1")!=null){
-	    			document.getElementById("t1").innerText = "ausstehende bestellungen ...";	
-	    		}
-	    		
-	    		if(document.getElementById("t2")!=null){
-	    			document.getElementById("t2").innerText = "bestätigte Bestellungen";	
-	    		}
-	    		
-	 	    	
-	 	    	var res1 =document.getElementsByClassName("res1");
-	 	    	var res2 =document.getElementsByClassName("res2");
-	 	    	var res3=document.getElementsByClassName("res3");
-	 	    	var res4 =document.getElementsByClassName("res4");
-	 	    	var res5 =document.getElementsByClassName("res5");
-	 	    	var res6 =document.getElementsByClassName("res6");
-	 	    	var res7 =document.getElementsByClassName("res7");
-	 	    	var res8 =document.getElementsByClassName("res8");
-	 	    	var res9 =document.getElementsByClassName("res9");
-	 	    	var res10 =document.getElementsByClassName("res10");
-	 	    	var res11 =document.getElementsByClassName("res11");
-	 	    	var res12=document.getElementsByClassName("res12");
-	 	    	var res13=document.getElementsByClassName("res13");
-	 	    	
-	 	    	
-	 	    	
-	 	    	for(let i=0;i< res1.length; i++){
-	 	    		
-	 	    		if(res1[i]!=null){
-	 	    			res1[i].innerText= "veröffentlicht am :	";
-		 	    		
-	 	    		}
-					if(res2[i]!=null){
-						res2[i].innerText="Name:	";
-		 	    		
-	 	    		}
-					if(res3[i]!=null){
-						res3[i].innerText= "Preis:	";
-		 	    			    			
-					}
-					if(res4[i]!=null){
-						res4[i].innerText= "Stadt:	";
-		 	    			
-					}
-					if(res5[i]!=null){
-						res5[i].innerText= "Adresse:	";
-		 	    			
-					}
-					if(res6[i]!=null){
-						res6[i].innerText= "Beschreibung:	";
-		 	    			
-					}
-					if(res7[i]!=null){
-						res7[i].innerText= "Marke:	";	
-					}
-					if(res8[i]!=null){
-						res8[i].innerText= "Menge im Lager:	";	
-					}
-					if(res9[i]!=null){
-						res9[i].innerText= "haben Sie Ihre Bestellung beim Verkäufer abgeholt?	";	
-					}
-					if(res10[i]!=null){
-						res10[i].innerText= "ja	";	
-					}
-					if(res11[i]!=null){
-						res11[i].innerText= "nein";	
-					}
-					
-					if(res12[i]!=null){
-						res12[i].innerText= "holen Sie sich Ihre Bestellung bevor die Zeit abläuft...denken Sie daran das Gerät mitzunehmen, mit dem Sie auf der Plattform verbunden sind";	
-					}
-					if(res13[i]!=null){
-						res13[i].innerText= "stornieren";	
-					}
-	 	    		
-	 	    	}
-	 	    	
-	 	    	
-	 	    	var tes1 =document.getElementsByClassName("tes1");
-	 	    	var tes2 =document.getElementsByClassName("tes2");
-	 	    	var tes3=document.getElementsByClassName("tes3");
-	 	    	var tes4 =document.getElementsByClassName("tes4");
-	 	    	var tes5 =document.getElementsByClassName("tes5");
-	 	    	var tes6 =document.getElementsByClassName("tes6");
-	 	    	var tes7 =document.getElementsByClassName("tes7");
-	 	    	var tes8 =document.getElementsByClassName("tes8");
-	 	    	var tes9 =document.getElementsByClassName("tes9");
-	 	    	
-	 	    	
-
-	 	    	for(let i=0;i< tes1.length; i++){
-	 	    		
-	 	    		if(tes1[i]!=null){
-	 	    			tes1[i].innerText= "veröffentlicht am :	";
-		 	    		
-	 	    		}
-					if(tes2[i]!=null){
-						tes2[i].innerText="Name:	";
-		 	    		
-	 	    		}
-					if(tes3[i]!=null){
-						tes3[i].innerText= "Preis:	";
-		 	    			    			
-					}
-					if(tes4[i]!=null){
-						tes4[i].innerText= "Stadt:	";
-		 	    			
-					}
-					if(tes5[i]!=null){
-						tes5[i].innerText= "Adresse:	";
-		 	    			
-					}
-					if(tes6[i]!=null){
-						tes6[i].innerText= "Bitte deine Bewertung zu diesem Produkt";
-		 	    			
-					}
-					if(tes7[i]!=null){
-						tes7[i].innerText= "Kommentar !";	
-					}
-					if(tes8[i]!=null){
-						tes8[i].innerText= "senden";	
-					}
-					if(tes9[i]!=null){
-						tes9[i].innerText= "nein danke";	
-					}
-					
-	 	    		
-	 	    	}
-	    	}
-	    	
+			    	if(parseInt(lg)==0){
+			    		
+			    		document.getElementById("warn").innerText =" if you don't see your waiting oders anymore, it mean that the seller canceled them";
+			    		document.getElementById("el1").innerText = "My Commands";
+			    		document.getElementById("el2").innerText = "Registration";
+			    		document.getElementById("el3").innerText = "Sign up";
+			    		document.getElementById("el4").innerText = "Notification";
+			    		document.getElementById("el5").innerText = "My Infos";
+			    		document.getElementById("el6").innerText = "hello ";
+			    		document.getElementById("el7").innerText = "As soon as the status of your order is set to confirmed, you can go to the seller at time and collect it";
+			    		document.getElementById("el8").innerText = "evaluation ";
+			    		if(document.getElementById("t1")!=null){
+			    			document.getElementById("t1").innerText = "orders waiting to be confirmed ...";	
+			    		}
+			    		
+			    		if(document.getElementById("t2")!=null){
+			    			document.getElementById("t2").innerText = "confirmed oders";	
+			    		}
+			    		
+			 	    	
+			 	    	var res1 =document.getElementsByClassName("res1");
+			 	    	var res2 =document.getElementsByClassName("res2");
+			 	    	var res3=document.getElementsByClassName("res3");
+			 	    	var res4 =document.getElementsByClassName("res4");
+			 	    	var res5 =document.getElementsByClassName("res5");
+			 	    	var res6 =document.getElementsByClassName("res6");
+			 	    	var res7 =document.getElementsByClassName("res7");
+			 	    	var res8 =document.getElementsByClassName("res8");
+			 	    	var res9 =document.getElementsByClassName("res9");
+			 	    	var res10 =document.getElementsByClassName("res10");
+			 	    	var res11 =document.getElementsByClassName("res11");
+			 	    	var res12=document.getElementsByClassName("res12");
+			 	    	var res13=document.getElementsByClassName("res13");
+			 	    	var conft =document.getElementsByClassName("textconfirm");
+			 	    	var confb =document.getElementsByClassName("buttonconfirm");
+			 	    	var confl =document.getElementsByClassName("labelconfir");
+			 	    	var conft2=document.getElementsByClassName("textconfirm2");
+			 	    	var conf=document.getElementsByClassName("confirm");
+			 	    	var confop1=document.getElementsByClassName("confoption1");
+			 	    	var confop2=document.getElementsByClassName("confoption2");
+			 	    	
+			 	    	
+			 	    	for(let i=0;i< res1.length; i++){
+			 	    		
+			 	    		if(res1[i]!=null){
+			 	    			res1[i].innerText= "published on :	";
+				 	    		
+			 	    		}
+							if(res2[i]!=null){
+								res2[i].innerText="name:	";
+				 	    		
+			 	    		}
+							if(res3[i]!=null){
+								res3[i].innerText= "price:	";
+				 	    			    			
+							}
+							if(res4[i]!=null){
+								res4[i].innerText= "town:	";
+				 	    			
+							}
+							if(res5[i]!=null){
+								res5[i].innerText= "exact location:	";
+				 	    			
+							}
+							if(res6[i]!=null){
+								res6[i].innerText= "description:	";
+				 	    			
+							}
+							if(res7[i]!=null){
+								res7[i].innerText= "brand:	";	
+							}
+							if(res8[i]!=null){
+								res8[i].innerText= "quantity on stock:	";	
+							}
+							if(res9[i]!=null){
+								res9[i].innerText= "Did you pick up your product from the seller?	";	
+							}
+							if(res10[i]!=null){
+								res10[i].innerText= "yes	";	
+							}
+							if(res11[i]!=null){
+								res11[i].innerText= "no";	
+							}
+							
+							if(res12[i]!=null){
+								res12[i].innerText= "pick up your order before the timer runs out";	
+							}
+							if(res13[i]!=null){
+								res13[i].innerText= "cancel";	
+							}
+							if(conft[i]!=null){
+								conft[i].innerText= "Please choose on the following list the way to confirm... be sure to be at the right seller's location to do it. if is'nt the case your position won't be correctly identify and you will lose one konto's live";	
+							}
+							if(confb[i]!=null){
+								confb[i].innerText= "envoyer";	
+							}
+							if(confl[i]!=null){
+								confl[i].innerText= "code here";	
+							}
+							if(conft2[i]!=null){
+								conft2[i].innerText= "You can also confirm having taken your order before the Time run out !";	
+							}
+							if(conf[i]!=null){
+								conf[i].innerText= "confirm";	
+							}
+							if(confop1[i]!=null){
+								confop1[i].innerText= "Confirm with the textcode that you recieved from the seller !";	
+							}
+							if(confop2[i]!=null){
+								confop2[i].innerText= "Confirm by scanning the QRcode that you recieved from the Seller !";	
+							}
+			 	    		
+			 	    	}
+			 	    	
+			 	    	
+			 	    	var tes1 =document.getElementsByClassName("tes1");
+			 	    	var tes2 =document.getElementsByClassName("tes2");
+			 	    	var tes3=document.getElementsByClassName("tes3");
+			 	    	var tes4 =document.getElementsByClassName("tes4");
+			 	    	var tes5 =document.getElementsByClassName("tes5");
+			 	    	var tes6 =document.getElementsByClassName("tes6");
+			 	    	var tes7 =document.getElementsByClassName("tes7");
+			 	    	var tes8 =document.getElementsByClassName("tes8");
+			 	    	var tes9 =document.getElementsByClassName("tes9");
+			 	    	
+			 	    	
+		
+			 	    	for(let i=0;i< tes1.length; i++){
+			 	    		
+			 	    		if(tes1[i]!=null){
+			 	    			tes1[i].innerText= "published on :	";
+				 	    		
+			 	    		}
+							if(tes2[i]!=null){
+								tes2[i].innerText="name:	";
+				 	    		
+			 	    		}
+							if(tes3[i]!=null){
+								tes3[i].innerText= "price:	";
+				 	    			    			
+							}
+							if(tes4[i]!=null){
+								tes4[i].innerText= "town:	";
+				 	    			
+							}
+							if(tes5[i]!=null){
+								tes5[i].innerText= "exact location:	";
+				 	    			
+							}
+							if(tes6[i]!=null){
+								tes6[i].innerText= "Please your review of this product";
+				 	    			
+							}
+							if(tes7[i]!=null){
+								tes7[i].innerText= "your comment !";	
+							}
+							if(tes8[i]!=null){
+								tes8[i].innerText= "send";	
+							}
+							if(tes9[i]!=null){
+								tes9[i].innerText= "no thanks";	
+							}
+							
+			 	    		
+			 	    	}
+			 	    	
+			    	}else if(parseInt(lg)==1){
+			    		document.getElementById("warn").innerText ="Si vous ne voyer plus aparaitre vos commandes en attente dans la liste d'attente, cela signifie que sois vous, soit le vendeur les a supprimer";
+				    	
+			    		document.getElementById("el1").innerText = "Mes commandes";
+			    		document.getElementById("el2").innerText = "enregistrement";
+			    		document.getElementById("el3").innerText = "se connecter";
+			    		document.getElementById("el4").innerText = "Notification";
+			    		document.getElementById("el5").innerText = "Mes Infos";
+			    		document.getElementById("el6").innerText = "Salut ";
+			    		document.getElementById("el7").innerText = "Aussitot que votre commande est confirmé par le vendeur vous pouvez aller le récupérer";
+			    		document.getElementById("el8").innerText = "évaluation ";
+			    		if(document.getElementById("t1")!=null){
+			    			document.getElementById("t1").innerText = "commande en attente de confirmation ...";	
+			    		}
+			    		
+			    		if(document.getElementById("t2")!=null){
+			    			document.getElementById("t2").innerText = "commandes confirmées";	
+			    		}
+			    		
+			 	    	
+			 	    	var res1 =document.getElementsByClassName("res1");
+			 	    	var res2 =document.getElementsByClassName("res2");
+			 	    	var res3=document.getElementsByClassName("res3");
+			 	    	var res4 =document.getElementsByClassName("res4");
+			 	    	var res5 =document.getElementsByClassName("res5");
+			 	    	var res6 =document.getElementsByClassName("res6");
+			 	    	var res7 =document.getElementsByClassName("res7");
+			 	    	var res8 =document.getElementsByClassName("res8");
+			 	    	var res9 =document.getElementsByClassName("res9");
+			 	    	var res10 =document.getElementsByClassName("res10");
+			 	    	var res11 =document.getElementsByClassName("res11");
+			 	    	var res12=document.getElementsByClassName("res12");
+			 	    	var res13=document.getElementsByClassName("res13");
+			 	    	var conft =document.getElementsByClassName("textconfirm");
+			 	    	var confb =document.getElementsByClassName("buttonconfirm");
+			 	    	var confl =document.getElementsByClassName("labelconfir");
+			 	    	var conft2=document.getElementsByClassName("textconfirm2");
+			 	    	var conf=document.getElementsByClassName("confirm");
+			 	    	var confop1=document.getElementsByClassName("confoption1");
+			 	    	var confop2=document.getElementsByClassName("confoption2");
+			 	    	
+			 	    	
+			 	    	
+			 	    	for(let i=0;i< res1.length; i++){
+			 	    		
+			 	    		if(res1[i]!=null){
+			 	    			res1[i].innerText= "mis en ligne le :	";
+				 	    		
+			 	    		}
+							if(res2[i]!=null){
+								res2[i].innerText="nom:	";
+				 	    		
+			 	    		}
+							if(res3[i]!=null){
+								res3[i].innerText= "prix:	";
+				 	    			    			
+							}
+							if(res4[i]!=null){
+								res4[i].innerText= "ville:	";
+				 	    			
+							}
+							if(res5[i]!=null){
+								res5[i].innerText= "lieu de vente:	";
+				 	    			
+							}
+							if(res6[i]!=null){
+								res6[i].innerText= "description:	";
+				 	    			
+							}
+							if(res7[i]!=null){
+								res7[i].innerText= "marque:	";	
+							}
+							if(res8[i]!=null){
+								res8[i].innerText= "quantité en stock:	";	
+							}
+							if(res9[i]!=null){
+								res9[i].innerText= "avez-vous récupérer votre commande chez le vendeur?	";	
+							}
+							if(res10[i]!=null){
+								res10[i].innerText= "oui	";	
+							}
+							if(res11[i]!=null){
+								res11[i].innerText= "non";	
+							}
+							
+							if(res12[i]!=null){
+								res12[i].innerText= "allez récupérer votre commande chez le vendeur...Penser à emporter l'appareil avec lequel vous etes connecté avec vous ";	
+							}
+							if(res13[i]!=null){
+								res13[i].innerText= "annuler";	
+							}
+							if(conft[i]!=null){
+								conft[i].innerText= "Svp ! choisissez le moyen de confirmation dans la liste suivante...assurez vous pour cela de vous trouver chez le vendeur, sinon votre position ne sera pas correctement identifiée et vous perdrez une vie sur votre compte.";	
+							}
+							if(confb[i]!=null){
+								confb[i].innerText= "envoyer";	
+							}
+							if(confl[i]!=null){
+								confl[i].innerText= "code ici";	
+							}
+							if(conft2[i]!=null){
+								conft2[i].innerText= "Vous pouvez aussi confirmer la récuperation de votre commande avant que le Timer ne se soit ecoulé !";	
+							}
+							if(conf[i]!=null){
+								conf[i].innerText= "confirmer";	
+							}
+							if(confop1[i]!=null){
+								confop1[i].innerText= "Confirmer en utilisant le code sous forme de text reçu du vendeur !";	
+							}
+							if(confop2[i]!=null){
+								confop2[i].innerText= "Confirmer en scannant le QRcode reçu du vendeur !";	
+							}
+			 	    	}
+			 	    	
+			 	    	
+			 	    	var tes1 =document.getElementsByClassName("tes1");
+			 	    	var tes2 =document.getElementsByClassName("tes2");
+			 	    	var tes3=document.getElementsByClassName("tes3");
+			 	    	var tes4 =document.getElementsByClassName("tes4");
+			 	    	var tes5 =document.getElementsByClassName("tes5");
+			 	    	var tes6 =document.getElementsByClassName("tes6");
+			 	    	var tes7 =document.getElementsByClassName("tes7");
+			 	    	var tes8 =document.getElementsByClassName("tes8");
+			 	    	var tes9 =document.getElementsByClassName("tes9");
+			 	    	
+			 	    	
+		
+			 	    	for(let i=0;i< tes1.length; i++){
+			 	    		
+			 	    		if(tes1[i]!=null){
+			 	    			tes1[i].innerText= "mise en ligne le :	";
+				 	    		
+			 	    		}
+							if(tes2[i]!=null){
+								tes2[i].innerText="nom:	";
+				 	    		
+			 	    		}
+							if(tes3[i]!=null){
+								tes3[i].innerText= "prix:	";
+				 	    			    			
+							}
+							if(tes4[i]!=null){
+								tes4[i].innerText= "ville:	";
+				 	    			
+							}
+							if(tes5[i]!=null){
+								tes5[i].innerText= "lieu de vente:	";
+				 	    			
+							}
+							if(tes6[i]!=null){
+								tes6[i].innerText= "S'il vous plait,évaluez ce produit ";
+				 	    			
+							}
+							if(tes7[i]!=null){
+								tes7[i].innerText= "ton commentaire !";	
+							}
+							if(tes8[i]!=null){
+								tes8[i].innerText= "envoyer";	
+							}
+							if(tes9[i]!=null){
+								tes9[i].innerText= "non merci";	
+							}
+							
+			 	    		
+			 	    	}
+			    	}else if(parseInt(lg)==2){
+			    		document.getElementById("warn").innerText ="Sollten Ihre ausstehenden Bestellungen nicht mehr  zu sehen sein, bedeutet das, dass der Kaufer Ihre bestellung abgelehnt hat !";
+			    		document.getElementById("el1").innerText = "Meine Bestellungen";
+			    		document.getElementById("el2").innerText = "Registrierung";
+			    		document.getElementById("el3").innerText = "Anmeldung";
+			    		document.getElementById("el4").innerText = "Benachrichtigung";
+			    		document.getElementById("el5").innerText = "Meine Infos";
+			    		document.getElementById("el6").innerText = "hallo ";
+			    		document.getElementById("el7").innerText = "Sobald der Status ihrer Bestellung auf 'bestätigt' gesetzt ist können Sie diese abholen gehen";
+			    		document.getElementById("el8").innerText = "Bewertung ";
+			    		if(document.getElementById("t1")!=null){
+			    			document.getElementById("t1").innerText = "ausstehende bestellungen ...";	
+			    		}
+			    		
+			    		if(document.getElementById("t2")!=null){
+			    			document.getElementById("t2").innerText = "bestätigte Bestellungen";	
+			    		}
+			    		
+			 	    	
+			 	    	var res1 =document.getElementsByClassName("res1");
+			 	    	var res2 =document.getElementsByClassName("res2");
+			 	    	var res3=document.getElementsByClassName("res3");
+			 	    	var res4 =document.getElementsByClassName("res4");
+			 	    	var res5 =document.getElementsByClassName("res5");
+			 	    	var res6 =document.getElementsByClassName("res6");
+			 	    	var res7 =document.getElementsByClassName("res7");
+			 	    	var res8 =document.getElementsByClassName("res8");
+			 	    	var res9 =document.getElementsByClassName("res9");
+			 	    	var res10 =document.getElementsByClassName("res10");
+			 	    	var res11 =document.getElementsByClassName("res11");
+			 	    	var res12=document.getElementsByClassName("res12");
+			 	    	var res13=document.getElementsByClassName("res13");
+			 	    	
+			 	    	var conft =document.getElementsByClassName("textconfirm");
+			 	    	var confb =document.getElementsByClassName("buttonconfirm");
+			 	    	var confl =document.getElementsByClassName("labelconfir");
+			 	    	var conft2=document.getElementsByClassName("textconfirm2");
+			 	    	var conf=document.getElementsByClassName("confirm");
+			 	    	var confop1=document.getElementsByClassName("confoption1");
+			 	    	var confop2=document.getElementsByClassName("confoption2");
+			 	    	
+			 	    	
+			 	    	
+			 	    	for(let i=0;i< res1.length; i++){
+			 	    		
+			 	    		if(res1[i]!=null){
+			 	    			res1[i].innerText= "veröffentlicht am :	";
+				 	    		
+			 	    		}
+							if(res2[i]!=null){
+								res2[i].innerText="Name:	";
+				 	    		
+			 	    		}
+							if(res3[i]!=null){
+								res3[i].innerText= "Preis:	";
+				 	    			    			
+							}
+							if(res4[i]!=null){
+								res4[i].innerText= "Stadt:	";
+				 	    			
+							}
+							if(res5[i]!=null){
+								res5[i].innerText= "Adresse:	";
+				 	    			
+							}
+							if(res6[i]!=null){
+								res6[i].innerText= "Beschreibung:	";
+				 	    			
+							}
+							if(res7[i]!=null){
+								res7[i].innerText= "Marke:	";	
+							}
+							if(res8[i]!=null){
+								res8[i].innerText= "Menge im Lager:	";	
+							}
+							if(res9[i]!=null){
+								res9[i].innerText= "haben Sie Ihre Bestellung beim Verkäufer abgeholt?	";	
+							}
+							if(res10[i]!=null){
+								res10[i].innerText= "ja	";	
+							}
+							if(res11[i]!=null){
+								res11[i].innerText= "nein";	
+							}
+							
+							if(res12[i]!=null){
+								res12[i].innerText= "holen Sie sich Ihre Bestellung bevor die Zeit abläuft...denken Sie daran das Gerät mitzunehmen, mit dem Sie auf der Plattform verbunden sind";	
+							}
+							if(res13[i]!=null){
+								res13[i].innerText= "stornieren";	
+							}
+							if(conft[i]!=null){
+								conft[i].innerText= "Bitte wählen Sie auf folgender List die Art der Bestätigung...Dafür müssen Sie sich beim Verkäufer befinden sonst wird ihre Position falsch erfasst, was dazu führt, dass Sie ein Kontolive verlieren";	
+							}
+							if(confb[i]!=null){
+								confb[i].innerText= "senden";	
+							}
+							if(confl[i]!=null){
+								confl[i].innerText= "Code hier";	
+							}
+							if(conft2[i]!=null){
+								conft2[i].innerText= "Sie können auch die Abholung Ihrer Bestellung bestätigen bevor der Timer abgelaufen ist !";	
+							}
+							if(conf[i]!=null){
+								conf[i].innerText= "bestätigen";	
+							}
+							
+							if(confop1[i]!=null){
+								confop1[i].innerText= "Mit dem Textcode des Verkäufer bestätigen !";	
+							}
+							if(confop2[i]!=null){
+								confop2[i].innerText= "QRcode des Verkäufer scannen !";	
+							}
+			 	    	}
+			 	    	
+			 	    	
+			 	    	var tes1 =document.getElementsByClassName("tes1");
+			 	    	var tes2 =document.getElementsByClassName("tes2");
+			 	    	var tes3=document.getElementsByClassName("tes3");
+			 	    	var tes4 =document.getElementsByClassName("tes4");
+			 	    	var tes5 =document.getElementsByClassName("tes5");
+			 	    	var tes6 =document.getElementsByClassName("tes6");
+			 	    	var tes7 =document.getElementsByClassName("tes7");
+			 	    	var tes8 =document.getElementsByClassName("tes8");
+			 	    	var tes9 =document.getElementsByClassName("tes9");
+			 	    	
+			 	    	
+		
+			 	    	for(let i=0;i< tes1.length; i++){
+			 	    		
+			 	    		if(tes1[i]!=null){
+			 	    			tes1[i].innerText= "veröffentlicht am :	";
+				 	    		
+			 	    		}
+							if(tes2[i]!=null){
+								tes2[i].innerText="Name:	";
+				 	    		
+			 	    		}
+							if(tes3[i]!=null){
+								tes3[i].innerText= "Preis:	";
+				 	    			    			
+							}
+							if(tes4[i]!=null){
+								tes4[i].innerText= "Stadt:	";
+				 	    			
+							}
+							if(tes5[i]!=null){
+								tes5[i].innerText= "Adresse:	";
+				 	    			
+							}
+							if(tes6[i]!=null){
+								tes6[i].innerText= "Bitte deine Bewertung zu diesem Produkt";
+				 	    			
+							}
+							if(tes7[i]!=null){
+								tes7[i].innerText= "Kommentar !";	
+							}
+							if(tes8[i]!=null){
+								tes8[i].innerText= "senden";	
+							}
+							if(tes9[i]!=null){
+								tes9[i].innerText= "nein danke";	
+							}
+							
+			 	    		
+			 	    	}
+			    	}
+			    	
 	    	
 	    },500);
 		   
 		   
 		   
-		   //
+	
 	    </script>
   </body>
 </html>

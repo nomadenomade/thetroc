@@ -29,6 +29,14 @@
     		height:auto;
     			
     	}
+    	input:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
     </style>
 </head>
 <body style="background-image: url('<%= request.getContextPath()%>/background1.jpg');background-size:cover;background-repeat:no-repeat;background-attachment:fixed;">

@@ -26,6 +26,11 @@
     		background-color:#F5F5F5;
     		margin:auto;
     	}
+    	
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
     	.bewertung{
     		width:calc(80% - 10px);
     		margin:auto;

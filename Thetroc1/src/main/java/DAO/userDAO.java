@@ -402,6 +402,7 @@ public class userDAO {
 			}
 
 		}else if(online.equals("unbegrenzt")) {
+			
 			request ="SELECT * FROM produkte AS p "
 					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
 					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
@@ -438,6 +439,7 @@ public class userDAO {
 			double lat2=0,lng2=0;
 			if(resultset!=null) {
 				while(resultset.next()) {
+					
 					lat2 = Double.valueOf(resultset.getString("Latitude"));
 					lng2 = Double.valueOf(resultset.getString("Longitude"));
 					if(!umkreis.equals("unbegrenzt")) {
@@ -445,9 +447,10 @@ public class userDAO {
 						double b = Double.valueOf(umkreis.split("-")[1].split(" ")[0]);
 						
 						double distance = abstand(Double.valueOf(lng),Double.valueOf(lat),lng2,lat2);
+				
 						
-						
-						if(a<distance && distance<=b) {
+						if(a<=distance && distance<=b) {
+							
 							produkt = new Produkt();
 							verkaufer = new Verkaufer();
 							unternehm = new Unternehmen();
@@ -696,6 +699,7 @@ public class userDAO {
 				unternehm.setStadt(resultset.getString("Stadt"));
 				unternehm.setGeolatidude(resultset.getString("Latitude"));
 				unternehm.setGeolongitude(resultset.getString("Longitude"));
+				unternehm.setBarcode(resultset.getString("Barcode"));
 
 				if(!imagename.contains(resultset.getString("Namebildprodukt"))) {
 					foto1.setIdFoto(resultset.getInt("idBilderprodukt"));
@@ -1049,7 +1053,7 @@ public class userDAO {
 	}
 	
 	public int checkaufantwort_kunde_verkaufer(String bereich, int id,Person person) {
-		int rueck=0;
+		int rueck=person.getWarnunganzahl();
 		if(bereich.equals("kaufer")) {
 			request = "SELECT * FROM warenkob WHERE idKaufer=? AND status='bestaetigt'  AND warnungcount ='-' ";
 			try {
@@ -1071,7 +1075,7 @@ public class userDAO {
 						double lng1 = Double.valueOf(prod.getVerkaufer().getUnternehmen().getGeolongitude());
 						
 						
-						if(resultset.getString("latitudek")!=null && resultset.getString("longitudek")!=null ){
+						if(resultset.getString("latitudek")!=null && resultset.getString("longitudek")!=null && !resultset.getString("latitudek").equals("-") && !resultset.getString("longitudek").equals("-") ){
 							double lat2 = Double.valueOf(resultset.getString("latitudek"));
 							double lng2 = Double.valueOf(resultset.getString("longitudek"));
 							
@@ -1090,6 +1094,12 @@ public class userDAO {
 								updateWarekob(resultset.getInt("idWarenkob"), "warnungcount",null,null);
 								rueck= zahl;
 							}
+						}else {
+							int zahl= person.getWarnunganzahl()+1;
+							person.setWarnunganzahl(zahl);
+							updateperson("warnunganzahl", person);
+							updateWarekob(resultset.getInt("idWarenkob"), "warnungcount",null,null);
+							rueck= zahl;
 						}
 								
 						
@@ -1180,6 +1190,8 @@ public class userDAO {
 					unternehmen.setName(resultset.getString("Nameunternehmen"));
 					unternehmen.setStadt(resultset.getString("Stadt"));
 					unternehmen.setStandort(resultset.getString("Standort"));
+					unternehmen.setBarcode(resultset.getString("Standort"));
+					unternehmen.setIdUnternehmen(resultset.getInt("idUnternehmen"));
 					verkaufer.setUnternehmen(unternehmen);
 					
 					rechnung.setNameProdukte(resultset.getString("Nameprodukt"));
@@ -1217,6 +1229,8 @@ public class userDAO {
 					unternehmen.setName(resultset.getString("Nameunternehmen"));
 					unternehmen.setStadt(resultset.getString("Stadt"));
 					unternehmen.setStandort(resultset.getString("Standort"));
+					unternehmen.setBarcode(resultset.getString("Standort"));
+					unternehmen.setIdUnternehmen(resultset.getInt("idUnternehmen"));
 					verkaufer.setUnternehmen(unternehmen);
 					
 					rechnung.setNameProdukte(resultset.getString("Nameprodukt"));
@@ -1449,6 +1463,7 @@ public class userDAO {
 					warenkob.setStatus(resultset.getString("Status"));
 					warenkob.setIdWarenkob(resultset.getInt("idWarenkob"));
 					warenkob.setKaufer(kaufer);
+					warenkob.setConfirmkunde(resultset.getString("confirmkunde"));
 					list.add(warenkob);
 					counter++;
 					break;

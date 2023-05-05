@@ -43,9 +43,10 @@ public class RequestReSend extends HttpServlet {
 				response.getWriter().print("An Error occured on the Server");
 			}
 			
+		}else if(param!=null && param.equals("errorpage")){
+			request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);	
 		}else {
 			request.getRequestDispatcher("anmeldung.jsp").forward(request, response);
-			
 		}
 		
 	}

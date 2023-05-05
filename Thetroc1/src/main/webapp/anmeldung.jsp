@@ -32,7 +32,11 @@
     		height:auto;
     	}
     
-    
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
+    	}
+    	
     	@media screen and (max-width: 992px){
     		.forms {
     			width: 400px;
@@ -136,7 +140,7 @@
 			      					<label for="passwort" class="form-label" id="el5">Passwort</label>
 			      				</div>
 			      				<div style="width: 50%; margin:auto">
-			      					<button class="mb-3" id="einloggen" style="margin:auto;width:200px; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.9em;background-color:#48D1CC;color: white; "><span id="el6">einloggen</span></button><span id="spinner"></span>		
+			      					<button class="mb-3" id="einloggen" style="margin:auto;width:100%; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.9em;background-color:#48D1CC;color: white; "><span id="el6">einloggen</span></button><span id="spinner"></span>		
 			      				</div>  
 			      			
 			      				 <div id="fehlermeldung"  style="color:red; font-size: 0.7em;"></div>
@@ -184,6 +188,8 @@
     					  }
     					
     					  
+    				  }else if(this.responseText.trim()=='errorpage'){
+    					  window.location.replace("<%=request.getContextPath()%>/RequestReSend?name=errorpage");
     				  }else{
     					  document.getElementById("fehlermeldung").innerHTML= this.responseText;
     				  }

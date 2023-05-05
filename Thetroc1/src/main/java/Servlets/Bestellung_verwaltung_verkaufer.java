@@ -279,6 +279,8 @@ public class Bestellung_verwaltung_verkaufer extends HttpServlet {
 				    result+="<img alt='bild'  style='width:25px; height:auto; margin:5px;' src='img/timer.png'/>";
 				    result+="<div id='"+count+"' style='color:green;font-size:2.5em'></div>";
 				    result+="<div class='fehlermeldung mt-2 text-danger' style='font-size:0.8em;'></div>";
+				    result+="<div class='infomeldung mt-2 ' style='font-size:0.8em;'></div>";
+				    result+="<button class='mt-2 me-2 infomeldungbutton' style=\"width:100px; border:1px solid black;border-radius:200px; padding:5px; font-size:0.7em;background-color:black;color: white; margin:auto;\" onclick='antwortja("+prod.getWarenkob().getIdWarenkob()+")'>Ja</button>";
 				    result+="</div>";
 				    result+="</div>";
 				    result+="<div class='blockantwort' style='visibility:hidden;'>";

@@ -147,7 +147,7 @@ public class Bestellung_verwaltung_kunde extends HttpServlet {
 						 uhrzeit = prod.getDatum().split(" ")[1];
 					}
 					//zweiter Card
-					result+="<div class='card mb-5' style='background-color:#F8F8FF; width:calc(80% - 10px);margin:auto;'>";
+					result+="<div class='card mb-5 bewertungbody' style='background-color:#F8F8FF; margin:auto;'>";
 					result+="<div class='card-body'>";
 					//blockbegin
 					result+="<div class='row'>";
@@ -232,8 +232,8 @@ public class Bestellung_verwaltung_kunde extends HttpServlet {
 				    result+="<label class='form-label tes7' for='kommentar'>Kommentar</label>";
 				    result+="</div>";
 				   //
-				    result+="<button class=' mt-2 tes8' style=\"width:200px; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.8em;background-color:#48D1CC;color: white; margin:auto;\" onclick='kommentierenja("+prod.getIdProdukt()+','+prod.getWarenkob().getIdWarenkob()+','+counter+")'>senden</button>";
-				    result+="<button class=' mt-2 tes9' style=\"width:200px; border:1px solid #D3D3D3;border-radius:200px; padding:5px; font-size:0.8em;background-color:#D3D3D3;color: white; margin-left:20px;\"  onclick='kommentierennein("+prod.getWarenkob().getIdWarenkob()+")'>nein danke</button>";
+				    result+="<button class=' mt-2 tes8 buttoncomment1' style=\"width:200px; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.8em;background-color:#48D1CC;color: white; \" onclick='kommentierenja("+prod.getIdProdukt()+','+prod.getWarenkob().getIdWarenkob()+','+counter+")'>senden</button>";
+				    result+="<button class=' mt-2 tes9 buttoncomment2' style=\"width:200px; border:1px solid #D3D3D3;border-radius:200px; padding:5px; font-size:0.8em;background-color:#D3D3D3;color: white; \"  onclick='kommentierennein("+prod.getWarenkob().getIdWarenkob()+")'>nein danke</button>";
 				    
 				    result+= "</div>";
 				    //Bewertungsend

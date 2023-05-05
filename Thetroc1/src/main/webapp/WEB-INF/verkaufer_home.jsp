@@ -1,3 +1,4 @@
+<%@page import="helpklasse.PathToSaveFile,Model.Verkaufer,Model.Person"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -24,9 +25,14 @@
     	#info1{
     		 margin:auto;
     		 background-color:#FFFFE0;
-    		 width:60%;
+    		 max-width:90%;
     		 padding:15px;
     	
+    	}
+    	
+    	button:hover{
+    		opacity:0.7;
+    		transition-duration: 0.4s;
     	}
     
     	@media screen and (max-width: 992px){
@@ -233,16 +239,16 @@
 <hr style="box-shadow:2px 3px;">
 <h5 class="text-white text-center lead " style="font-weight:bold;" id="el13">Info Unternehmen</h5>
 
-<div style="max-width: 800px;margin:auto;">
+<div style="max-width:100%;margin:auto;">
 	<div class='row' id='z'>
-		<div class='col-sm-6'>
+		<div class='col-sm-8'>
 			<div class="card mt-4"  id="info1" >
 				<div class="card-body">
 					 <p class="lead" style="font-size:0.9em;"  id="el14">Sie haben bisher kein Unternehmen erstellt. Wechseln Sie bitte auf Profil-> "Unternehmen erstellen" und geben Sie alle Informationen über Ihr Unternehmen! </p>
 				</div>
 			</div>
 	</div>
-		<div class='col-sm-6' >
+		<div class='col-sm-4' >
 			<div class="text-white text-center lead " style="font-weight:bold; font-size:1em;">Lives</div>
 			<div  class="card" id= "kk" style="width:50%;margin:auto;">
 				 <div class="card-body" id="live">
@@ -256,234 +262,6 @@
 
 
 
-<!--  
-<div class="container-fluid" id="container1">	
-	<hr>
-	<h5 class="text-info text-center lead" style="font-weight:bold;"  id="el15">Produkterstellung und Veröffentlichung</h5>
-	<div  style="width:55%; font-size:0.9em; padding:12px; margin:auto;background-color:#ADD8E6;border-radius:12px;box-shadow: 2px 6px :#ADD8E6"  id="el16">Hier können Sie ein Produkt erstellen,Bilder für dieses Produkt einfügen,welche von Ihren Kunden werden gesehen werden können,und dieses Produkt dann veröffentlichen</div>
-	
-	<form class="mt-5" action="Produkterstellung">
-	<div class="row">
-		<div class="col-md-8 pt-3">
-		
-			<div class="card" style="background-color:#F5F5F5;">
-				<div class="card-body">
-					<div class="row">
-						<div class="col-sm-4">
-							<span class="text-danger">*</span>
-							<div class="form-outline mb-4">
-								<input type="text" name="nameprodukt" id="nameprodukt" class="form-control" value="${name}">
-								<label for="nameprodukt" class="form-label"  id="el17">Name</label>
-							</div>
-							<div id="namefehler" style="color:red; font-size: 0.7em;">${fehlermeldung.checknameprodukt}</div>
-							<div class="form-outline mb-4">
-								<textarea rows="5" cols="8" name="beschreibung" id="beschreibung" class="form-control" value="${beschreibung}"></textarea>
-								<label for="beschreibung" class="form-label"  id="el18">Beschreibung</label>
-							</div>
-						</div>
-						<div class="col-sm-8">
-							<div class="row">
-								<div class="col-sm-6">
-								 
-								 	<div class="row">
-								 		<div class="col">
-								 			<span class="text-danger">*</span>
-											<div class="form-outline mb-4">
-												<input type="text" name="preis" id="preis" class="form-control" value="${preis}">
-												<label for="preis" class="form-label"  id="el19">Preis</label>
-								   			</div>
-								   			 <div id="preisfehler"  style="color:red; font-size: 0.7em;">${fehlermeldung.checkpreisprodukt}</div>
-								 		</div>
-								 		<div class="col">
-								 			<span class="text-danger">*</span>
-								 			<select class="form-control" name="waehrung" id="waehrung" value="${währung}">
-								 				<option>Euro</option>
-								 				<option>Fcfa</option>
-								 				<option>dinar</option>
-								 				<option>dolar</option>
-								 			</select>
-								 		</div>
-								 	</div>
-								 	<div class="row">
-								 		<div class="col">
-								 			<div class="form-outline mb-4">
-												<input type="text" name="marke" id="marke" class="form-control" value="${marke}">
-												<label for="marke" class="form-label"  id="el20">Marke</label>
-											</div>
-								 		</div>
-								 	</div>
-									
-									
-									
-								</div>
-								<div class="col-sm-6">
-								<span class="text-danger">*</span>
-								<div class="form-group" style="margin:auto;">
-									<label for="kategorie"  id="el21">Kategorie</label>
-									<select class="form-control" id="kategorie" name="kategorie" value="${kategorie}">
-										<option  id="el22">Restaurant</option>
-										<option  id="el23">Supermarkt</option>
-										<option  id="el24">imbiss</option>
-										<option  id="el25">kiosk</option>
-										<option  id="el26">shop mode</option>
-										<option  id="el27">allgemeine shop</option>
-										<option  id="el28">Drogerie markt</option>
-										<option  id="el29">Elekronik</option>
-										<option  id="el30">Getraenke</option>
-										<option  id="el31">Baeckerei</option>
-										<option  id="el300">Apotheke</option>
-										<option  id="el32">Sonstiges</option>
-									</select>
-								</div>
-								
-								<div class="row ">
-								<p style="font-size:0.9em" class="lead mt-3 text-center"  id="el33">Geben Sie die Menge und wählen Sie die Einheit aus oder klicken Sie auf unbegrenzt.</p>
-								
-									<div class="col">
-										<span class="text-danger">*</span>
-										<div class="form-outline mb-2" id="block1">
-											<input type="text" name="menge" id="menge" class="form-control" value="${menge}">
-											<label for="menge" class="form-label"  id="el34">Menge</label>
-										</div>	
-										<div id="block2">
-											<select id="einheit" name="einheit" class="form-control" value="${einheit}">
-												<option  id="el35">Stueck</option>
-												<option>Kg</option>
-												<option  id="el36">Liter</option>
-											</select>
-										</div>
-										
-										<div id="ablauffehler"  style="color:red; font-size: 0.7em;">${fehlermeldung.checkmenge}</div>
-									
-									</div>
-									<div class="col">
-										<span style="visibility:hidden">*</span>
-										<div class="form-check" id="block3">
-											<input type="checkbox" name="mengecheckbox"  onclick="isChecked3(this)" class="form-check-input" id="mengecheckbox">
-											<label for="mengecheckbox" class="form-check-label"  id="el37">unbegrenzt </label>
-											
-										</div>
-									</div>
-								</div>
-								</div>
-							</div>
-							<div class="row">
-								<p style="font-size:0.9em" class="lead text-center mt-4"  id="el38">Wählen Sie das Ablaufdatum des Produkts oder klicken Sie auf "Kein Datum"</p>
-								<div class="col">
-									<div id="blockablauf">
-										<span class="text-danger">*</span>
-										<div class="form-outline">
-											<input type="date" name="ablauf" id ="ablauf" class="form-control" value="${ablaufdatum}">
-											<label for="ablauf" class="form-label"  id="el39">ablaufdatum</label>
-										</div>
-										<div id="ablauffehler"  style="color:red; font-size: 0.7em;">${fehlermeldung.checkablaufdatum}</div>
-									</div>
-									
-													
-								</div>
-								<div class="col">
-									<span style="visibility:hidden">*</span>
-									<div class="form-check">
-											<input type="checkbox" name="ablaufcheckbox" onclick="isChecked2(this)" class="form-check-input" id="ab">
-											<label for="ab" class="form-check-label"  id="el40">Kein Datum </label>
-											
-									</div>
-									<input type="hidden" id="ablaufcheckboxhidden" value="${ablaufcheckbox }">
-								</div>
-								
-							</div>
-						</div>		
-					</div>
-					
-					<div class="row">
-						<div class="row">
-							<div class="col-sm" style=" margin-top:10px;">
-								<div class="card">
-									<div class="card-body">
-										<p class="text-center lead" style="font-size:0.9em"  id="el41">geben Sie das Datum, bis wann dieses Angebot Online bleiben soll</p>
-										<span class="text-danger">*</span>
-											<div id="blockdate">
-												<div class="form-outline mb-4">
-													<input type="date" name="dateonline"   id ="dateonline" class="form-control" value="${onlinebis}">
-													<label for="dateonline" class="form-label"  id="el42">Online bis</label>
-												</div>
-												<div id="onlinedatefehler"></div>	
-												
-															
-												<div class="form-outline mb-4"> 
-													<input type="time" name="timeonline"   id="timeonline" class="form-control" class="form-control" value="${onlinetime }">
-													<label for="timeonline" class="form-label"  id="el43">Uhrzeit</label>
-												</div>
-											</div>
-											
-											<div class="form-check" id="kein1">
-														<input type="checkbox" name="dateonlinecheckbox" onclick="isChecked(this)" class="form-check-input" id="doc">
-														<label for="doc" class="form-check-label"  id="el44">unbegrenzt </label>							
-											</div>
-											<div id="onlinetimefehler"  style="color:red; font-size: 0.7em;">${fehlermeldung.checkonlinedate }</div>	
-											<input type="hidden" id="dateonlinecheckboxhidden" value="${dateonlinecheckbox}">
-									</div>
-								</div>				
-						</div>
-						<div class="col-sm" style=" margin-top:10px;">
-							<div class="card">
-								<div class="card-body">
-									<p class="text-center lead" style="font-size:0.9em"  id="el45">wie lange soll es maximal dauer bis der kunde sein Produkt abgeholt hat.Diese Dauer muss in Stunden sein zb: 2</p>
-									<span class="text-danger">*</span>
-									<div class="form-outline mb-4">					
-										<input type="text" name="dauer" id="dauer" class="form-control">
-										<label for="dauer" class="form-label"  id="el46">Dauer</label>
-									</div>
-									<div id="dauerfehler"  style="color:red; font-size: 0.7em;" >${fehlermeldung.checkdauerabholprodukt}</div>
-								</div>
-							</div>
-						
-						</div>
-						</div>
-						<div class="row mt-5">
-							<div style="width:50%; margin:auto;" class="mb-4 ">
-								<input type="submit" name="erstellen"  id="erstellen"  class="btn btn-sm btn-info btn-block" value="erstellen">
-							</div>		
-						</div>
-						
-					</div>
-					
-				</div>
-			</div>		
-		</div>
-		<div class="col-md-4">
-			<h5 class="text-info text-center lead mb-3"  style="margin-top:25px;font-weight:bold;"  id="el47">neue Bestellungen</h5>
-	
-			<div class="card" style="max-height:800px; overflow-y:scroll;">
-			
-			<div class="card-body">
-				
-				<div id="neuebestellung"></div>
-			</div>
-			
-			</div>		
-		</div>
-	</div>
-	</form>
-	
-	
-	
-	<hr>
-	<h5 class="text-info text-center lead"  style="margin-top:25px;font-weight:bold;"  id="el48">Liste der erstellten Produkte</h5>
-	<div class="card">
-		<div class="card-body" id="content" Style="max-height:600px;overflow-y:scroll;background-color:#F5F5F5;"></div>
-	</div>
-	
-	
-	
-</div>
-<div class="mt-4" id="bb">
-	<span class="btn btn-sm btn-success" style='margin-right:20px;margin-left:20px;' onclick="allonline()" id="online">all Online</span>
-	<span class="btn btn-sm btn-danger" id="offline" onclick="alloffline()">all Offline</span>
-	<span class="btn btn-sm " id="aktualisieren" style='margin-left:50px;  background-color:#D3D3D3;' onclick="aktualisieren()" >aktualisieren</span>
-</div>
-
--->
 <!-- end container -->
    <div id="contain"></div>
    <script type="text/javascript" src="js/mdb.min.js"></script>
@@ -541,7 +319,34 @@
 			if(document.getElementById("bb")!=null){
 				document.getElementById("bb").style.visibility="hidden";
 			}
-			document.getElementById("info1").innerHTML="<div class='lead ' style='font-size:0.9em;'><span id='s1' style='font-weight:bold;font-size:1.0em;'>Name</span> : <%= request.getSession().getAttribute("unternehmenname")%></div><div class='lead mt-5 ' style='font-size:0.9em;'><span id='s2' style='font-weight:bold;font-size:1.0em;'>Standort</span> : <%= request.getSession().getAttribute("unternehmenstandort")%></div>";
+			
+			let verkaufer = "<%=(Verkaufer)request.getSession().getAttribute("verkaufer")%>";
+			if(verkaufer !=null){
+				let QRcodeimg = "<%= request.getContextPath()+"/Dateien/"+((Person)((Verkaufer)request.getSession().getAttribute("verkaufer")).getPerson()).getEmail()%>/QRcode.jpg";
+				
+				let QRblock = "<div class='card-body'><div class='row'>";
+						QRblock += "<div class='col-sm-4'>";
+									QRblock += "<div class='lead ' style='font-size:0.9em;'>";
+										QRblock +="<span id='s1' style='font-weight:bold;font-size:1.0em;'>Name</span>";
+										QRblock +=" : <%= request.getSession().getAttribute("unternehmenname")%>";
+									QRblock +="</div>";
+									QRblock +="<div class='lead mt-5 ' style='font-size:0.9em;'>";
+										QRblock +="<span id='s2' style='font-weight:bold;font-size:1.0em;'>Standort</span>";
+										QRblock +=" : <%= request.getSession().getAttribute("unternehmenstandort")%>";
+									QRblock +="</div>";
+						QRblock += "</div>";
+						QRblock += "<div class='col-sm-8'>";
+								QRblock +="<div id='barcodetext' style='font-weight:bold;font-size:0.8em; text-align:center;'></div>";
+								QRblock +="<div style='font-size:1.4em;color:#2E8B57; text-align:center;'><%= request.getSession().getAttribute("barcode")%></div>";
+								QRblock +="<div id='barcodetext2' class='mb-2 mt-1' style='font-weight:bold;font-size:0.8em; text-align:center;'></div>";
+								QRblock +="<img src='"+QRcodeimg+"' alt='qrcode'/>";
+								QRblock +="<a class='mt-1' id='qrcodedownload' href='"+QRcodeimg+"'></a>"
+						QRblock +=	"</div>";
+						
+				QRblock +=	"</div></div>";
+				document.getElementById("info1").innerHTML=QRblock;
+			}
+			
 			
 			//live Sector
 			var warnungzahl = parseInt(<%= request.getSession().getAttribute("warnungzahl") %>);
@@ -992,7 +797,15 @@
 	    			document.getElementById("s2").innerText="location";
 	    		}
 	    		
-	    		
+	    		if(document.getElementById("barcodetext")!=null){
+	    			document.getElementById("barcodetext").innerText="please... you must show to following code to your customer after he has picked up its product, so that he can confirm this operation on Apps";
+	    		}
+	    		if(document.getElementById("barcodetext2")!=null){
+	    			document.getElementById("barcodetext2").innerText="In another way, you can also show him the following QRcode to scan";
+	    		}
+	    		if(document.getElementById("qrcodedownload")!=null){
+	    			document.getElementById("qrcodedownload").innerText="download";
+	    		}
 	    		
 	    	
 	 	    	var res1 =document.getElementsByClassName("res1");
@@ -1184,6 +997,17 @@
     		if(document.getElementById("s2")!=null){
     			document.getElementById("s2").innerText="lieu";
     		}
+    		
+    		if(document.getElementById("barcodetext")!=null){
+    			document.getElementById("barcodetext").innerText="vous devez à tout prix montrer le code suivant à vos clients à fin qu'il puissent confirmer la récuperation du produit dans l'application";
+    		}
+    		if(document.getElementById("barcodetext2")!=null){
+    			document.getElementById("barcodetext2").innerText="vous pouvez également lui mettre a disposition le QRcode suivant pour qu'il puisse le scanner !";
+    		}
+    		if(document.getElementById("qrcodedownload")!=null){
+    			document.getElementById("qrcodedownload").innerText="télécharger";
+    		}
+    		
     		
     		
     		
@@ -1377,8 +1201,16 @@
     			document.getElementById("s2").innerText="Standort";
     		}
     		
+    		if(document.getElementById("barcodetext")!=null){
+    			document.getElementById("barcodetext").innerText="Sie müssen Ihren Kunden den folgenden Code zeigen, damit sie die Abholung Ihrer verkauften Produkte bestätigen können";
+    		}
     		
-    		
+    		if(document.getElementById("barcodetext2")!=null){
+    			document.getElementById("barcodetext2").innerText="Alternative können Sie him auch folgendem QRcode zum Scannen zur Verfügung stellen !";
+    		}
+    		if(document.getElementById("qrcodedownload")!=null){
+    			document.getElementById("qrcodedownload").innerText="herunterladen";
+    		}
     	
  	    	var res1 =document.getElementsByClassName("res1");
  	    	var res2 =document.getElementsByClassName("res2");
