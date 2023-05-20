@@ -717,14 +717,13 @@ setInterval(function(){
 	 	    	var res14 =document.getElementsByClassName("res14");
 	 	    	var info =document.getElementsByClassName("infomeldung");
 	 	    	var infob =document.getElementsByClassName("infomeldungbutton");
+	 	    	if(res1.length!=0){
+	 	    		res1[0].innerText="oders waiting to be confirmed...";
+	 	    	}
 	 	    	
-	 	    	
-	 	    	for(let i=0;i< res1.length; i++){
+	 	    	for(let i=0;i< res2.length; i++){
 	 	    		
-	 	    		if(res1[i]!=null){
-	 	    			res1[i].innerText= "oders waiting to be confirmed...";
-		 	    		
-	 	    		}
+	 	   
 					if(res2[i]!=null){
 						res2[i].innerText="information on the customer";
 		 	    		
@@ -798,13 +797,12 @@ setInterval(function(){
 	 		var t14 =document.getElementsByClassName("t14");
 	 		var t15 =document.getElementsByClassName("t15");
 	 		
+	 		if(t1.length!=0){
+	 			t1[0].innerText= "waiting to be picked up ...";
+	 		}
 	 		
-	 		for(let i=0;i< t1.length; i++){
+	 		for(let i=0;i< t2.length; i++){
  	    		
-	 			if(t1[i]!=null){
- 	    			t1[i].innerText= "waiting to be picked up ...";
-	 	    		
- 	    		}
 				if(t2[i]!=null){
 					t2[i].innerText="information on the customer";
 	 	    		
@@ -889,14 +887,12 @@ setInterval(function(){
 	 	    	var info =document.getElementsByClassName("infomeldung");
 	 	    	var infob =document.getElementsByClassName("infomeldungbutton");
 	 	    	
+	 	    	if(res1.length!=0){
+	 	    		res1[0].innerText="commande en attente de confirmation...";
+	 	    	}
 	 	    	
-	 	    	
-	 	    	for(let i=0;i< res1.length; i++){
+	 	    	for(let i=0;i< res2.length; i++){
 	 	    		
-	 	    		if(res1[i]!=null){
-	 	    			res1[i].innerText= "commande en attente de confirmation...";
-		 	    		
-	 	    		}
 					if(res2[i]!=null){
 						res2[i].innerText="informations sur le client";
 		 	    		
@@ -970,13 +966,11 @@ setInterval(function(){
 	 		var t14 =document.getElementsByClassName("t14");
 	 		var t15 =document.getElementsByClassName("t15");
 	 		
-	 		
-	 		for(let i=0;i< t1.length; i++){
+	 		if(t1.length!=0){
+	 			t1[0].innerText="commandes en attente de récupération!";
+	 		}
+	 		for(let i=0;i< t2.length; i++){
  	    		
-	 			if(t1[i]!=null){
- 	    			t1[i].innerText= "commandes en attente de récupération!";
-	 	    		
- 	    		}
 				if(t2[i]!=null){
 					t2[i].innerText="informations sur le client";
 	 	    		
@@ -1062,14 +1056,12 @@ setInterval(function(){
 	 	    	var info =document.getElementsByClassName("infomeldung");
 	 	    	var infob =document.getElementsByClassName("infomeldungbutton");
 	 	    	
+	 	    	if(res1.length!=0){
+	 	    		res1[0].innerText="ausstehende Bestellungen...";
+	 	    	}
 	 	    	
-	 	    	
-	 	    	for(let i=0;i< res1.length; i++){
+	 	    	for(let i=0;i< res2.length; i++){
 	 	    		
-	 	    		if(res1[i]!=null){
-	 	    			res1[i].innerText= "ausstehende Bestellungen...";
-		 	    		
-	 	    		}
 					if(res2[i]!=null){
 						res2[i].innerText="informationen über den Kunden";
 		 	    		
@@ -1143,13 +1135,12 @@ setInterval(function(){
 	 		var t14 =document.getElementsByClassName("t14");
 	 		var t15 =document.getElementsByClassName("t15");
 	 		
+	 		if(t1.length!=0){
+	 			t1[0].innerText="Bestellungen wartend zur Abholung ...";
+	 		}
 	 		
-	 		for(let i=0;i< t1.length; i++){
+	 		for(let i=0;i< t2.length; i++){
  	    		
-	 			if(t1[i]!=null){
- 	    			t1[i].innerText= "Bestellungen wartend zur Abholung ...";
-	 	    		
- 	    		}
 				if(t2[i]!=null){
 					t2[i].innerText="Informationen über den Kunden";
 	 	    		

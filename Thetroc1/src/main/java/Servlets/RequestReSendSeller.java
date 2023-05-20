@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import Model.Verkaufer;
+
 /**
  * Servlet implementation class RequestReSendSeller
  */
@@ -26,12 +28,13 @@ public class RequestReSendSeller extends HttpServlet {
 		String param = (String)request.getParameter("name");
 		String idprodukt = (String)request.getParameter("idprodukt");
 		String produktname = (String)request.getParameter("produktname");
-		
+	    Verkaufer verkaufer = (Verkaufer)request.getSession().getAttribute("verkaufer");
+	    
 		if(request.getSession().getAttribute("idverkaufer")==null) {
 			request.getRequestDispatcher("anmeldung.jsp").forward(request, response);	
 		}else {
 			int idverkaufer = (int)request.getSession().getAttribute("idverkaufer");
-			if(param!=null && request.getSession().getAttribute("idverkaufer") !=null && idverkaufer !=0 && param.equals("verkaufer_home")) {
+			if(param!=null&& param.equals("verkaufer_home") && request.getSession().getAttribute("idverkaufer") !=null && idverkaufer !=0 &&verkaufer !=null ) {
 				request.getRequestDispatcher("WEB-INF/verkaufer_home.jsp").forward(request, response);
 			}else if(param!=null && request.getSession().getAttribute("idverkaufer") !=null && idverkaufer !=0 && param.equals("kommentarverkaufer")) {
 				request.getRequestDispatcher("WEB-INF/kommentarverkaufer.jsp").forward(request, response);
@@ -45,6 +48,8 @@ public class RequestReSendSeller extends HttpServlet {
 				}else {
 					response.getWriter().print("Error: Unknown product");
 				}
+			}else if(param!=null && param.equals("errorpage2")){
+				request.getRequestDispatcher("WEB-INF/errorpage2.jsp").forward(request, response);	
 			}else {
 				request.getRequestDispatcher("anmeldung.jsp").forward(request, response);	
 			}

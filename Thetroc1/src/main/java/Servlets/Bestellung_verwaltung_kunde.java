@@ -308,7 +308,7 @@ public class Bestellung_verwaltung_kunde extends HttpServlet {
 				
 			}else if(type.equals("warning")) {
 				Kaufer kaufer = (Kaufer)request.getSession().getAttribute("kaufer");
-				int rueck=0;
+				int rueck=80;
 				if(kaufer!=null) {
 					rueck  = dao.checkaufantwort_kunde_verkaufer("kaufer", idkaufer,kaufer.getPerson());
 				}

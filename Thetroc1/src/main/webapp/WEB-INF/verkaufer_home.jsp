@@ -250,11 +250,11 @@
 	</div>
 		<div class='col-sm-4' >
 			<div class="text-white text-center lead " style="font-weight:bold; font-size:1em;">Lives</div>
-			<div  class="card" id= "kk" style="width:50%;margin:auto;">
+			<div  class="card" id= "kk" style="min-width:60%;margin:auto;">
 				 <div class="card-body" id="live">
 				 
 				 </div>
-				 <div id="livemeldung"></div>
+				 <div id="livemeldung" style="padding:5px;"></div>
 			</div>
 		</div>
 	</div>

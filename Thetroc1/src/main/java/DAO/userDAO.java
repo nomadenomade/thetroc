@@ -692,6 +692,12 @@ public class userDAO {
 				verkaufer.setIdVerkaufer(resultset.getInt("idVerkaufer"));
 				person.setId(resultset.getInt("idPerson"));
 				person.setEmail(resultset.getString("Email"));
+				person.setAdresse(resultset.getString("Adresse"));
+				person.setName(resultset.getString("Nameperson"));
+				person.setVorname(resultset.getString("vorname"));
+				person.setRolle(resultset.getString("Rolle"));
+				person.setDatum(resultset.getString("Datum"));
+				person.setWarnunganzahl(resultset.getInt("warnunganzahl"));
 
 				unternehm.setIdUnternehmen(resultset.getInt("idUnternehmen"));
 				unternehm.setName(resultset.getString("Nameunternehmen"));
@@ -1087,12 +1093,15 @@ public class userDAO {
 								int zahl = pers.getWarnunganzahl()+1;
 								pers.setWarnunganzahl(zahl);
 								updateperson("warnunganzahl", pers);
+								updateWarekob(resultset.getInt("idWarenkob"), "warnungcount",null,null);
+								
 							}else {
 								int zahl= person.getWarnunganzahl()+1;
 								person.setWarnunganzahl(zahl);
 								updateperson("warnunganzahl", person);
 								updateWarekob(resultset.getInt("idWarenkob"), "warnungcount",null,null);
 								rueck= zahl;
+								
 							}
 						}else {
 							int zahl= person.getWarnunganzahl()+1;

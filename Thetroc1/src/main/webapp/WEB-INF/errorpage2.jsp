@@ -88,8 +88,11 @@
 		<div id ="panel3" style="position:absolute;index-z:3; ">
 			<div class="lead" style="text-align:center;font-size:2.1em;color:red; font-weight:bold;margin-top:20px;">The following account has temporaly been locked !</div>
 			<div class="mt-4 text-center text-white lead" id="emailuser" style="font-weight:bold; font-size:1.2em;"><span class="text-danger" >Email :</span><%= request.getSession().getAttribute("email") %></div>
-			<div class="mt-2  text-center text-white lead" id="pseudo" style="font-weight:bold; font-size:1.2em;"><span class="text-danger">Pseudo :</span><%= request.getSession().getAttribute("pseudo") %></div>
-			<div class="text-white text-center lead mt-3" style="font-weight:bold; font-size:1.0em;"><span class="lead ml-2 text-success">Reason: </span> You have already losed all your 4 account's lives </div>
+			<div class="mt-2  text-center text-white lead" id="pseudo" style="font-weight:bold; font-size:1.2em;"><span class="text-danger">firstname :</span><%= request.getSession().getAttribute("name") %></div>
+			<div class="mt-2  text-center text-white lead" id="pseudo" style="font-weight:bold; font-size:1.2em;"><span class="text-danger">lastname :</span><%= request.getSession().getAttribute("vorname") %></div>
+			<div class="mt-2  text-center text-white lead" id="pseudo" style="font-weight:bold; font-size:1.2em;"><span class="text-danger">Date registration :</span><%= request.getSession().getAttribute("datum") %></div>
+			
+			<div class="text-white text-center lead mt-3" style="font-weight:bold; font-size:1.0em;"><span class="lead ml-2 text-success">Reason: </span> You have already losed all your 10 account's lives </div>
 			<div class="text-white text-center  lead mt-5" style="font-weight:bold; font-size:1.0em;">Please contact us at <span class="lead ml-2 text-success"> thetroc-service-support@gmail.com </span> to know the modalities to unlock it !</div>
 		
 		</div>

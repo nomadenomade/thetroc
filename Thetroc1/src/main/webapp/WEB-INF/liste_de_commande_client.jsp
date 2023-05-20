@@ -279,7 +279,19 @@
 	    	 }
 	    	
 	    	 
-	    	
+	    	 // für die Warnunganzahl des Kaufer 
+    		 setInterval(function(){ 
+    			 let XML = initRequest();
+    			 XML.onreadystatechange = function(){
+    				 if(this.readyState==4 && this.status==200){
+    					
+    				 }
+    			 };
+    			 XML.open("GET","Bestellung_verwaltung_kunde?type=warning",false);
+	    		 XML.send();
+    			 
+    		 },5000);
+    		 
 	    	
 	    	
 	    

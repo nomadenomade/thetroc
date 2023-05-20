@@ -130,20 +130,56 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 			    //ende erster grossen Spalte
 			    
 			    //beginn zweiter grossen Spalte
-			    result+= "<div class='col-sm-8 mt-5'>";
-			    result+="<div style='max-height:500px;overflow-y:auto;'>";
-			    
-			    //produktsbilder laden
+			    result+="<div class='col-sm-8 mt-5'>";
+			    result+="<button type='button' style='background-color:white;border:1px solid white;' data-mdb-toggle='modal' data-mdb-target='#windowimageproduct'>";
 			    if(prod.getProduktBilder().size()!=0) {
-			    	 for(Foto foto: prod.getProduktBilder()) {
-			    		 result+="<img alt='bild' class='produkt ' style='width:100%; height:auto; margin:5px;' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
-					
-			    	 }
-			    }else {
-			    	 result+="<h1>Keine Fotos vorhanden</h1>";
+			    	 result+="<img src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+prod.getProduktBilder().get(0).getName()+"' style='width:100%; height:auto; margin:5px;' alt='productimage'/>";
 			    }
-			   
+			    result+="</button>";
+			    result+="<div id='windowimageproduct' class='modal fade' tabindex='-1' aria-labelledby='windowimageproductlabel' aria-hidden='true'>";
+				    result+="<div class='modal-dialog'>";
+					    result+="<div class='modal-content'>";
+					    result+="<div class='modal-body' style='min-height:500px;'>";
+					    //carousel start
+					    	result+="<div class='carousel slide' id='carousel1' data-mdb-ride='carousel'>";
+					    		int counter1 =1;
+					    		//indicators
+					    		result+="<div class='carousel-indicators'>";
+						    		result+="<button type='button' class='active' aria-current='true' data-mdb-target='#carousel1Indicators' data-mdb-slide-to='0' aria-label='Slide 1'>";
+					    			result+="</button>";
+					    		for(Foto foto: prod.getProduktBilder()) {
+					    			result+="<button type='button' data-mdb-target='#carousel1Indicators' data-mdb-slide-to='"+counter1+"' aria-label='Slide "+(counter1 +1)+"'>";
+					    			result+="</button>";
+					    			counter1++;
+					    		}
+					    		result+="</div>";
+					    		//indicator end
+					    		result+="<div class='carousel-inner'>";
+					    			result+="<div class='carousel-item active'>";
+					    				result+="<img class='d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+prod.getProduktBilder().get(0).getName()+"' style='width:100%; height:auto; margin:5px;' alt='productimage'/>";
+					    			result+="</div>";
+					    			for(Foto foto: prod.getProduktBilder()) {
+					    				result+="<div class='carousel-item'>";
+					    					result+="<img alt='bild' class='produkt d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
+					    				result+="</div>";
+					    			}
+					    		result+="</div>";
+					    		result+="<button type='button' class='carousel-control-prev' data-mdb-target='#carousel1' data-mdb-slide='prev'>";
+					    			result+="<span class='carousel-control-prev-icon' aria-hidden='true'></span>";
+					    			result+="<span class='visually-hidden'>Preview</span>";
+					    		result+="</button>";
+					    		result+="<button type='button' class='carousel-control-next' data-mdb-target='#carousel1' data-mdb-slide='next'>";
+				    				result+="<span class='carousel-control-next-icon'  aria-hidden='true'></span>";
+				    				result+="<span class='visually-hidden'>Next</span>";
+				    		    result+="</button>";
+					    	result+="</div>";
+					    //carousel end	
+					    result+="</div>";
+					    //modalbody end
+					    result+="</div>";
+				    result+="</div>";
 			    result+="</div>";
+			   
 			    result+= "</div>";
 			    //ende zweiter grossen Spalte
 			
@@ -162,18 +198,58 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 			    result+="</div>";
 			    //column zwei
 			    result+="<div class='col-sm-8'>";
-			    result+="<div style='height:500px;overflow-y:auto;'>";
-			   
+			    
+			    //zweiter new
+			    result+="<button type='button' style='background-color:white;border:1px solid white;' data-mdb-toggle='modal' data-mdb-target='#windowimageseller'>";
 			    if(prod.getVerkaufer().getUnternehmen().getBilder().size()!=0) {
-			    	 for(Foto foto: prod.getVerkaufer().getUnternehmen().getBilder()) {
-			    		 result+="<img alt='bild'  style='width:100%; height:auto; margin:5px;' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
-					//card-img-top
-			    	 }
-			    }else {
-			    	 result+="<h1>Keine Fotos vorhanden</h1>";
+			    	 result+="<img src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+prod.getVerkaufer().getUnternehmen().getBilder().get(0).getName()+"' style='width:100%; height:auto; margin:5px;' alt='productimage'/>";
 			    }
-			   
+			    result+="</button>";
+			    result+="<div id='windowimageseller' class='modal fade' tabindex='-1' aria-labelledby='windowimagesellerlabel' aria-hidden='true'>";
+				    result+="<div class='modal-dialog'>";
+					    result+="<div class='modal-content'>";
+					    result+="<div class='modal-body' style='min-height:500px;'>";
+					    //carousel start
+					    	result+="<div class='carousel slide' id='carousel2' data-mdb-ride='carousel'>";
+					    		int counter =1;
+					    		//indicators
+					    		result+="<div class='carousel-indicators'>";
+						    		result+="<button type='button' class='active' aria-current='true' data-mdb-target='#carousel2Indicators' data-mdb-slide-to='0' aria-label='Slide 1'>";
+					    			result+="</button>";
+					    		for(Foto foto: prod.getVerkaufer().getUnternehmen().getBilder()) {
+					    			result+="<button type='button' data-mdb-target='#carousel2Indicators' data-mdb-slide-to='"+counter+"' aria-label='Slide "+(counter +1)+"'>";
+					    			result+="</button>";
+					    			counter1++;
+					    		}
+					    		result+="</div>";
+					    		//indicator end
+					    		result+="<div class='carousel-inner'>";
+					    			result+="<div class='carousel-item active'>";
+					    				result+="<img class='d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+prod.getVerkaufer().getUnternehmen().getBilder().get(0).getName()+"' style='width:100%; height:auto; margin:5px;' alt='productimage'/>";
+					    			result+="</div>";
+					    			for(Foto foto: prod.getVerkaufer().getUnternehmen().getBilder()) {
+					    				result+="<div class='carousel-item'>";
+					    					result+="<img alt='bild' class='produkt d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
+					    				result+="</div>";
+					    			}
+					    		result+="</div>";
+					    		result+="<button type='button' class='carousel-control-prev' data-mdb-target='#carousel2' data-mdb-slide='prev'>";
+					    			result+="<span class='carousel-control-prev-icon' aria-hidden='true'></span>";
+					    			result+="<span class='visually-hidden'>Preview</span>";
+					    		result+="</button>";
+					    		result+="<button type='button' class='carousel-control-next' data-mdb-target='#carousel2' data-mdb-slide='next'>";
+				    				result+="<span class='carousel-control-next-icon'  aria-hidden='true'></span>";
+				    				result+="<span class='visually-hidden'>Next</span>";
+				    		    result+="</button>";
+					    	result+="</div>";
+					    //carousel end	
+					    result+="</div>";
+					    //modalbody end
+					    result+="</div>";
+				    result+="</div>";
 			    result+="</div>";
+			    // end zweiter new
+			   
 			    //ende card
 			    result+="</div>";
 			    result+="</div>";
@@ -361,9 +437,45 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				    
 				    //beginn zweiter grossen Spalte
 				    result+= "<div class='col-sm-4 mt-5'>";
-				    result+="<div style='max-height:500px;overflow-y:auto;'>";
-				    
-				    
+				    //neu block image
+				    if(prod.getProduktBilder().size()!=0) {
+				    	 //carousel start
+				    	result+="<div class='carousel slide carousel-dark' id='carousel"+prod.getIdProdukt()+"' data-mdb-touch='false' data-mdb-ride='carousel'>";
+				    		int counter1 =1;
+				    		//indicators
+				    		result+="<div class='carousel-indicators'>";
+					    		result+="<button type='button' class='active' aria-current='true' data-mdb-target='#carousel"+prod.getIdProdukt()+"Indicators' data-mdb-slide-to='0' aria-label='Slide 1'>";
+				    			result+="</button>";
+				    		for(Foto foto: prod.getProduktBilder()) {
+				    			result+="<button type='button' data-mdb-target='#carousel"+prod.getIdProdukt()+"Indicators' data-mdb-slide-to='"+counter1+"' aria-label='Slide "+(counter1 +1)+"'>";
+				    			result+="</button>";
+				    			counter1++;
+				    		}
+				    		result+="</div>";
+				    		//indicator end
+				    		result+="<div class='carousel-inner'>";
+				    			result+="<div class='carousel-item active'>";
+				    				result+="<img class='d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+prod.getProduktBilder().get(0).getName()+"' style='width:100%; height:auto; margin:5px;' alt='productimage'/>";
+				    			result+="</div>";
+				    			for(Foto foto: prod.getProduktBilder()) {
+				    				result+="<div class='carousel-item'>";
+				    					result+="<img alt='bild' class='produkt d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
+				    				result+="</div>";
+				    			}
+				    		result+="</div>";
+				    		result+="<button type='button' class='carousel-control-prev' data-mdb-target='#carousel"+prod.getIdProdukt()+"' data-mdb-slide='prev'>";
+				    			result+="<span class='carousel-control-prev-icon' aria-hidden='true'></span>";
+				    			result+="<span class='visually-hidden'>Preview</span>";
+				    		result+="</button>";
+				    		result+="<button type='button' class='carousel-control-next' data-mdb-target='#carousel"+prod.getIdProdukt()+"' data-mdb-slide='next'>";
+			    				result+="<span class='carousel-control-next-icon'  aria-hidden='true'></span>";
+			    				result+="<span class='visually-hidden'>Next</span>";
+			    		    result+="</button>";
+				    	result+="</div>";
+				    //carousel end	
+				    }
+			        //neu block end
+				   /* result+="<div style='max-height:500px;overflow-y:auto;'>";
 				    //produktsbilder laden
 				    if(prod.getProduktBilder().size()!=0) {
 				    	 for(Foto foto: prod.getProduktBilder()) {
@@ -376,6 +488,7 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				   
 				  
 				    result+="</div>";
+				    */
 				    result+= "</div>";
 				    //ende zweiter grossen Spalte
 				
@@ -516,6 +629,46 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				    
 				    //beginn zweiter grossen Spalte
 				    result+= "<div class='col-sm-4 mt-5'>";
+				    
+				    //neu block image
+				    if(prod.getProduktBilder().size()!=0) {
+				    	 //carousel start
+				    	result+="<div class='carousel slide carousel-dark' id='carousel"+prod.getIdProdukt()+"' data-mdb-touch='false' data-mdb-ride='carousel'>";
+				    		int counter1 =1;
+				    		//indicators
+				    		result+="<div class='carousel-indicators'>";
+					    		result+="<button type='button' class='active' aria-current='true' data-mdb-target='#carousel"+prod.getIdProdukt()+"Indicators' data-mdb-slide-to='0' aria-label='Slide 1'>";
+				    			result+="</button>";
+				    		for(Foto foto: prod.getProduktBilder()) {
+				    			result+="<button type='button' data-mdb-target='#carousel"+prod.getIdProdukt()+"Indicators' data-mdb-slide-to='"+counter1+"' aria-label='Slide "+(counter1 +1)+"'>";
+				    			result+="</button>";
+				    			counter1++;
+				    		}
+				    		result+="</div>";
+				    		//indicator end
+				    		result+="<div class='carousel-inner'>";
+				    			result+="<div class='carousel-item active'>";
+				    				result+="<img class='d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+prod.getProduktBilder().get(0).getName()+"' style='width:100%; height:auto; margin:5px;' alt='productimage'/>";
+				    			result+="</div>";
+				    			for(Foto foto: prod.getProduktBilder()) {
+				    				result+="<div class='carousel-item'>";
+				    					result+="<img alt='bild' class='produkt d-block w-100' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
+				    				result+="</div>";
+				    			}
+				    		result+="</div>";
+				    		result+="<button type='button' class='carousel-control-prev' data-mdb-target='#carousel"+prod.getIdProdukt()+"' data-mdb-slide='prev'>";
+				    			result+="<span class='carousel-control-prev-icon' aria-hidden='true'></span>";
+				    			result+="<span class='visually-hidden'>Preview</span>";
+				    		result+="</button>";
+				    		result+="<button type='button' class='carousel-control-next' data-mdb-target='#carousel"+prod.getIdProdukt()+"' data-mdb-slide='next'>";
+			    				result+="<span class='carousel-control-next-icon'  aria-hidden='true'></span>";
+			    				result+="<span class='visually-hidden'>Next</span>";
+			    		    result+="</button>";
+				    	result+="</div>";
+				    //carousel end	
+				    }
+			        //neu block end
+				    /*
 				    result+="<div style='height:500px;overflow-y:auto;'>";
 				   
 				    result+="<div class='mt-1 mb-1 lead res12' style='font-size:0.8em;' >holen Sie sich ihre Bestellung bevor der Timer ablaeuft</div>";
@@ -531,6 +684,7 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				   
 				   
 				    result+="</div>";
+				    */
 				    result+= "</div>";
 				    //ende zweiter grossen Spalte
 				

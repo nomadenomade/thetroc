@@ -190,6 +190,8 @@
     					  
     				  }else if(this.responseText.trim()=='errorpage'){
     					  window.location.replace("<%=request.getContextPath()%>/RequestReSend?name=errorpage");
+    				  }else if(this.responseText.trim()=='errorpage2'){
+    					  window.location.replace("<%=request.getContextPath()%>/RequestReSendSeller?name=errorpage2");
     				  }else{
     					  document.getElementById("fehlermeldung").innerHTML= this.responseText;
     				  }

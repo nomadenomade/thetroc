@@ -43,17 +43,29 @@ public class Einloggen extends HttpServlet {
 				Verkaufer verkaufer = dao2.getVerkaufer(person);
 				Unternehmen unternehmen = new UnternehmenDAO().getUnternehmen(verkaufer.getIdVerkaufer());
 				verkaufer.setUnternehmen(unternehmen);
-				session.setAttribute("verkaufer",verkaufer);
-				session.setAttribute("idverkaufer", verkaufer.getIdVerkaufer());
-				session.setAttribute("isuser","verkaufer");
-				session.setAttribute("userEmail",verkaufer.getPerson().getEmail());
-				session.setAttribute("unternehmenid", unternehmen.getIdUnternehmen());
-				session.setAttribute("warnungzahl", person.getWarnunganzahl());
-				session.setAttribute("unternehmenname",unternehmen.getName());
-				session.setAttribute("unternehmenstandort",unternehmen.getStandort());
-				session.setAttribute("barcode",unternehmen.getBarcode());
 				
-				response.getWriter().println("verkaufer");
+				if(person.getWarnunganzahl()>=10) {
+					session.setAttribute("idverkaufer", verkaufer.getIdVerkaufer());
+					session.setAttribute("email", person.getEmail());
+					session.setAttribute("name", person.getName());
+					session.setAttribute("vorname", person.getVorname());
+					session.setAttribute("datum", person.getDatum());
+					response.getWriter().println("errorpage2");
+				}else {
+					session.setAttribute("verkaufer",verkaufer);
+					session.setAttribute("idverkaufer", verkaufer.getIdVerkaufer());
+					session.setAttribute("isuser","verkaufer");
+					session.setAttribute("userEmail",verkaufer.getPerson().getEmail());
+					session.setAttribute("unternehmenid", unternehmen.getIdUnternehmen());
+					session.setAttribute("warnungzahl", person.getWarnunganzahl());
+					session.setAttribute("unternehmenname",unternehmen.getName());
+					session.setAttribute("unternehmenstandort",unternehmen.getStandort());
+					session.setAttribute("barcode",unternehmen.getBarcode());
+					
+					response.getWriter().println("verkaufer");
+				}
+				
+				
 			}else if(person.getRolle().equals("Kaufer")) {
 				Kaufer kaufer = dao1.getKaufer(person);
 				

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@page import="Model.Kaufer,Model.Person"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -399,7 +400,7 @@
 	    	 
 	    	
 	    	 
-	    	 if(idkaufer !== null){
+	    	 if(idkaufer !== null ){
 	    		 document.getElementById("bestellungbutton").style.visibility="visible";
 	    		 document.getElementById("profil").style.visibility="visible";
 	    		 document.getElementById("blockname").style.visibility="visible";
@@ -434,14 +435,22 @@
 	    			 XML.onreadystatechange = function(){
 	    				 if(this.readyState==4 && this.status==200){
 	    					 warnungzahl = parseInt(this.responseText);
-	    					
+	    					 if(warnungzahl==80){
+	    		    			 document.getElementById("bestellungbutton").style.visibility="hidden";
+	    			    		 document.getElementById("profil").style.visibility="hidden";
+	    			    		 document.getElementById("blockname").style.visibility="hidden";
+	    			    		// document.getElementById("blocklive").style.visibility="visible";
+	    			    		 document.getElementById("notif").style.visibility="hidden";
+	    			    		 document.getElementById("blockinfo").innerHTML="";
+	    			    		 document.getElementById("blockname").style.visibility="hidden";
+	    		    		 }	
 	    	    			
 	    				 }
 	    			 };
 	    			 XML.open("GET","Bestellung_verwaltung_kunde?type=warning",false);
 		    		 XML.send();
 	    			 
-	    		 },5000);
+	    		 },1000);
 	    		 
 	    		 //für den Nachweis der Produktabholung
 	    		 
@@ -601,6 +610,7 @@
 	 	    var warningtext ="Ein Leben wurde von Ihrem Konto abgezogen,da Sie oder der Verkaufer bestätigt hat,dass eine gebuchte Ware nicht abgeholt wurde.Sollten es nicht der Falls sein ,bitten Sie darum uns per Email zu kontaktieren"; 
 	 	    	
 	    	function hilffunctionblockinfo(){
+	    		
 	    		 if(warnungzahl==0){
 	    			
 	    			 document.getElementById("kontolive").innerHTML="<img  src='<%=request.getContextPath() %>/img/alllive.png' alt='lives' width='100%' />";
@@ -621,6 +631,14 @@
 	    			 document.getElementById("kontolive").innerHTML="<img src='<%=request.getContextPath()%>/img/warn4.png'  alt='lives' width='100%'/>";
 	    			 document.getElementById("warnungtext").innerHTML="<div style='font-size:0.6em;text-align:center;color:red;'>"+warningtext+"</div>";
 	  				
+	    		 }else if(warnungzahl==80){
+	    			 document.getElementById("bestellungbutton").style.visibility="hidden";
+		    		 document.getElementById("profil").style.visibility="hidden";
+		    		 document.getElementById("blockname").style.visibility="hidden";
+		    		// document.getElementById("blocklive").style.visibility="visible";
+		    		 document.getElementById("notif").style.visibility="hidden";
+		    		 document.getElementById("blockinfo").innerHTML="";
+		    		 document.getElementById("blockname").style.visibility="hidden";
 	    		 }	
 	    		 
 	    	}
@@ -649,6 +667,7 @@
 	    	
 	    	var latfilter=0;
 			var lngfilter=0;
+			
 	    	document.getElementById("submit").addEventListener('click',function(event){
 	    		event.preventDefault();
 	    		
