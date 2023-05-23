@@ -291,8 +291,7 @@ setInterval(function(){
 	    				 seconde2+=60;
 	    				 minute2--;
 	 	    			 neusecond=seconde2-seconde;
-	    				
-	    				
+	    					
 	    			 }
 	    						 
 	    		 }else{
@@ -300,8 +299,6 @@ setInterval(function(){
 	    			 neusecond =seconde2-seconde;
 	    			
 	    		 }
-	    		 
-	    	
 	    		 
 	    		 if(minute2<minute){
 					
@@ -311,9 +308,7 @@ setInterval(function(){
     				 }else{
     					 minute2+=60;
     					 stunde2--;
-    					 neuminute=minute2-minute;
-    					
-    					 
+    					 neuminute=minute2-minute;		 
     				 }
 					 
 				 }else{
@@ -406,7 +401,6 @@ setInterval(function(){
 	    		 for(let i=0;i<tabdatum.length;i++){
 	    			
 	    			 let id= setInterval(function(){
-	    				
 	    	    		 var datum = new Date();
 	    		    	 let index= i;	
 	    	    		 var tag2 =  parseInt(datum.getDate());
@@ -429,6 +423,9 @@ setInterval(function(){
 	    				 let min = parseInt(t.split(",")[1].split(":")[1]);
 	    				 let uhrinit = parseInt(tabdatum[index].value.split(",")[1].split(":")[0]);
 	    				 let mininit = parseInt(tabdatum[index].value.split(",")[1].split(":")[1]);
+	    				 
+	    				 let imeld = document.getElementById("infomeldung"+index);
+	    				 let imeldb = document.getElementById("infomeldungbutton"+index)
 	    				
 	    				 if(parseInt(tabdate[0])==parseInt(parseInt(tabdauerabholung[index].value)/2) && parseInt(tabdate[0]) !=0 && parseInt(tabdauerabholung[index].value)!=2){
 	    					 tabbutton[index].disabled=true;
@@ -442,8 +439,12 @@ setInterval(function(){
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";
 	    					 tabblockantwort[index].style.visibility ="visible";
-	    					 info[index].remove();
-	    					 infob[index].remove();
+	    					 let imeld = document.getElementById("infomeldung"+index)
+	    					 if(imeld != null){
+	    						imeld.remove();
+	    					 	imeldb.remove();
+	    					 }
+	    					
 	    					if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -460,8 +461,10 @@ setInterval(function(){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";  
-	    					 info[index].remove();
-	    					 infob[index].remove();
+	    					 if(imeld != null){
+		    						imeld.remove();
+		    					 	imeldb.remove();
+		    					 }
 	    					if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -469,7 +472,7 @@ setInterval(function(){
 		    			    }else{
 		    			    	tabfehlermeldung[index].innerHTML= "Die Frist fürs Abholen dieses Produkts ist längst abgeläufen";	
 				    			
-		    			    }
+		    			    	}
 	    					 zeitabgelaufen(tabidwarenkob[index].value);
 	    					 clearInterval(id);
 	    				 }
@@ -479,8 +482,10 @@ setInterval(function(){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0"; 
 	    					 document.getElementById(index).style.color="red";
-	    					 info[index].remove();
-	    					 infob[index].remove();
+	    					 if(imeld != null){
+		    						imeld.remove();
+		    					 	imeldb.remove();
+		    					 }
 	    					if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline for collecting this product has long passed";
 		    			    }else if(parseInt(lg)==1){
@@ -497,8 +502,10 @@ setInterval(function(){
 	    					 tabblockantwort[index].style.visibility ="visible";
 	    					 document.getElementById(index).innerHTML="0:0:0";
 	    					 document.getElementById(index).style.color="red";
-	    					 info[index].remove();
-	    					 infob[index].remove();
+	    					 if(imeld != null){
+		    						imeld.remove();
+		    					 	imeldb.remove();
+		    					 }
 	    					 if(parseInt(lg)==0){
 	    						 tabfehlermeldung[index].innerHTML= "The deadline to collect this product has just passed";
 	    						 alert("Your time to collect one of your orders has expired. Answer the question asked in the appropriate place");
