@@ -1,5 +1,7 @@
 package tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -12,10 +14,26 @@ public class Kunkensuche {
 	@Test
 	void Kundenproduktsuche() {
 		userDAO dao = new userDAO();
-		List<Produkt>list = dao.produktSuche("", "riz", "", "", "", "", "","","");
+		List<Produkt>list = dao.produktSuche("rest", "", "", "", "", "", "","","");
 		for (Produkt produkt : list) {
 			System.out.println(produkt.toString());
 		}
+	}
+	
+	@Test
+	void KundenproduktsucheAnzahk() {
+		userDAO dao = new userDAO();
+		int zahl = dao.getAnzahlDatensatz("rest", "", "", "unbegrenzt", "", "", "","","");
+		assertEquals(4, zahl);
+		
+	}
+	
+	@Test
+	void KundenproduktsuchemitLimit() {
+		userDAO dao = new userDAO();
+		List<Produkt>list = dao.produktSucheMitLimit("rest", "", "", "unbegrenzt", "", "", "","","",0,3);
+		assertEquals(0, list.size());
+		
 	}
 	
 

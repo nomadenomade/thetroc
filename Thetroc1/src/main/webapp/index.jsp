@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <%@page import="Model.Kaufer,Model.Person"%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -341,7 +340,7 @@
 			
 			
 			<!-- searchresult -->
-			<div id="searchblock" class=" card mt-5" style="visibility:hidden;max-height:650px;overflow-y:scroll;width:95%;margin:auto;background-color:#F5F5F5;">
+			<div id="searchblock" class=" card mt-5" style="visibility:hidden;max-height:100%;width:95%;margin:auto;background-color:#F5F5F5;">
 				<h1 class="text-center mt-4 lead" style="font-weight:bold;color:#48D1CC; font-size:1.2em;"id="el25"> Ergebnisse</h1>
 				<div class="card-body" id="searchresult">
 					
@@ -465,9 +464,8 @@
 	 	 	    			opaciti = opaciti-0.1;
 	 	 	    		}else{
 	 	 	    			opaciti =1;
-	 	 	    		}
-	 	 	    		
-	 	 	    		
+	 	 	    		}    		
+	     		
 	 	 	    	},200);
 	    		 
 	    	 
@@ -711,7 +709,7 @@
 			    			}
 			    		};
 			    		
-			    		xml.open("GET","Kundensuche?kategorie="+kategorie+"&suche="+suche+"&umkreis="+umkreis+"&online="+online+"&stadt="+stadt+"&stadtviertel="+stadtviertel+"&unternehmensname="+unternehmensname+"&lat="+latfilter+"&lng="+lngfilter,false);
+			    		xml.open("GET","Kundensuche?type=firstload&kategorie="+kategorie+"&suche="+suche+"&umkreis="+umkreis+"&online="+online+"&stadt="+stadt+"&stadtviertel="+stadtviertel+"&unternehmensname="+unternehmensname+"&lat="+latfilter+"&lng="+lngfilter,false);
 			    		xml.send();
 		    		}else{
 		    			alert("Sie müssen den Zugriff auf Ihre aktuelle Position erlauben auf dem Browser, damit die Strecke zur Verkauferstelle berechnet wird");
@@ -719,8 +717,7 @@
 				 
 				   
 			   }
-	    	//end
-	    	
+	    	//end    	
 	    	function alsgelesenmarkieren(e){
 	    		 let XML = initRequest();
     			 XML.onreadystatechange = function(){
@@ -730,13 +727,8 @@
     			 };
     			 XML.open("GET","Bestellung_verwaltung_kunde?type=notif-gelesen&idwarenkob="+e,false);
 	    		 XML.send();
-	    	}
-	    
-	    	
-	    	
+	    	} 	
 	    	//geolocalisation funktionen
-	
-   
 			   function navigatorCallback(position){
 				
 				   lat = position.coords.latitude;
@@ -1136,7 +1128,26 @@
 	    },4000);
 	    
 	    
+	   
 	    //end
+	    
+	    //pagination
+	   
+	    function pagination(seitebeginn, anzahl, kategorie,suche,umkreis,online,stadt,stadtviertel,unternehmensname,lat,lng){
+	    	
+	    	let xml = initRequest();
+	    	xml.onreadystatechange = function (){
+	    		if(this.readyState==4 && this.status==200){
+	    			document.getElementById("searchblock").style.visibility="visible";
+    				
+    				document.getElementById("searchresult").innerHTML=this.responseText;
+	    		}
+	    	};
+	    	
+	    	xml.open("GET","Kundensuche?type=next&startzahl="+seitebeginn+"&anzahldaten="+anzahl+"&kategorie="+kategorie+"&suche="+suche+"&umkreis="+umkreis+"&online="+online+"&stadt="+stadt+"&stadtviertel="+stadtviertel+"&unternehmensname="+unternehmensname+"&lat="+lat+"&lng="+lng,false);
+    		xml.send();
+	    	
+	    }
 	    </script>
   </body>
 </html>

@@ -343,7 +343,329 @@ public class userDAO {
 		return person;
 
 	}
+	
+	public int getAnzahlDatensatz (String kategorie,String suchbegriff,String umkreis,String online, String stadt,String stadtviertel,String unternehmen,String lat,String lng) {
+		SimpleDateFormat dataformat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		String datestring = dataformat.format(date);
+		int counter =0;
+		if(online.equals("heute")) {
+			request ="SELECT * FROM produkte AS p "
+					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
+					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
+					+ "INNER JOIN person AS pers ON v.idPerson= pers.idPerson "
+					+ "WHERE p.kategorie LIKE ? AND p.nameprodukte LIKE ? AND u.stadt LIKE ? AND u.Standort LIKE ? AND u.nameunternehmen LIKE ? "
+					+ " AND p.status='online' AND p.Datum LIKE ?";
 
+			try {
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, "%"+kategorie+"%");
+				preparedstatement.setString(2, "%"+suchbegriff+"%");
+				preparedstatement.setString(3, "%"+stadt+"%");
+				preparedstatement.setString(4, "%"+stadtviertel+"%");
+				preparedstatement.setString(5, "%"+unternehmen+"%");
+				preparedstatement.setString(6, "%"+datestring+"%");
+				resultset = preparedstatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		}else if(online.equals("2 Tagen")) {
+			request ="SELECT * FROM produkte AS p "
+					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
+					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
+					+ "INNER JOIN person AS pers ON v.idPerson= pers.idPerson "
+					+ "WHERE p.kategorie LIKE ? AND p.nameprodukte LIKE ? AND u.stadt LIKE ? AND u.Standort LIKE ? AND u.nameunternehmen LIKE ? "
+					+ " AND p.status='online' AND (p.Datum LIKE ? OR p.Datum LIKE ?OR p.Datum LIKE ? )";
+
+			try {
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, "%"+kategorie+"%");
+				preparedstatement.setString(2, "%"+suchbegriff+"%");
+				preparedstatement.setString(3, "%"+stadt+"%");
+				preparedstatement.setString(4, "%"+stadtviertel+"%");
+				preparedstatement.setString(5, "%"+unternehmen+"%");
+				preparedstatement.setString(6, "%"+datestring+"%");
+				preparedstatement.setString(7, "%"+getDateFilter(online,1)+"%");
+				preparedstatement.setString(8, "%"+getDateFilter(online,2)+"%");
+				resultset = preparedstatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}else if(online.equals("unbegrenzt")) {
+			request ="SELECT * FROM produkte AS p "
+					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
+					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
+					+ "INNER JOIN person AS pers ON v.idPerson= pers.idPerson "
+					+ "WHERE p.kategorie LIKE ? AND p.nameprodukte LIKE ? AND u.stadt LIKE ? AND u.Standort LIKE ? AND u.nameunternehmen LIKE ? "
+					+ " AND p.status='online'";
+
+
+			try {
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, "%"+kategorie+"%");
+				preparedstatement.setString(2, "%"+suchbegriff+"%");
+				preparedstatement.setString(3, "%"+stadt+"%");
+				preparedstatement.setString(4, "%"+stadtviertel+"%");
+				preparedstatement.setString(5, "%"+unternehmen+"%");
+				resultset = preparedstatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		}
+		
+		try {
+
+			
+			double lat2=0,lng2=0;
+			if(resultset!=null) {
+				while(resultset.next()) {
+					lat2 = Double.valueOf(resultset.getString("Latitude"));
+					lng2 = Double.valueOf(resultset.getString("Longitude"));
+					if(!umkreis.equals("unbegrenzt")) {
+						if(umkreis!=null && !umkreis.equals("")) {
+							double a = Double.valueOf(umkreis.split("-")[0]);
+							double b = Double.valueOf(umkreis.split("-")[1].split(" ")[0]);
+							
+							double distance = abstand(Double.valueOf(lng),Double.valueOf(lat),lng2,lat2);
+					
+							if(a<=distance && distance<=b) {
+								counter ++;
+							}
+						}else {
+							counter++;
+						}
+						
+					}else {
+						counter ++;
+					}
+					
+				}
+			}
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+
+		return counter;
+	}
+
+
+	
+	public List<Produkt> produktSucheMitLimit(String kategorie,String suchbegriff,String umkreis,String online, String stadt,String stadtviertel,String unternehmen,String lat,String lng,int intervallimitA, int numberelement){
+
+		List<Produkt> list = new ArrayList<>();
+		SimpleDateFormat dataformat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		String datestring = dataformat.format(date);
+
+		if(online.equals("heute")) {
+			request ="SELECT * FROM produkte AS p "
+					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
+					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
+					+ "INNER JOIN person AS pers ON v.idPerson= pers.idPerson "
+					+ "WHERE p.kategorie LIKE ? AND p.nameprodukte LIKE ? AND u.stadt LIKE ? AND u.Standort LIKE ? AND u.nameunternehmen LIKE ? "
+					+ " AND p.status='online' AND p.Datum LIKE ? "
+					+ "LIMIT ?,? ";
+
+			try {
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, "%"+kategorie+"%");
+				preparedstatement.setString(2, "%"+suchbegriff+"%");
+				preparedstatement.setString(3, "%"+stadt+"%");
+				preparedstatement.setString(4, "%"+stadtviertel+"%");
+				preparedstatement.setString(5, "%"+unternehmen+"%");
+				preparedstatement.setString(6, "%"+datestring+"%");
+				preparedstatement.setInt(7, intervallimitA);
+				preparedstatement.setInt(8, numberelement);
+				resultset = preparedstatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		}else if(online.equals("2 Tagen")) {
+			request ="SELECT * FROM produkte AS p "
+					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
+					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
+					+ "INNER JOIN person AS pers ON v.idPerson= pers.idPerson "
+					+ "WHERE p.kategorie LIKE ? AND p.nameprodukte LIKE ? AND u.stadt LIKE ? AND u.Standort LIKE ? AND u.nameunternehmen LIKE ? "
+					+ " AND p.status='online' AND (p.Datum LIKE ? OR p.Datum LIKE ?OR p.Datum LIKE ? ) "
+					+ "LIMIT ?,?";
+
+			try {
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, "%"+kategorie+"%");
+				preparedstatement.setString(2, "%"+suchbegriff+"%");
+				preparedstatement.setString(3, "%"+stadt+"%");
+				preparedstatement.setString(4, "%"+stadtviertel+"%");
+				preparedstatement.setString(5, "%"+unternehmen+"%");
+				preparedstatement.setString(6, "%"+datestring+"%");
+				preparedstatement.setString(7, "%"+getDateFilter(online,1)+"%");
+				preparedstatement.setString(8, "%"+getDateFilter(online,2)+"%");
+				preparedstatement.setInt(9, intervallimitA);
+				preparedstatement.setInt(10, numberelement);
+				resultset = preparedstatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}else if(online.equals("unbegrenzt")) {
+			request ="SELECT * FROM produkte AS p "
+					+ "INNER JOIN verkaufer AS v ON p.idVerkaufer=v.idVerkaufer "
+					+ "INNER JOIN unternehmen AS u ON v.idVerkaufer=u.idVerkaufer "
+					+ "INNER JOIN person AS pers ON v.idPerson= pers.idPerson "
+					+ "WHERE p.kategorie LIKE ? AND p.nameprodukte LIKE ? AND u.stadt LIKE ? AND u.Standort LIKE ? AND u.nameunternehmen LIKE ? "
+					+ " AND p.status='online' "
+					+ "LIMIT ?,?";
+
+
+			try {
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, "%"+kategorie+"%");
+				preparedstatement.setString(2, "%"+suchbegriff+"%");
+				preparedstatement.setString(3, "%"+stadt+"%");
+				preparedstatement.setString(4, "%"+stadtviertel+"%");
+				preparedstatement.setString(5, "%"+unternehmen+"%");
+				preparedstatement.setInt(6, intervallimitA);
+				preparedstatement.setInt(7, numberelement);
+				resultset = preparedstatement.executeQuery();
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+
+		}
+
+
+		try {
+
+
+			Produkt produkt =null;
+			Verkaufer verkaufer =null;
+			Person person = null;
+			Unternehmen unternehm =null;
+			double lat2=0,lng2=0;
+			if(resultset!=null) {
+				while(resultset.next()) {
+					lat2 = Double.valueOf(resultset.getString("Latitude"));
+					lng2 = Double.valueOf(resultset.getString("Longitude"));
+					if(!umkreis.equals("unbegrenzt")) {
+						double a = Double.valueOf(umkreis.split("-")[0]);
+						double b = Double.valueOf(umkreis.split("-")[1].split(" ")[0]);
+						double distance = abstand(Double.valueOf(lng),Double.valueOf(lat),lng2,lat2);
+						if(a<=distance && distance<=b) {
+							produkt = new Produkt();
+							verkaufer = new Verkaufer();
+							unternehm = new Unternehmen();
+							person = new Person();
+							produkt.setIdProdukt(resultset.getInt("idProdukte"));
+							produkt.setName(resultset.getString("Nameprodukte"));
+							produkt.setBeschreibung(resultset.getString("Beschreibung"));
+							produkt.setMarke(resultset.getString("Marke"));
+							produkt.setPreis(resultset.getString("Preis"));
+							produkt.setWährung(resultset.getString("Währung"));
+							produkt.setMenge(resultset.getString("Menge"));
+							produkt.setMenge(resultset.getString("Mengeeinheit"));
+							produkt.setKategorie(resultset.getString("Kategorie"));
+							produkt.setDauerbisabholung(resultset.getString("Dauerbisabholung"));
+							produkt.setOnlinebis(resultset.getString("Onlinebis"));
+							produkt.setAblaufdatum(resultset.getString("Ablaufdatum"));
+							produkt.setOnlinetime(resultset.getString("Onlinetime"));
+							produkt.setStatus(resultset.getString("Status"));
+							produkt.setIdProdukt(resultset.getInt("idProdukte"));
+							produkt.setDatum(resultset.getString("Datum"));
+							verkaufer.setIdVerkaufer(resultset.getInt("idVerkaufer"));
+							person.setId(resultset.getInt("idPerson"));
+							person.setEmail(resultset.getString("Email"));
+							unternehm.setIdUnternehmen(resultset.getInt("idUnternehmen"));
+							unternehm.setName(resultset.getString("Nameunternehmen"));
+							unternehm.setStandort(resultset.getString("Standort"));
+							unternehm.setStadt(resultset.getString("Stadt"));
+							unternehm.setGeolatidude(resultset.getString("Latitude"));
+							unternehm.setGeolongitude(resultset.getString("Longitude"));
+							unternehm.setVerkaufer(verkaufer);
+							verkaufer.setUnternehmen(unternehm);
+
+							verkaufer.setPerson(person);
+							produkt.setVerkaufer(verkaufer);
+							list.add(produkt);
+							
+						}
+					}else {
+						
+						produkt = new Produkt();
+						verkaufer = new Verkaufer();
+						unternehm = new Unternehmen();
+						person = new Person();
+						produkt.setIdProdukt(resultset.getInt("idProdukte"));
+						produkt.setName(resultset.getString("Nameprodukte"));
+						produkt.setBeschreibung(resultset.getString("Beschreibung"));
+						produkt.setMarke(resultset.getString("Marke"));
+						produkt.setPreis(resultset.getString("Preis"));
+						produkt.setWährung(resultset.getString("Währung"));
+						produkt.setMenge(resultset.getString("Menge"));
+						produkt.setMenge(resultset.getString("Mengeeinheit"));
+						produkt.setKategorie(resultset.getString("Kategorie"));
+						produkt.setDauerbisabholung(resultset.getString("Dauerbisabholung"));
+						produkt.setOnlinebis(resultset.getString("Onlinebis"));
+						produkt.setAblaufdatum(resultset.getString("Ablaufdatum"));
+						produkt.setOnlinetime(resultset.getString("Onlinetime"));
+						produkt.setStatus(resultset.getString("Status"));
+						produkt.setIdProdukt(resultset.getInt("idProdukte"));
+						produkt.setDatum(resultset.getString("Datum"));
+						verkaufer.setIdVerkaufer(resultset.getInt("idVerkaufer"));
+						person.setId(resultset.getInt("idPerson"));
+						person.setEmail(resultset.getString("Email"));
+						unternehm.setIdUnternehmen(resultset.getInt("idUnternehmen"));
+						unternehm.setName(resultset.getString("Nameunternehmen"));
+						unternehm.setStandort(resultset.getString("Standort"));
+						unternehm.setStadt(resultset.getString("Stadt"));
+						unternehm.setGeolatidude(resultset.getString("Latitude"));
+						unternehm.setGeolongitude(resultset.getString("Longitude"));
+						unternehm.setVerkaufer(verkaufer);
+						verkaufer.setUnternehmen(unternehm);
+
+						verkaufer.setPerson(person);
+						produkt.setVerkaufer(verkaufer);
+						list.add(produkt);
+					}
+					
+					
+				}
+			}
+
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+	
+	
+	
 	public List<Produkt> produktSuche(String kategorie,String suchbegriff,String umkreis,String online, String stadt,String stadtviertel,String unternehmen,String lat,String lng){
 
 		List<Produkt> list = new ArrayList<>();
@@ -447,7 +769,6 @@ public class userDAO {
 						double b = Double.valueOf(umkreis.split("-")[1].split(" ")[0]);
 						
 						double distance = abstand(Double.valueOf(lng),Double.valueOf(lat),lng2,lat2);
-				
 						
 						if(a<=distance && distance<=b) {
 							
