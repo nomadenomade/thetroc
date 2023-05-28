@@ -237,7 +237,7 @@
 
 
 <!-- formular end -->
-    
+   <%@ include file="/footer.jsp" %>
     <!-- End your project here-->
 
     <!-- MDB -->

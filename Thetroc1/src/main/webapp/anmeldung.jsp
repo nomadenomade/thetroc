@@ -126,8 +126,8 @@
 		</nav>
 <!-- Navbar -->
 
-		<div class="container " >
-			<div class="text-center lead  mt-5 mb-3"  style="color:white; font-weight:bold; font-size:2.5em;" id="el3">Anmeldung</div>
+		<div class="container" >
+			<div class="text-center lead  mt-5 mb-3"  style="color:white;font-weight:bold; font-size:2.5em;" id="el3">Anmeldung</div>
 			
 			<div class="forms">
 				<form>
@@ -147,7 +147,7 @@
 			      </form>	
 			</div>
 		</div>
-
+	
     <!-- End your project here-->
 
     <!-- MDB -->
@@ -248,4 +248,5 @@
     	  
     </script>
   </body>
+
 </html>

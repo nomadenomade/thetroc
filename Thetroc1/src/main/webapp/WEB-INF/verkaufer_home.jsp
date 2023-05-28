@@ -264,16 +264,12 @@
 
 <!-- end container -->
    <div id="contain"></div>
+   
+   <%@ include file="/footer.jsp" %>
+   
+   
    <script type="text/javascript" src="js/mdb.min.js"></script>
    <script>
-   
-   
-   //iNHALT SEITE
-   
-   
-  //INHALT END
-   
-   
    var lang = <%= request.getSession().getAttribute("language")%>
    lang = parseInt(lang);
    var abzug1="Ein Leben wurde von Ihrem Konto abgezogen,da Sie vorgegeben haben,dass einer Ihrer Kunden Sein Produkt nicht abgeholt hat obwohl unser System das Gegenteil bewiesen hat.";

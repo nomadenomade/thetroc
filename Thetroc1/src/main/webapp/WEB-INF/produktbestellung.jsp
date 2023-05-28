@@ -225,6 +225,7 @@
 	<div id="bewertung"  class="mt-5 mb-2 "></div>
 	<!-- inhalt ende-->
 	
+	<%@ include file="/footer.jsp" %>
 	
 	    <!-- End your project here-->
 	

@@ -217,13 +217,13 @@
 	
 	<!-- inhalt ende-->
 	
+	<%@ include file="/footer.jsp" %>
+<!-- End your project here-->
 	
-	    <!-- End your project here-->
-	
-	  <!-- Parameter empfangen -->
-	  	<% request.getSession().setAttribute("idprodukt", request.getParameter("idprodukt"));
-	  	   request.getSession().setAttribute("produktname", request.getParameter("produktname"));
-	    %>
+<!-- Parameter empfangen -->
+	<% request.getSession().setAttribute("idprodukt", request.getParameter("idprodukt"));
+	 request.getSession().setAttribute("produktname", request.getParameter("produktname"));
+	 %>
 	  <!--Parameter empfangen end  -->
 <script type="text/javascript" src="js/mdb.min.js"></script>
 <script type="text/javascript" src="js/qrcode.min.js"></script>

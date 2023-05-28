@@ -9,7 +9,9 @@
     <title>Online handeln</title>
     <!-- MDB icon -->
     <link rel="icon" href="img/logo3.png"   type="image/x-icon" />
-    <!-- Font Awesome -->
+    <!-- Font Awesome unter https://use.fontawesome.com/releases/v5.15.2/css/all.css
+    for fab fa icone
+     -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" />
     <!-- Google Fonts Roboto -->
     <link
@@ -350,8 +352,7 @@
 			
 	
 	<!-- inhalt ende-->
-	
-	
+	<%@ include file="/footer.jsp" %>
 	    <!-- End your project here-->
 	
 	    <!-- MDB -->

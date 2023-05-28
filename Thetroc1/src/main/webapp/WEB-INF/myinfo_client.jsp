@@ -100,11 +100,12 @@
 			
 			<h1 class="text-center text-white mt-3 mb-1" style="font-weight:bold;" id="el7"> Gesamts-Geldausgabe</h1>
 			
-			<div id="gesamtpreis" class ="text-center" style =" font-size:4.0em;margin-bottom:10px;color: green; background-color: white; margin:auto; height:300px; width:300px;padding:90px; border: 1px solid white; border-radius:50%;">
+			<div id="gesamtpreis" class ="text-center p-5" style =" font-size:4.0em;margin-bottom:10px;color: green; background-color: white; margin:auto;  min-width:300px; max-width:60%; border: 1px solid white; border-radius:10px;">
 					
 			</div>
 			
 		</div>
+		<%@ include file="/footer.jsp" %>
     <!-- End your project here-->
 
     <!-- MDB <h1 class="text-center" style="font-size:4.0em; color: green; margin:auto;" id="gesamtpreis"></h1>
