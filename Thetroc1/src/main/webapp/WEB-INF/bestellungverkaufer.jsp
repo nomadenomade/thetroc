@@ -202,7 +202,7 @@
 		<div class="card-body" id="inhalt"></div>
 </div>
 
-<%@ include file="/footer.jsp" %>
+
 
 </body>
 <script type="text/javascript" src="js/mdb.min.js"></script>

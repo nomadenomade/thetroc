@@ -105,7 +105,7 @@
 			</div>
 			
 		</div>
-		<%@ include file="/footer.jsp" %>
+		
     <!-- End your project here-->
 
     <!-- MDB <h1 class="text-center" style="font-size:4.0em; color: green; margin:auto;" id="gesamtpreis"></h1>

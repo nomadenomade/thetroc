@@ -179,8 +179,6 @@
 </div>
 
 
-<%@ include file="/footer.jsp" %>
-
    <script type="text/javascript" src="js/mdb.min.js"></script>
    <script>
    

@@ -217,7 +217,7 @@
 	
 	<!-- inhalt ende-->
 	
-	<%@ include file="/footer.jsp" %>
+	
 <!-- End your project here-->
 	
 <!-- Parameter empfangen -->
