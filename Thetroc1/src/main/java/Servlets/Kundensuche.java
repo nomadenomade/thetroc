@@ -1,6 +1,8 @@
 package Servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -53,7 +55,11 @@ public class Kundensuche extends HttpServlet {
 			umkreis="unbegrenzt";
 		}
 		
-		
+		// calculate the actual year
+		SimpleDateFormat dataformat = new SimpleDateFormat("dd-MM-yyyy");
+		Date date = new Date();
+		String datestring = dataformat.format(date);
+		int actualyear= Integer.valueOf(datestring.split("-")[2]);
 		
 		VerkauferDAO dao1 = new VerkauferDAO();
 		userDAO dao = new userDAO();
@@ -124,6 +130,11 @@ public class Kundensuche extends HttpServlet {
 						prod.setMengeeinheit("");
 					}
 					
+					//rueckgabe datereg in der form 11-03-2023 06:28:31
+					String datereg = prod.getVerkaufer().getPerson().getDatum();
+					int yearregistration = Integer.valueOf(datereg.split(" ")[5]);
+					int diffyear = actualyear-yearregistration;
+
 					Foto firstfoto = dao1.getFirstFotoProdukt(prod.getIdProdukt());
 					result+= "<div class='col-sm mt-5'><a  href='"+request.getContextPath()+"/RequestReSend?name=produktbestellung&idprodukt="+prod.getIdProdukt()+"&produktname="+prod.getName()+"'>";
 					result+= "<div class='card text-black' style=' max-width:320px; margin:auto; height:auto;'>";
@@ -150,8 +161,35 @@ public class Kundensuche extends HttpServlet {
 				    result+="<div><span class='lead res6' style='font-weight:bold; font-size:0.8em;' >Stadt               : </span><span class='lead' style='font-size:0.7em'>"+prod.getVerkaufer().getUnternehmen().getStadt()+"</span></div>";
 				    result+="<div><span class='lead res7' style='font-weight:bold; font-size:0.8em;'><u>genauer Standort              </u> :  </span><span class='lead' style='font-size:0.7em'>"+prod.getVerkaufer().getUnternehmen().getStandort()+"</span></div>";   
 				    result+="</div>";
+				    result+="</div>";
+				    //end first row unten <i class="fas fa-shield"></i>
+				    result+="<div class='d-flex justify-content-center'>";
+				    result+="<div>";
+				   
+				    if(diffyear<5) {
+				    	 // der neuling
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#48D1CC;'></i>";
+				    	
+				    }else if(diffyear>=5 && diffyear<=10) {
+				    	//der junior Partner
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#FF8C00'></i>";
+				    }else if(diffyear>=10 && diffyear<20) {
+				    	//der Senior Partner
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#008B8B'></i>";
+				    }else if(diffyear>=20 && diffyear<40) {
+				    	//der Boss
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#00008B'></i>";
+				    }else if(diffyear>=40 && diffyear<70) {
+				    	//der OberBoss
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#B22222'></i>";
+				    }else {
+				    	//der Pate
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:black;'></i>";
+				    }
 				    
 				    result+="</div>";
+				    result+="</div>";
+				    //end d-flex class oben
 				    result+="</div>";
 				    result+="</div></a></div>";
 					
@@ -258,6 +296,11 @@ public class Kundensuche extends HttpServlet {
 					}
 					
 					Foto firstfoto = dao1.getFirstFotoProdukt(prod.getIdProdukt());
+					String datereg = prod.getVerkaufer().getPerson().getDatum();
+					int yearregistration = Integer.valueOf(datereg.split(" ")[5]);
+					
+					int diffyear = actualyear -yearregistration;
+					
 					result+= "<div class='col-sm mt-5'><a  href='"+request.getContextPath()+"/RequestReSend?name=produktbestellung&idprodukt="+prod.getIdProdukt()+"&produktname="+prod.getName()+"'>";
 					result+= "<div class='card text-black' style=' max-width:320px; margin:auto; height:auto;'>";
 					
@@ -283,8 +326,34 @@ public class Kundensuche extends HttpServlet {
 				    result+="<div><span class='lead res6' style='font-weight:bold; font-size:0.8em;' >Stadt               : </span><span class='lead' style='font-size:0.7em'>"+prod.getVerkaufer().getUnternehmen().getStadt()+"</span></div>";
 				    result+="<div><span class='lead res7' style='font-weight:bold; font-size:0.8em;'><u>genauer Standort              </u> :  </span><span class='lead' style='font-size:0.7em'>"+prod.getVerkaufer().getUnternehmen().getStandort()+"</span></div>";   
 				    result+="</div>";
+				    //end first row unten <i class="fas fa-shield"></i>
+				    result+="</div>";
+				    result+="<div class='d-flex justify-content-center'>";
+				    result+="<div>";
+				    if(diffyear<5) {
+				    	 // der neuling
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#48D1CC;'></i>";
+				    	
+				    }else if(diffyear>=5 && diffyear<10) {
+				    	//der junior Partner
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#FF8C00'></i>";
+				    }else if(diffyear>=10 && diffyear<20) {
+				    	//der Senior Partner
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#008B8B'></i>";
+				    }else if(diffyear>=20 && diffyear<40) {
+				    	//der Boss
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#00008B'></i>";
+				    }else if(diffyear>=40 && diffyear<70) {
+				    	//der OberBoss
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:#B22222'></i>";
+				    }else {
+				    	//der Pate
+				    	result+="<i class='fas fa-user-shield fa-2x' style='color:black;'></i>";
+				    }
 				    
 				    result+="</div>";
+				    result+="</div>";
+				    //end d-flex class oben
 				    result+="</div>";
 				    result+="</div></a></div>";
 					

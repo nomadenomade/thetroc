@@ -23,9 +23,21 @@ public class Person {
 	private String rolle;
 	private String Pseudo;
 	private int warnunganzahl;
+	private String gewinn;
 	
 	
-	
+
+
+
+	public String getGewinn() {
+		return gewinn;
+	}
+
+
+
+	public void setGewinn(String gewinn) {
+		this.gewinn = gewinn;
+	}
 
 
 

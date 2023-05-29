@@ -357,6 +357,7 @@
 	
 	    <!-- MDB -->
 	    <script type="text/javascript" src="js/mdb.min.js"></script>
+	    <script type="text/javascript" src="js/fontawesome2.js"></script>
 	    <!-- Custom scripts -->
 	    <script type="text/javascript">
 	    function initRequest() {
