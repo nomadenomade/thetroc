@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import DAO.userDAO;
+import Model.Betreiber;
 import Model.Foto;
+import Model.Kaufer;
+import Model.Person;
 import Model.Produkt;
 import Model.Warenkob;
 import helpklasse.QRcode;
@@ -475,20 +478,7 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				    //carousel end	
 				    }
 			        //neu block end
-				   /* result+="<div style='max-height:500px;overflow-y:auto;'>";
-				    //produktsbilder laden
-				    if(prod.getProduktBilder().size()!=0) {
-				    	 for(Foto foto: prod.getProduktBilder()) {
-				    		 result+="<img alt='bild' class='produkt card-img-top' style='width:100%; height:auto; margin:5px;' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
-						
-				    	 }
-				    }else {
-				    	 result+="<h1>Keine Fotos vorhanden</h1>";
-				    }
-				   
 				  
-				    result+="</div>";
-				    */
 				    result+= "</div>";
 				    //ende zweiter grossen Spalte
 				
@@ -520,6 +510,8 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				String longitude="";
 				String latitude="";
 				int idwarenk=0;
+				Betreiber betreiber = (Betreiber)request.getSession().getAttribute("betreiber");
+				Kaufer kaufer = (Kaufer)request.getSession().getAttribute("kaufer");
 				
 				for (Produkt prod : bestaetigt) {
 					barcode = prod.getVerkaufer().getUnternehmen().getBarcode();
@@ -593,26 +585,12 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 			    					result+="</div>";
 			    					result+="<div id='confcontentoption"+count+"'></div>";
 				    				//end neu
-				    				/*
-				    				result+="<div class='mt-5 mb-3 textconfirm' style='text-align: center; font-weight: bold; font-size=0.8em;' id='textconfirm'>Please put the Code, that you recieve from the seller in following field !</div>";
-				    				result+="<div class='mb-1' style='text-align:center; font-weight: bold; font-size: 1.4em; color:#2E8B57;'>Code</div>";
-				    			    result+="<div>";
-				    					result+="<div class='form-outline mb-2' >";
-				    							result+="<input type='password' style='font-size:0.8em;' class='form-control code' name='code' placeholder='e.g: TE123-345-SE12' id='code"+count+"'/>";
-				    							result+="<label for='code"+count+"' style='font-size:0.8em;' class='form-label labelconfirm'>Code here</label>";
-				    					result+="</div>";
-				    					result+="<div class='mt-2' style='width:50%; margin:auto;'>";
-				    							result+="<button class='buttonconfirm' onclick='checkCodeSeller(\""+barcode+"\","+longitude+","+latitude+","+idwarenk+","+count+")' style='width:100%; border:1px solid #48D1CC;border-radius:200px; padding:5px; font-size:0.8em;background-color:#48D1CC;color: white; margin:auto;'>send</button>";
-				    							result+="<span id='fehler"+count+"' style='width:50%;margin:auto;'></span>";		
-				    					result+="</div>";
-				    				result+="</div>";
-				    				*/
+				    				
 				    		  result+="</div>";
 				        
 				    	   result+="</div>";
 				     result+="</div>";
 				  result+="</div>";
-
 				    //modal end
 				    result+="</div>";
 				    result+="<div class='blockantwort' style='visibility:hidden;'>";
@@ -622,8 +600,74 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				    result+="<button class=' me-2 res11' style=\"width:100px; border:1px solid red;border-radius:200px; padding:5px; font-size:0.8em;background-color:red;color: white; margin:auto;\" onclick='antwortnein("+prod.getWarenkob().getIdWarenkob()+")'>Nein</button>"; 
 				    result+="</div>";
 				    result+="</div>";
-				   
 				    //end Timerbereich
+				    //bereich zahlung
+				    result+="<div class='d-flex justify-content-center'>";
+				    //start modal2
+				    result+="<div class='payblock'>";
+				    result+="<div class='paytext' style='font-weight:bold; font-size:0.9em;'>You can try paying your oder with your 'Thetroc gains' before confirming to have taken your product !";
+				    result+="</div>";
+				    result+="<button type='button' class='pay' style='width:100px; border:1px solid blue;border-radius:200px; padding:5px; font-size:0.9em;background-color:white;color:blue; margin:auto;' data-mdb-toggle='modal' data-mdb-target='#exampleModal2"+count+"'>Pay</button>";
+				    result+="</div>";
+				    result+="<div class='modal fade'  id='exampleModal2"+count+"' tabindex='-1' aria-labelledby='exampleModal2Label"+count+"' aria-hidden='true'>";
+				    	result+="<div class='modal-dialog' >";
+				    		result+="<div class='modal-content'>"; 
+				    			result+="<div class='modal-body p-2' style='min-height: 400px;'>";
+				    				result+="<button type='button' class='btn-close'  data-mdb-dismiss='modal' aria-label='Close'></button>";
+				    				//
+				    				if(betreiber !=null && betreiber.getGutscheinfunction().equals("activated")) {
+				    					Person pers = kaufer.getPerson();
+				    					kaufer.setPerson(dao.getPerson(pers.getId()));
+				    					String gewinn = kaufer.getPerson().getGewinn();
+				    					double gewinnDoubleValue = 0;
+				    					double preisprodukt = Double.valueOf(prod.getPreis());
+				    					if(gewinn !=null) {
+				    						gewinnDoubleValue = Double.valueOf(gewinn);
+				    						if(gewinnDoubleValue >= preisprodukt) {
+				    							double rest = gewinnDoubleValue-preisprodukt;
+				    							result+="<div class='mt-5 mb-4 paytext2' style='text-align: center; font-weight: bold; font-size:1.3em; color:#48D1CC;' >Please click on 'thetroc money' to pay  !</div>";
+				    							result+="<div class='lead  ms-2 mb-2'><span class=' paytext3' style='font-size:0.9em;'>Amount to pay :</span><span class='fw-bold' style='font-size:1em; color:blue;'>"+prod.getPreis()+"</span> <span>"+prod.getWährung()+"</span></div>";
+				    							result+="<div class='lead  ms-2' mb-3><span class=' paytext4' style='font-size:0.9em;'>Your actual Thetroc Gains :</span><span class='fw-bold' style='font-size:1em; color:green;'>"+kaufer.getPerson().getGewinn()+"</span> <span>"+prod.getWährung()+"</span></div>";
+				    							result+="<div class'mb-2' style='border-bottom:3px dotted black'></div>";
+				    							result+="<div class='lead  ms-2 mb-2'><span class=' paytext5' style='font-size:0.9em;'>Remaining Thetroc Gains :</span><span class='fw-bold' style='font-size:1em; color:#D2691E;'>"+rest+"</span> <span>"+prod.getWährung()+"</span></div>";
+				    							result+="<div class='d-flex justify-content-center'>";
+				    							result+="<div><button style='min-width:120px; background-color:white; padding:3px; border:1px solid blue; border-color:blue; border-radius:100px;' onclick='thetrocpay(\""+barcode+"\","+kaufer.getPerson().getId()+",\""+kaufer.getPseudo()+"\",\""+kaufer.getPerson().getEmail()+"\","+prod.getVerkaufer().getIdVerkaufer()+",\""+prod.getPreis()+"\",\""+prod.getName()+"\","+rest+","+count+","+prod.getWarenkob().getIdWarenkob()+")'><img src='img/moneylogo.png' width='70px' /> <span class='lead fw-bold 'style='font-size:1.1em;color:#48D1CC;'>Pay</span></button></div>";
+				    							result+="<div class='mt-2' id='paytextconfirmsticker"+count+"'></div>";
+				    							result+="<div class='mt-2' id='paytextconfirmtext"+count+"'></div>";
+				    							result+="</div>";
+				    							
+				    							
+				    							
+				    						}else {
+				    							double rest=0;
+				    							result+="<div class='mt-5 mb-4 paytext8' style='text-align: center; font-weight: bold; font-size:1.3em; color:orange;' >Your Thetroc gains are not enought to pay the total amount of this oder!</div>";
+				    							result+="<div class='lead  ms-2 mb-2'><span class=' paytext3' style='font-size:0.9em;'>Amount to pay :</span><span class='fw-bold' style='font-size:1em; color:blue;'>"+prod.getPreis()+"</span> <span>"+prod.getWährung()+"</span></div>";
+				    							result+="<div class='lead  ms-2' mb-3><span class=' paytext4' style='font-size:0.9em;'>Your actual Thetroc Gains :</span><span class='fw-bold' style='font-size:1em; color:green;'>"+kaufer.getPerson().getGewinn()+"</span> <span>"+prod.getWährung()+"</span></div>";
+				    							result+="<div class'mb-2' style='border-bottom:3px dotted black'></div>";
+				    							result+="<div class='lead  ms-2 mb-3'><span class=' paytext5' style='font-size:0.9em;'>Remaining Thetroc Gains :</span><span class='fw-bold' style='font-size:1em; color:#D2691E;'>0 </span> <span>"+prod.getWährung()+"</span></div>";
+				    							result+="<div class='text-justify mb-2 lead paytext7' style='font-size:0.8em;'>your can nevertheless pay a part of the amount if the seller accept it. For this operation put the QR String Code of the seller in the following field !</div>";
+				    							result+="<div class='form-outline mb-2'><input type='password' class='form-control' id='paycodefield"+count+"'  /><label class='form-label' for='paycodefield"+count+"'>QRcode here</label></div>";
+				    							result+="<div class='d-flex justify-content-center'>";
+				    							result+="<div><button style='min-width:120px; background-color:white; padding:3px; border:1px solid blue; border-color:blue; border-radius:100px;' onclick='thetrocpay2(\""+barcode+"\","+kaufer.getPerson().getId()+",\""+kaufer.getPseudo()+"\",\""+kaufer.getPerson().getEmail()+"\","+prod.getVerkaufer().getIdVerkaufer()+",\""+prod.getPreis()+"\",\""+prod.getName()+"\","+rest+","+count+","+prod.getWarenkob().getIdWarenkob()+")'><img src='img/moneylogo.png' width='70px' /> <span class='lead fw-bold'style='font-size:1.1em;color:#48D1CC;'>Pay</span></button></div>";
+				    							result+="<div class='mt-2' id='paytextconfirmsticker"+count+"'></div>";
+				    							result+="<div class='mt-2' id='paytextconfirmtext"+count+"'></div>";
+				    							result+="</div>";
+				    						}
+				    					}
+				    					
+				    				}else {
+				    					result+="<div class='mt-5  paytext6' style='text-align: center; font-weight: bold; font-size:1.3em; color:red;' >This Functionality has been temporaly deactivated !</div>";
+				    				}
+				    				
+				    				//
+				    		  result+="</div>";
+				        
+				    	   result+="</div>";
+				     result+="</div>";
+				  result+="</div>";
+				    //end modal2
+				    result+="</div>";
+				    //end bereich zahlung
 				    result+="</div>";  
 				    //ende erster grossen Spalte
 				    
@@ -668,23 +712,7 @@ public class Produkt_fuer_Bestellung extends HttpServlet {
 				    //carousel end	
 				    }
 			        //neu block end
-				    /*
-				    result+="<div style='height:500px;overflow-y:auto;'>";
 				   
-				    result+="<div class='mt-1 mb-1 lead res12' style='font-size:0.8em;' >holen Sie sich ihre Bestellung bevor der Timer ablaeuft</div>";
-				    //produktsbilder laden
-				    if(prod.getProduktBilder().size()!=0) {
-				    	 for(Foto foto: prod.getProduktBilder()) {
-				    		 result+="<img alt='bild'  style='width:100%; height:auto; margin:5px;' src='Dateien/"+prod.getVerkaufer().getPerson().getEmail()+"/"+foto.getName()+"'/>";
-						
-				    	 }
-				    }else {
-				    	 result+="<h1>Keine Fotos vorhanden</h1>";
-				    }
-				   
-				   
-				    result+="</div>";
-				    */
 				    result+= "</div>";
 				    //ende zweiter grossen Spalte
 				

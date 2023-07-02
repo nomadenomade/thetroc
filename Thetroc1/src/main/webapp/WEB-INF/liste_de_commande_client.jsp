@@ -784,7 +784,7 @@
 		    			if(parseInt(this.responseText)==1){
 		    				alert("Danke");
 		    			}else{
-		    				alert("Ein Fehler ist aufgetreten");
+		    				alert("an error occured");
 		    			}
 		    		}
 		    	};
@@ -811,6 +811,107 @@
 		   }
 		   
 		   //Kommentarbereichend
+		   
+		   //Thetroc Pay Start
+		   function thetrocpay(barcode,idpersonkau,pseudokaufer,emailkaufer,idverkaufer,preiszuzahlen,nameprodukt,restgewinn,count,idwarenkob){
+			   let xml = initRequest();
+			   xml.onreadystatechange =  function (){
+				   if(this.readyState==4 && this.status==200){
+					   if(parseInt(this.responseText)==1){
+						   if(parseInt(lg)==0){
+		    	    			document.querySelector("#paytextconfirmsticker"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmed <img src='success.gif' alt='success' /><div>";
+		    	    			document.querySelector("#paytextconfirmtext"+count).innerHTML="<div>you can close this window !</div>"
+		        			 }else if(parseInt(lg)==1){
+		        			    document.querySelector("#paytextconfirmsticker"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmé <img src='success.gif' alt='success' /><div>";	 
+		        			    document.querySelector("#paytextconfirmtext"+count).innerHTML="<div>vous pouvez fermer cette fenetre !</div>"
+		        			 }else{
+		        			    document.querySelector("#paytextconfirmsticker"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> bestätigt <img src='success.gif' alt='success' /><div>";
+		        			    document.querySelector("#paytextconfirmtext"+count).innerHTML="<div>Sie können dieses Fenster schließen!</div>"
+		        			 }
+					   }else if(parseInt(this.responseText)==2){
+						   if(parseInt(lg)==0){
+			    				 document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:#3cb371; text-align:center;'>you have already payed for this order !</div>";
+		    			    }else if(parseInt(lg)==1){
+		    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:#3cb371; text-align:center;'>vous avez déjà payé pour cette commande !</div>";
+		    			    }else{
+		    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:#3cb371; text-align:center;'>Sie haben bereits für diese Bestellung bezahlt !</div>";
+		    			    }
+					   }else{
+						   if(parseInt(lg)==0){
+			    				 document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Payment failed...a problem occured !</div>";
+		    			    }else if(parseInt(lg)==1){
+		    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Echec du paiement...un Probleme est survenu!</div>";
+		    			    }else{
+		    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Zahlung fehlgeschlagen...ein Fehler ist aufgetreten !</div>";
+		    			    }
+					   }
+				   }
+			   };
+			   
+			   xml.open("GET","Bestellung_verwaltung_kunde?type=thetrocpay&idperson="+idpersonkau+"&pseudo="+pseudokaufer+"&emailkaufer="+emailkaufer+"&idverkaufer="+idverkaufer+"&preiszuzahlen="+preiszuzahlen+"&nameprodukt="+nameprodukt+"&restgewinn="+restgewinn+"&idwarenkob="+idwarenkob,false);
+		   	   xml.send();
+		   }
+		   
+		   
+		   
+		   //falls gewinn kleiner als preis
+		   function thetrocpay2(barcode,idpersonkau,pseudokaufer,emailkaufer,idverkaufer,preiszuzahlen,nameprodukt,restgewinn,count,idwarenkob){
+			   
+			   let Qrcode = document.getElementById("paycodefield"+count).value;
+			  
+			   if(Qrcode==barcode){
+				   let xml = initRequest();
+				   xml.onreadystatechange =  function (){
+					   if(this.readyState==4 && this.status==200){
+						   if(parseInt(this.responseText)==1){
+							   if(parseInt(lg)==0){
+			    	    			document.querySelector("#paytextconfirmsticker"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmed <img src='success.gif' alt='success' /><div>";
+			    	    			document.querySelector("#paytextconfirmtext"+count).innerHTML="<div>you can close this window !</div>"
+			        			 }else if(parseInt(lg)==1){
+			        			    document.querySelector("#paytextconfirmsticker"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> confirmé <img src='success.gif' alt='success' /><div>";	 
+			        			    document.querySelector("#paytextconfirmtext"+count).innerHTML="<div>vous pouvez fermer cette fenetre !</div>"
+			        			 }else{
+			        			    document.querySelector("#paytextconfirmsticker"+count).innerHTML="<div style='text-align:center; color:#2E8B57;font-weight:bold; font-size:0.9em;margin-left:5px;'> bestätigt <img src='success.gif' alt='success' /><div>";
+			        			    document.querySelector("#paytextconfirmtext"+count).innerHTML="<div>Sie können dieses Fenster schließen!</div>"
+			        			 }
+						   }else if(parseInt(this.responseText)==2){
+							   if(parseInt(lg)==0){
+				    				 document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:#3cb371; text-align:center;'>you have already payed for this order !</div>";
+			    			    }else if(parseInt(lg)==1){
+			    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:#3cb371; text-align:center;'>vous avez déjà payé pour cette commande !</div>";
+			    			    }else{
+			    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:#3cb371; text-align:center;'>Sie haben bereits für diese Bestellung bezahlt !</div>";
+			    			    }
+						   }else{
+							   if(parseInt(lg)==0){
+				    				 document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Payment failed...a problem occured !</div>";
+			    			    }else if(parseInt(lg)==1){
+			    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Echec du paiement...un Probleme est survenu!</div>";
+			    			    }else{
+			    			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Zahlung fehlgeschlagen...ein Fehler ist aufgetreten !</div>";
+			    			    }
+						   }
+					   }
+				   };
+				   
+				   xml.open("GET","Bestellung_verwaltung_kunde?type=thetrocpay&idperson="+idpersonkau+"&pseudo="+pseudokaufer+"&emailkaufer="+emailkaufer+"&idverkaufer="+idverkaufer+"&preiszuzahlen="+preiszuzahlen+"&nameprodukt="+nameprodukt+"&restgewinn="+restgewinn+"&idwarenkob="+idwarenkob,false);
+			   	   xml.send();
+			   }else{
+				   if(parseInt(lg)==0){
+	    				 document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>This Qrcode is wrong...try again !</div>";
+	  			    }else if(parseInt(lg)==1){
+	  			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Qrcode incorrect...essayez de nouveau !</div>";
+	  			    }else{
+	  			    	document.querySelector("#paytextconfirmtext"+count).innerHTML="<div class='fw-bold lead ms-1' style='color:red; text-align:center;'>Qrcode falsch... versuchen Sie nochmal !</div>";
+	  			    }
+				   
+			   }
+			   
+	
+		   }
+		   
+		   
+		   //Thetroc Pay end
 	   
 		  function alsgelesenmarkieren(e){
 	    		 let XML = initRequest();
@@ -953,7 +1054,14 @@
 			 	    	var conf=document.getElementsByClassName("confirm");
 			 	    	var confop1=document.getElementsByClassName("confoption1");
 			 	    	var confop2=document.getElementsByClassName("confoption2");
-			 	    	
+			 	    	var paytext=document.getElementsByClassName("paytext");
+			 	    	var paytext2=document.getElementsByClassName("paytex2");
+			 	    	var paytext3=document.getElementsByClassName("paytext3");
+			 	    	var paytext4=document.getElementsByClassName("paytext4");
+			 	    	var paytext5=document.getElementsByClassName("paytext5");
+			 	    	var paytext6=document.getElementsByClassName("paytext6");
+			 	    	var paytext7=document.getElementsByClassName("paytext7");
+			 	    	var paytext8=document.getElementsByClassName("paytext8");
 			 	    	
 			 	    	for(let i=0;i< res1.length; i++){
 			 	    		
@@ -1024,7 +1132,32 @@
 							if(confop2[i]!=null){
 								confop2[i].innerText= "Confirm by scanning the QRcode that you recieved from the Seller !";	
 							}
-			 	    		
+							
+							if(paytext[i]!=null){
+								paytext[i].innerText = "You can try paying your oder with your 'Thetroc gains' before confirming to have taken your product !";
+							}
+							if(paytext2[i]!=null){
+								paytext2[i].innerText = "Please click on 'thetroc money Pay' to pay  !";
+							}
+							if(paytext3[i]!=null){
+								paytext3[i].innerText = "Amount to pay :";
+							}
+							if(paytext4[i]!=null){
+								paytext4[i].innerText = "Your actual Thetroc Gains :";
+							}
+							if(paytext5[i]!=null){
+								paytext5[i].innerText = "Remaining Thetroc Gains :";
+							}
+							if(paytext6[i]!=null){
+								paytext6[i].innerText = "This Functionality has been temporaly deactivated !";
+							}
+							if(paytext7[i]!=null){
+								paytext7[i].innerText = "your can nevertheless pay a part of the amount if the seller accept it. For this operation put the QR String Code of the seller in the following field !";
+							}
+							if(paytext8[i]!=null){
+								paytext8[i].innerText = "Your Thetroc gains are not enought to pay the total amount of this oder!";
+							}
+							
 			 	    	}
 			 	    	
 			 	    	
@@ -1119,8 +1252,14 @@
 			 	    	var conf=document.getElementsByClassName("confirm");
 			 	    	var confop1=document.getElementsByClassName("confoption1");
 			 	    	var confop2=document.getElementsByClassName("confoption2");
-			 	    	
-			 	    	
+			 	    	var paytext=document.getElementsByClassName("paytext");
+			 	    	var paytext2=document.getElementsByClassName("paytext2");
+			 	    	var paytext3=document.getElementsByClassName("paytext3");
+			 	    	var paytext4=document.getElementsByClassName("paytext4");
+			 	    	var paytext5=document.getElementsByClassName("paytext5");
+			 	    	var paytext6=document.getElementsByClassName("paytext6");
+			 	    	var paytext7=document.getElementsByClassName("paytext7");
+			 	    	var paytext8=document.getElementsByClassName("paytext8");
 			 	    	
 			 	    	for(let i=0;i< res1.length; i++){
 			 	    		
@@ -1191,6 +1330,33 @@
 							if(confop2[i]!=null){
 								confop2[i].innerText= "Confirmer en scannant le QRcode reçu du vendeur !";	
 							}
+							if(paytext[i]!=null){
+								paytext[i].innerText = "Vous pouvez éssayer de payer avec vos 'Gains thetroc' avant de confirmer la récupération de votre commande !";
+							}
+							if(paytext2[i]!=null){
+								paytext2[i].innerText = "Appuyer sur le bouton 'thetroc money Pay' pour payer !";
+							}
+							if(paytext3[i]!=null){
+								paytext3[i].innerText = "Montant à payer :";
+							}
+							if(paytext4[i]!=null){
+								paytext4[i].innerText = "Vos Gains Thetroc actuels :";
+							}
+							if(paytext5[i]!=null){
+								paytext5[i].innerText = "Vos Gains Thretoc restant après paiement :";
+							}
+							if(paytext6[i]!=null){
+								paytext6[i].innerText = "Cette fonctionalité a été temporairement déactivée !";
+							}
+							if(paytext7[i]!=null){
+								paytext7[i].innerText = "Si vos Gains Thetroc sont supérieur à 0, vous pouvez avec l'accord du vendeur payer une partie du montant à verser. Pour cela veuillez entrer le QR code en chaine de caractères du vendeur dans le champ suivant !";
+							}
+							if(paytext8[i]!=null){
+								paytext8[i].innerText = "Vos gain Thetroc ne sont malheureusement pas suffisant pour payer la totalité du montant à payer !";
+							}
+							
+							
+							
 			 	    	}
 			 	    	
 			 	    	
@@ -1284,8 +1450,14 @@
 			 	    	var conf=document.getElementsByClassName("confirm");
 			 	    	var confop1=document.getElementsByClassName("confoption1");
 			 	    	var confop2=document.getElementsByClassName("confoption2");
-			 	    	
-			 	    	
+			 	    	var paytext=document.getElementsByClassName("paytext");
+			 	    	var paytext2=document.getElementsByClassName("paytext2");
+			 	    	var paytext3=document.getElementsByClassName("paytext3");
+			 	    	var paytext4=document.getElementsByClassName("paytext4");
+			 	    	var paytext5=document.getElementsByClassName("paytext5");
+			 	    	var paytext6=document.getElementsByClassName("paytext6");
+			 	    	var paytext7=document.getElementsByClassName("paytext7");
+			 	    	var paytext8=document.getElementsByClassName("paytext8");
 			 	    	
 			 	    	for(let i=0;i< res1.length; i++){
 			 	    		
@@ -1357,6 +1529,31 @@
 							if(confop2[i]!=null){
 								confop2[i].innerText= "QRcode des Verkäufer scannen !";	
 							}
+							if(paytext[i]!=null){
+								paytext[i].innerText = "Sie können diese Bestellung mit Ihren Thetroc Gewinns bezahlen bevor Sie deren Abholung bestätigen";
+							}
+							if(paytext2[i]!=null){
+								paytext2[i].innerText = "Bitte Klicken Sie auf 'thetroc money Pay', um zu bezahlen !";
+							}
+							if(paytext3[i]!=null){
+								paytext3[i].innerText = "Betrag zu zahlen :";
+							}
+							if(paytext4[i]!=null){
+								paytext4[i].innerText = "Ihre actelle Thetroc Gewinns :";
+							}
+							if(paytext5[i]!=null){
+								paytext5[i].innerText = "Ihre Thetroc Gewinn nach dieser Zahlung :";
+							}
+							if(paytext6[i]!=null){
+								paytext6[i].innerText = "Diese Funktionalität wurde vorübergehend deaktiviert !";
+							}
+							if(paytext7[i]!=null){
+								paytext7[i].innerText = "Wenn Ihre Gewinns größer als 0 sind können Sie mit dem Einverständnis des Verkäufers einen Teil des Angefordeten Betrag zahlen. Dafür Geben Sie bitte den String QRcode des Verkäufer auf folgendem Feld !";
+							}
+							if(paytext8[i]!=null){
+								paytext8[i].innerText = "Ihre Thetroc Gewinns sind leider nicht genug für die vollständige Bezahlung dieser Bestellung !";
+							}
+							
 			 	    	}
 			 	    	
 			 	    	

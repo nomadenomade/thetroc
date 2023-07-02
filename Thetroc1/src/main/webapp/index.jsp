@@ -166,7 +166,7 @@
 			      <!-- Anmeldung -->
 			      <span  class="navbar-item me-1 ">
 				      <a  class="nav-link text-reset me-1" href="<%=request.getContextPath()%>/anmeldung.jsp" >
-				      	<span class="lead text-white" style="font-weight:bold; font-size:0.8em;"id="el3">Anmeldung<i class="fas fa-circle-user"></i></span>
+				      	<span class="lead text-white" style="font-weight:bold; font-size:0.8em;"id="el3">Anmeldung</span>
 				      </a>
 			      </span>
 			      
@@ -180,7 +180,7 @@
 				        role="button"
 				        data-mdb-toggle="dropdown"
 				        aria-expanded="false"
-				      > <span class="lead text-white" id="username" style="font-weight:bold; font-size:0.8em;" ><span id="el4">Benachrichtigung</span> <i class="fas fa-bell"></i><span class="badge rounded-pill badge-notification bg-danger" id="notif-zahl"></span></span>        
+				      > <span class="lead text-white" id="username" style="font-weight:bold; font-size:0.8em;" ><span id="el4">Benachrichtigung </span> <i class="fas fa-bell"></i><span class="badge rounded-pill badge-notification bg-danger" id="notif-zahl"></span></span>        
 				      </a>
 				       
 				      <ul id="notification"
@@ -209,9 +209,11 @@
 				        aria-labelledby="navbarDropdownMenuLink"
 				      >
 				        <li>
-				          <a class="dropdown-item" href="<%=request.getContextPath() %>/RequestReSend?name=myinfo_client" id="el100">Mein infos</a>
+				          <a class="dropdown-item" href="<%=request.getContextPath() %>/RequestReSend?name=myinfo_client" id="el100">My infos</a>
 				        </li>
-				       
+				        <li>
+				          <a class="dropdown-item" href="<%=request.getContextPath() %>/RequestReSend?name=thetrocmoneyreceipt" id="m1">My Receipt for Thetroc money Pay </a>
+				        </li>
 				        <li>
 				          <a class="dropdown-item" href="#" id="logout">Logout</a>
 				        </li>
@@ -430,6 +432,9 @@
 	    			 
 	    		 },20000);
 	    		 
+	    		 //Gewinn Berechnung
+	    		 gewinnBerechnung();
+	    		 //ende
 	    		 // für die Warnunganzahl des Kaufer 
 	    		 setInterval(function(){ 
 	    			 let XML = initRequest();
@@ -730,6 +735,21 @@
     			 XML.open("GET","Bestellung_verwaltung_kunde?type=notif-gelesen&idwarenkob="+e,false);
 	    		 XML.send();
 	    	} 	
+	    	//Gewinn Berechnung 
+	    	function gewinnBerechnung(){
+	    		 let XML = initRequest();
+    			 XML.onreadystatechange = function(){
+    				 if(this.readyState==4 && this.status==200){
+    				
+    				 }
+    			 };
+    			 XML.open("GET","Bestellung_verwaltung_kunde?type=gewinnberechnung",false);
+	    		 XML.send();
+	    	} 
+	    	
+	    	
+	    	//Gewinn Berechnung end
+	    	
 	    	//geolocalisation funktionen
 			   function navigatorCallback(position){
 				
@@ -878,6 +898,8 @@
 	    		document.getElementById("el203").innerText = "today";
 	    		document.getElementById("el204").innerText = "2 days";
 	    		document.getElementById("el206").innerText = "pharmacies";
+	    		document.getElementById("m1").innerText = "My Receipt for Thetroc money Pay";
+	    		
 	    		
 	    		text = "click on PR if you want permanent and automatic proof that you have picked up your product. This functionality is important if the seller pretends that you did not collect their product. With this proof you avoid losing an account's live. This option only work if an only if you are at the seller's location when the timer run out. The other better option is to use later the button 'confirm' as soon as the seller confirm your Oder";
 	 	    	text2 = "account lives";
@@ -935,9 +957,7 @@
 					}
 	 	    		
 	 	    	}
-	 	    	
-	 	    	
-	 	    	
+	 	    	    	
 	    	}else if(parseInt(lg)==1){
 	    		document.getElementById("el1").innerText = "Mes commandes";
 	    		document.getElementById("el2").innerText = "enregistrement";
@@ -971,6 +991,7 @@
 	    		document.getElementById("el203").innerText = "aujourd'hui";
 	    		document.getElementById("el204").innerText = "2 jours";
 	    		document.getElementById("el206").innerText = "pharmacies";
+	    		document.getElementById("m1").innerText = "Mes reçus Thetroc money Pay";
 	    		
 	    		text = "Cliquez sur PR si vous voulez une preuve permanente et automatique que vous avez récupéré votre produit. Cette fonctionnalité est importante si le vendeur affirme que vous n'avez pas récupéré son produit. Avec cette preuve vous évitez de perdre une vie sur votre compte. Cette fonction fonctionne si et seulement si vous vous trouver chez le vendeur lorsque le timer arrive à 0 .L'autre option de confirmation est d utiliser plustard le button confirmer après avoir commander votre produit.";
 	 	    	text2 = "vies du compte";
@@ -1065,6 +1086,8 @@
 	    		document.getElementById("el203").innerText = "heute";
 	    		document.getElementById("el204").innerText = "2 Tage";
 	    		document.getElementById("el206").innerText = "Apotheken";
+	    		document.getElementById("m1").innerText = "Meine Quittungen Thetroc money Pay";
+	    		
 	    		
 	    		text = "Klicken Sie auf PR, wenn Sie dauerhaft und automatisch nachweisen wollen, dass Sie Ihr Produkt abgeholt haben. Diese Funktion ist wichtig, wenn der Verkäufer vorgibt, dass Sie sein Produkt nicht abgeholt haben,obwohl es der Fall war. Mit diesem Beweis vermeiden Sie den Verlust  eines Kontolives. Diese Option funktioniert nur, wenn sie sich beim Verkaufer befinden, wenn der Timer abläuft. Alternativ können Sie später nach der Bestellung den Button 'bestätigen' nutzen. ";
 	 	    	text2 = "Kontolives";

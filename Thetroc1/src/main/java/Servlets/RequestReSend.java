@@ -27,13 +27,20 @@ public class RequestReSend extends HttpServlet {
 		
 		
 		if(param!=null && idkaufer !=null && param.equals("myinfo_client")) {
+			
 			request.getRequestDispatcher("WEB-INF/myinfo_client.jsp").forward(request, response);
+			
 		}else if(param!=null && idkaufer !=null && param.equals("liste_de_commande_client")){
+			
 			request.getRequestDispatcher("WEB-INF/liste_de_commande_client.jsp").forward(request, response);
+			
 		}else if(param!=null && idkaufer !=null && param.equals("liste_de_commande_client_produkt")){
+			
 			String idprodukt = (String)request.getParameter("idprodukt");
 			request.getRequestDispatcher("WEB-INF/liste_de_commande_client.jsp?idprodukt="+idprodukt).forward(request, response);	
+			
 		}else if(param!=null && param.equals("produktbestellung")){
+			
 			String idprodukt = request.getParameter("idprodukt");
 			String produktname = request.getParameter("produktname");
 			if(idprodukt!=null) {
@@ -44,7 +51,12 @@ public class RequestReSend extends HttpServlet {
 			}
 			
 		}else if(param!=null && param.equals("errorpage")){
+			
 			request.getRequestDispatcher("WEB-INF/errorpage.jsp").forward(request, response);	
+			
+		}else if(param!=null &&param.equals("thetrocmoneyreceipt") && idkaufer !=null ){
+			request.getRequestDispatcher("WEB-INF/listgutscheinekaufer.jsp").forward(request, response);
+			
 		}else {
 			request.getRequestDispatcher("anmeldung.jsp").forward(request, response);
 		}

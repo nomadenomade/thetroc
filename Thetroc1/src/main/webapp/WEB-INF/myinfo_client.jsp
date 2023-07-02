@@ -103,6 +103,18 @@
 			<div id="gesamtpreis" class ="text-center p-5" style =" font-size:4.0em;margin-bottom:10px;color: green; background-color: white; margin:auto;  min-width:300px; max-width:60%; border: 1px solid white; border-radius:10px;">
 					
 			</div>
+			<div id="gainblock" class="mt-2">
+				<h1 class="text-center text-white mt-3 mb-1" style="font-weight:bold;" id="el8"> Your Thetroc Gain</h1>
+				<div class="d-flex justify-content-center mt-2">
+					<div class="card d-flex justify-content-center" style="min-width:300px; padding:5px;">
+						<div id="gewinn" class="text-center pt-5" style="font-size:2.0em;color: green;"></div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
 			
 		</div>
 		
@@ -209,6 +221,7 @@
   	    		document.getElementById("el4").innerText = "With this Filter you can limit the billsresult by defining a date";
   	    		document.getElementById("el5").innerText = "Filter";
   	    		document.getElementById("el7").innerText = "total expense";
+  	    		document.getElementById("el8").innerText = "Your Thetroc Money Gain";
   	    		document.getElementById("filterbutton").innerText = "filter";
   	    		
   	    		if(document.getElementById("res1")!=null){
@@ -231,6 +244,7 @@
   	    		document.getElementById("el4").innerText = "Limitez le resultat de la recherche avec le filtre ci-dessous";
   	    		document.getElementById("el5").innerText = "Filtre";
   	    		document.getElementById("el7").innerText = "Dépense total";
+  	    		document.getElementById("el8").innerText = "Vos Gains Argent Thetroc";
   	    		document.getElementById("filterbutton").innerText = "filtrer";
   	    		
   	    		if(document.getElementById("res1")!=null){
@@ -252,6 +266,7 @@
   	    		document.getElementById("el5").innerText = "Filter";
   	    		document.getElementById("filterbutton").innerText = "filtern";
   	    		document.getElementById("el7").innerText = "Gesamts-Geldausgabe";
+  	    		document.getElementById("el8").innerText = "Ihr Thetrocgewinn";
   	    		
   	    		if(document.getElementById("res1")!=null){
   	    			document.getElementById("res1").innerText= "ID-Nummer";
@@ -272,7 +287,32 @@
       
         
         //end
-    	  
+        var lg = <%= request.getSession().getAttribute("language")%>
+    	// Gewinn laden
+    	 var xmL = initRequest();
+    		  xmL.onreadystatechange = function(){
+    			  
+    			  if(this.readyState==4 && this.status==200){
+    				  if(parseInt(this.responseText)==-1){
+    					if(parseInt(lg)==0){
+    						 document.getElementById("gewinn").innerText= "this function is not yet available !";
+    					}else if(parseInt(lg)==1){
+    						 document.getElementById("gewinn").innerText= "cette function n'est pas encore disponible!";
+    					}else if(parseInt(lg) ==2){
+    						 document.getElementById("gewinn").innerText= "Diese Function ist noch nicht verfügbar! ";
+    					}
+    				  }else{
+    					  document.getElementById("gewinn").innerText= this.responseText;
+    				  }
+    				
+    			  }
+    				 
+    		  };
+    		  
+    		  xmL.open("GET","Bestellung_verwaltung_kunde?type=loadgewinn",false);
+    		  xmL.send();
+    		  
+    	//end laden
     </script>
   </body>
 </html>

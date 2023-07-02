@@ -14,8 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import DAO.userDAO;
+import Model.Betreiber;
 import Model.Bewertung;
 import Model.Foto;
+import Model.Gutschein;
 import Model.Kaufer;
 import Model.Produkt;
 import Model.Warenkob;
@@ -33,11 +35,16 @@ public class Bestellung_verwaltung_kunde extends HttpServlet {
 		String id = (String)request.getSession().getAttribute("idkaufer");
 		int idkaufer=0;
 		userDAO dao = new userDAO();
+		Betreiber betreiber = null;
+		List <Betreiber>listbetreiber = dao.getListBetreiber();
+		if(listbetreiber.size()>0) {
+			betreiber = listbetreiber.get(0);
+		}
+		request.getSession().setAttribute("betreiber", betreiber);
 		
 		if(id!=null) {
 			idkaufer =Integer.valueOf(id);
 			
-
 			
 			if(type.equals("stornieren")) {
 				if(idWarenkob!=null) {
@@ -334,7 +341,6 @@ public class Bestellung_verwaltung_kunde extends HttpServlet {
 				
 			}else if(type.equals("buttonnachweisautoclick")) {
 				String browserid = request.getParameter("browserid");
-				
 				int rueck = 0;
 				if(browserid !=null) {
 					rueck = dao.buttonNachweisAutoclick(idkaufer, browserid);
@@ -426,6 +432,69 @@ public class Bestellung_verwaltung_kunde extends HttpServlet {
 			result+="</div>";
 			response.getWriter().print(result);
 			
+		}else if (type.equals("gewinnberechnung")) {
+			idkaufer =Integer.valueOf(id);
+			Kaufer kaufer= (Kaufer)request.getSession().getAttribute("kaufer");
+	        int idperson = kaufer.getPerson().getId();
+	        response.getWriter().print(dao.gewinnBerechnung(idkaufer, idperson));
+		}else if(type.equals("loadgewinn")) {
+			Kaufer kaufer= (Kaufer)request.getSession().getAttribute("kaufer");
+			int idperson = kaufer.getPerson().getId();
+			if(betreiber.getGutscheinfunction().equals("activated")) {
+				  response.getWriter().print(dao.getPerson(idperson).getGewinn());
+			}else {
+				  response.getWriter().print(-1);
+			}
+	        
+		}else if(type.equals("thetrocpay")) {
+			String idperson1= request.getParameter("idperson");
+			String pseudo = request.getParameter("pseudo");
+			String emailkaufer = request.getParameter("emailkaufer");
+			String idverkaufer1 = request.getParameter("idverkaufer");
+			String preiszuzahlen = request.getParameter("preiszuzahlen");
+			String nameprodukt = request.getParameter("nameprodukt");
+			String restgewinn = request.getParameter("restgewinn");
+			String idw = request.getParameter("idwarenkob");
+		
+			int idperson=0,idverkaufer = 0,idwarenkob=0;
+			if(idperson1 !=null && idverkaufer1 !=null){
+				idperson = Integer.valueOf(idperson1);
+				idverkaufer = Integer.valueOf(idverkaufer1);
+				idwarenkob= Integer.valueOf(idw);
+			}
+			
+			if(idperson!=0) {
+				
+				response.getWriter().print(dao.thetrocPay(idperson, restgewinn, idverkaufer, preiszuzahlen, pseudo, emailkaufer, nameprodukt,idwarenkob));
+				
+			}
+			
+		}else if(type.equals("quittungladen")) {
+			Kaufer kaufer= (Kaufer)request.getSession().getAttribute("kaufer");
+			String result="<div class='table-responsive-sm'>";
+			result+="<table class='table mt-5 ms-1 me-1 table-stripped' style='font-size:0.8em;'>";
+			result+="<thead style='background-color:#48D1CC; color:white;'>";
+			result+="<tr>";
+			result+="<th id='res1'>ID-Payment</th><th id='res2'>ID-Oder</th><th id='res3'>Pseudo</th><th id='res4'>Email</th><th id='res5'>Name Product</th><th id='res6'>Price</th><th id='res7'>Date</th>";
+			result+="</tr>";
+			result+="</thead>";
+			result+="<tbody style='background-color:white;' >";
+			for(Gutschein gut: dao.getListGutscheinKaufer(kaufer.getPseudo(), kaufer.getPerson().getEmail())) {
+				result+="<tr>";
+				result+="<td>"+gut.getIdgutschein()+"</td>";
+				result+="<td>"+gut.getIdwarenkob()+"</td>";
+				result+="<td>"+gut.getPseudokaufer()+"</td>";
+				result+="<td>"+gut.getEmailkaufer()+"</td>";
+				result+="<td>"+gut.getNameprodukt()+"</td>";
+				result+="<td>"+gut.getBetrag()+"</td>";
+				result+="<td>"+gut.getDatumguschein()+"</td>";
+				result+="</tr>";
+			}
+			result+="</tbody>";
+			result+="</table>";
+			result+="</div>";
+			
+			response.getWriter().print(result);
 		}
 
 	}

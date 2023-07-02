@@ -15,6 +15,8 @@ import DAO.VerkauferDAO;
 import DAO.userDAO;
 import Model.Bewertung;
 import Model.Foto;
+import Model.Gutschein;
+import Model.Kaufer;
 import Model.Produkt;
 import Model.Warenkob;
 
@@ -579,6 +581,33 @@ public class Bestellung_verwaltung_verkaufer extends HttpServlet {
 			int rueck = dao2.getwaitingcommandnummber(idverkaufer);
 			
 			response.getWriter().print(rueck);
+		}else if(type.equals("quittungladen")) {
+			VerkauferDAO dao2 = new VerkauferDAO();
+			String result="<div class='table-responsive-sm'>";
+			result+="<table class='table mt-5 ms-1 me-1 table-stripped' style='font-size:0.8em;'>";
+			result+="<thead style='background-color:#48D1CC; color:white;'>";
+			result+="<tr>";
+			result+="<th id='res1'>ID-Payment</th><th id='res2'>ID-Oder</th><th id='res3'>Pseudo</th><th id='res4'>Email</th><th id='res5'>Name Product</th><th id='res6'>Price</th><th id='res7'>Date</th>";
+			result+="</tr>";
+			result+="</thead>";
+			result+="<tbody style='background-color:white;' >";
+			for(Gutschein gut: dao2.getListGutscheinKaufer(idverkaufer)) {
+				result+="<tr>";
+				result+="<td>"+gut.getIdgutschein()+"</td>";
+				result+="<td>"+gut.getIdwarenkob()+"</td>";
+				result+="<td>"+gut.getPseudokaufer()+"</td>";
+				result+="<td>"+gut.getEmailkaufer()+"</td>";
+				result+="<td>"+gut.getNameprodukt()+"</td>";
+				result+="<td>"+gut.getBetrag()+"</td>";
+				result+="<td>"+gut.getDatumguschein()+"</td>";
+				result+="</tr>";
+			}
+			result+="</tbody>";
+			result+="</table>";
+			result+="</div>";
+			
+			response.getWriter().print(result);
+			
 		}
 				
 		

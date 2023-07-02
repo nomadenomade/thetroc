@@ -11,15 +11,7 @@ import Model.Produkt;
 
 public class Kunkensuche {
 	
-	@Test
-	void Kundenproduktsuche() {
-		userDAO dao = new userDAO();
-		List<Produkt>list = dao.produktSuche("rest", "", "", "", "", "", "","","");
-		for (Produkt produkt : list) {
-			System.out.println(produkt.toString());
-		}
-	}
-	
+
 	@Test
 	void KundenproduktsucheAnzahk() {
 		userDAO dao = new userDAO();

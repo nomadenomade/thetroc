@@ -223,6 +223,9 @@
         <li>
           <a class="dropdown-item" href="<%=request.getContextPath() %>/RequestReSendSeller?name=Unternehmeninfo"  id="el9">Unternehmen erstellen</a>
         </li>
+         <li>
+			<a class="dropdown-item" href="<%=request.getContextPath() %>/RequestReSendSeller?name=thetrocmoneyreceipt" id="m1">My Customers-Receipts for Thetroc money Pay </a>
+		 </li>
         <li>
           <a class="dropdown-item" id="logout" href="<%=request.getContextPath() %>/index.jsp">Logout</a>
         </li>
@@ -782,6 +785,8 @@
 		    		document.getElementById("aktualisieren").innerText ="refresh page";
 		    		document.getElementById("erstellen").value ="create";
 		    		document.getElementById("el300").innerText = "pharmacies";
+		    		document.getElementById("m1").innerText = "My Customers-Receipts for Thetroc money Pay";
+		    		
 	    			
 	    		}
 	    		
@@ -983,7 +988,7 @@
         		document.getElementById("aktualisieren").innerText ="actualiser la page";
         		document.getElementById("erstellen").value ="créer";
         		document.getElementById("el300").innerText = "pharmacies";
-        		
+        		document.getElementById("m1").innerText = "Mes Reçus-Client Thetroc Money Pay ";
     			
     		}
     		
@@ -1187,6 +1192,7 @@
         		document.getElementById("aktualisieren").innerText ="Seite aktualisieren";
         		document.getElementById("erstellen").value ="erstellen";
         		document.getElementById("el300").innerText = "Apotheken";
+        		document.getElementById("m1").innerText = "Meine Quittungen Thetroc money Pay von Kunden";
     		}
     		
     		

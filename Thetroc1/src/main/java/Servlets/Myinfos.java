@@ -32,8 +32,8 @@ public class Myinfos extends HttpServlet {
 				List<Rechnung> listrechnung = dao.getRechnung("kaufer", idk,null);
 				
 				String result ="<div class='table-responsive-sm' style='max-height:500px; overflow-y:auto;'>"
-						      + " <table class='table table-dark ' >"
-						      + "<thead><tr>"
+						      + " <table class='table table-stripped ' >"
+						      + "<thead  style='background-color:#48D1CC; color:white;'><tr>"
 						      + "<th id='res1'>Nummer</th>"
 						      + "<th id='res2'>Name</th>"
 						      + "<th id='res3'>Gesamtmenge</th>"
@@ -43,7 +43,7 @@ public class Myinfos extends HttpServlet {
 						      + "<th id='res7'>Stadt</th>"
 						      + "<th id='res8'>Datum</th>"
 						      + "</tr></thead>"
-						      + "<tbody>";
+						      + "<tbody  style='background-color:white;'>";
 			for(Rechnung rech: listrechnung) {
 				result+="<tr style='font-size:0.8em;'>";
 				result+="<td>"+rech.getIdRechnung()+"</td>";

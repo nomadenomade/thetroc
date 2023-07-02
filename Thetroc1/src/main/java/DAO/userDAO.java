@@ -13,8 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.hibernate.Transaction;
+
+import com.mysql.cj.protocol.Resultset;
+
+import Model.Betreiber;
 import Model.Bewertung;
 import Model.Foto;
+import Model.Gutschein;
 import Model.Kaufer;
 import Model.Person;
 import Model.Produkt;
@@ -1767,5 +1773,181 @@ public class userDAO {
 		return rueck;
 	}
 	
+	public double gewinnBerechnung (int idkaufer, int idPerson) {
+		
+		String request = "SELECT * FROM Rechnung WHERE idKaufer = ? AND checked IS NULL";
+		Double Summe =0.0;
+		Double rate = getRate("kaufer");
+		Double oldSum = Double.valueOf(getPerson(idPerson).getGewinn()); 
+		try {
+			preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+			preparedstatement.setInt(1, idkaufer);
+			
+			ResultSet resultset = preparedstatement.executeQuery();
+			while(resultset.next()) {
+				Summe += (double)(Double.valueOf(resultset.getString("gesamtpreis")) * rate /100) ;
+			}
+			Summe+=oldSum;
+			
+			if(Summe != 0.0) {
+				request = "Update Person SET gewinn = ? WHERE idPerson = ?";
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, String.valueOf(Math.round(Summe)));
+				preparedstatement.setInt(2, idPerson);
+				int rueck = preparedstatement.executeUpdate();
+				if(rueck==1) {
+					request="UPDATE rechnung SET checked ='yes' WHERE idkaufer=? AND checked IS NULL";
+					preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+					preparedstatement.setInt(1, idkaufer);
+					preparedstatement.executeUpdate();
+					}
+			
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return Math.round(Summe);
+	}
+	
 
+	
+	public Double getRate (String type) {
+		Double rate=0.0;
+		String request="SELECT * FROM betreiber";
+		try {
+			Statement statement = DBconnection.getInstance().getStatement();
+			ResultSet resultset = statement.executeQuery(request);
+			while(resultset.next()) {
+				if(type.equals("kaufer")) {
+					rate = resultset.getDouble("ratekaufer");
+					break;
+				}else {
+					rate = resultset.getDouble("rateverkaufer");
+					break;
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return rate;
+	}
+	
+	public int thetrocPay(int idperson, String rest, int idverkaufer, String preiszuzahlen, String pseudo, String email,String nameprodukt,int idwarenkob) {
+		SimpleDateFormat dataformat = new SimpleDateFormat("dd-MM-yyyy,HH:mm:ss");
+		Date date = new Date();
+		String datestring = dataformat.format(date);
+		int rueck =0;
+		String request= "SELECT * FROM gutscheine WHERE idwarenkob=?";	
+		
+		//String 
+		
+		try {
+			
+			preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+			preparedstatement.setInt(1, idwarenkob);
+			
+			ResultSet result = preparedstatement.executeQuery();
+			while(result.next()) {
+				rueck++;
+				break;
+			}
+			
+			if(rueck ==0) {
+				request ="UPDATE person SET gewinn = ? WHERE idPerson=?";
+				preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+				preparedstatement.setString(1, rest);
+				preparedstatement.setInt(2, idperson);
+				rueck = preparedstatement.executeUpdate();
+				if(rueck==1) {
+					request="INSERT INTO gutscheine(pseudokaufer,emailkaufer,nameprodukt,betrag,datumgutschein,idVerkaufer,idwarenkob) VALUES(?,?,?,?,?,?,?)";
+					preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+					preparedstatement.setString(1, pseudo);
+					preparedstatement.setString(2, email);
+					preparedstatement.setString(3, nameprodukt);
+					preparedstatement.setString(4, preiszuzahlen);
+					preparedstatement.setString(5, datestring);
+					preparedstatement.setInt(6, idverkaufer);	
+					preparedstatement.setInt(7, idwarenkob);
+					rueck = preparedstatement.executeUpdate();	
+				}
+			}else {
+				rueck=2;
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+		
+		return rueck;
+	}
+	
+	public List<Betreiber> getListBetreiber(){
+		List<Betreiber> list = new ArrayList<>();
+		Betreiber betreiber = null;
+		Person person =null;
+		request =" SELECT * FROM betreiber";
+		try {
+			Statement statement = DBconnection.getInstance().getStatement();
+			ResultSet resultset = statement.executeQuery(request);
+			while(resultset.next()) {
+				person = getPerson(resultset.getString("idPerson"));
+				betreiber = new Betreiber();
+				betreiber.setIdBetreiber(resultset.getInt("idbetreiber"));
+				betreiber.setRatekaufer(resultset.getDouble("ratekaufer"));
+				betreiber.setRateverkaufer(resultset.getDouble("rateverkaufer"));
+				betreiber.setGutscheinfunction(resultset.getString("gutscheinfunction"));
+				betreiber.setPerson(person);
+				list.add(betreiber);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return list;
+	}
+	
+	public List<Gutschein> getListGutscheinKaufer(String pseudo, String email){
+		List<Gutschein> listgutschein = new ArrayList<>();
+		Gutschein gutschein =null;
+		request ="SELECT * FROM gutscheine WHERE pseudokaufer=? AND emailkaufer=? ORDER BY idgutscheine DESC";
+		try {
+			preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+			preparedstatement.setString(1, pseudo);
+			preparedstatement.setString(2, email);
+			ResultSet resultset = preparedstatement.executeQuery();
+			while(resultset.next()) {
+				gutschein = new Gutschein();
+				gutschein.setIdgutschein(resultset.getInt("idgutscheine"));
+				gutschein.setPseudokaufer(resultset.getString("pseudokaufer"));
+				gutschein.setEmailkaufer(resultset.getString("emailkaufer"));
+				gutschein.setNameprodukt(resultset.getString("nameprodukt"));
+				gutschein.setBetrag(resultset.getString("betrag"));
+				gutschein.setDatumguschein(resultset.getString("datumgutschein"));
+				gutschein.setIdverkaufer(resultset.getInt("idVerkaufer"));
+				gutschein.setIdwarenkob(resultset.getInt("idWarenkob"));
+				listgutschein.add(gutschein);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return listgutschein;
+	}
+	
 }

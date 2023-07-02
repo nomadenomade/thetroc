@@ -3,7 +3,28 @@ package Model;
 public class Betreiber {
 	private Person person;
 	private int idBetreiber;
+	double ratekaufer;
+	double rateverkaufer;
+	String gutscheinfunction;
 	
+	public double getRatekaufer() {
+		return ratekaufer;
+	}
+	public void setRatekaufer(double ratekaufer) {
+		this.ratekaufer = ratekaufer;
+	}
+	public double getRateverkaufer() {
+		return rateverkaufer;
+	}
+	public void setRateverkaufer(double rateverkaufer) {
+		this.rateverkaufer = rateverkaufer;
+	}
+	public String getGutscheinfunction() {
+		return gutscheinfunction;
+	}
+	public void setGutscheinfunction(String gutscheinfunction) {
+		this.gutscheinfunction = gutscheinfunction;
+	}
 	public Betreiber() {
 		super();
 	}

@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 import Model.Foto;
+import Model.Gutschein;
 import Model.Person;
 import Model.Produkt;
 import Model.Verkaufer;
@@ -527,5 +528,35 @@ public class VerkauferDAO {
 	 
 	 return rueck;
  }
+ 
+ public List<Gutschein> getListGutscheinKaufer(int idverkaufer){
+		List<Gutschein> listgutschein = new ArrayList<>();
+		Gutschein gutschein =null;
+		request ="SELECT * FROM gutscheine WHERE idverkaufer=? ORDER BY idgutscheine DESC";
+		try {
+			preparedstatement = DBconnection.getInstance().getPreparedStatement(request);
+			preparedstatement.setInt(1, idverkaufer);
+			
+			ResultSet resultset = preparedstatement.executeQuery();
+			while(resultset.next()) {
+				gutschein = new Gutschein();
+				gutschein.setIdgutschein(resultset.getInt("idgutscheine"));
+				gutschein.setPseudokaufer(resultset.getString("pseudokaufer"));
+				gutschein.setEmailkaufer(resultset.getString("emailkaufer"));
+				gutschein.setNameprodukt(resultset.getString("nameprodukt"));
+				gutschein.setBetrag(resultset.getString("betrag"));
+				gutschein.setDatumguschein(resultset.getString("datumgutschein"));
+				gutschein.setIdverkaufer(resultset.getInt("idVerkaufer"));
+				gutschein.setIdwarenkob(resultset.getInt("idWarenkob"));
+				listgutschein.add(gutschein);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return listgutschein;
+	}
+	
  
 }
